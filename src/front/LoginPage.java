@@ -116,7 +116,9 @@ public class LoginPage extends JFrame {
         	LoginPage loginPage = new LoginPage();
             loginPage.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set the frame to full size
             loginPage.setVisible(true);
-            //new LoginPage().setVisible(true);
+           // new LoginPage().setVisible(true);
+            
+            
         });
     }
 }

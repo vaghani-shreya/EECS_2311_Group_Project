@@ -92,6 +92,7 @@ public class dashBoard extends JPanel{
         SwingUtilities.invokeLater(() -> {
             dashBoard dashboard = new dashBoard(login);
             JFrame frame = new JFrame();
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(dashboard);
             frame.pack();
