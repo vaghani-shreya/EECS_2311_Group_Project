@@ -4,101 +4,135 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class LoginPage extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JPanel cardPanel;
-    private CardLayout cardLayout;
+	private static JTextField usernameField;
+	private JPasswordField passwordField;
+	private JPanel cardPanel;
+	private CardLayout cardLayout;
+    private DatabaseHandler dbHandler;
 
-    public LoginPage() {
-        setTitle("Login");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public boolean login(String username, String password) {
+		// For simplicity, let's use a hardcoded username and password for demonstration
+//		return username.equals("user") && password.equals("password");
+		boolean login = dbHandler.authenticateUser(username, password) || username.equals("user") && password.equals("password");
+		
+        return login;
 
-        // Create components
-        JLabel titleLabel = new JLabel("Shows Tracking Application");
-        JLabel usernameLabel = new JLabel("Username:");
-        JLabel passwordLabel = new JLabel("Password:");
-        usernameField = new JTextField(20); 
-        passwordField = new JPasswordField(20); 
-        JButton loginButton = new JButton("Login");
+	}
 
-        // Label Properties
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 24));
-        usernameLabel.setForeground(Color.WHITE); 
-        passwordLabel.setForeground(Color.WHITE);
+	public LoginPage() {
+        dbHandler = new DatabaseHandler();
+		setTitle("Login");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Set layout manager for content pane
-        cardPanel = new JPanel();
-        cardLayout = new CardLayout();
-        cardPanel.setLayout(cardLayout);
-        cardPanel.setBackground(new Color(45, 45, 45));
+		// Create components
+		JLabel titleLabel = new JLabel("Shows Tracking Application");
+		JLabel usernameLabel = new JLabel("Username:");
+		JLabel passwordLabel = new JLabel("Password:");
+		usernameField = new JTextField(20); 
+		passwordField = new JPasswordField(20); 
+		JButton loginButton = new JButton("Login");
 
-        JPanel contentPane = new JPanel(new GridBagLayout());
-        contentPane.setBackground(new Color(45, 45, 45));
-        // Create constraints for centering
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new java.awt.Insets(5, 5, 5, 5); // Add some padding
+		// Label Properties
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 24));
+		usernameLabel.setForeground(Color.WHITE); 
+		passwordLabel.setForeground(Color.WHITE);
 
-        // Add components to the content pane
-        contentPane.add(titleLabel, gbc);
-        gbc.gridy++;
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Allow the component to expand horizontally
-        contentPane.add(usernameLabel, gbc);
-        gbc.gridy++;
-        gbc.weightx = 0; // Do not allow the component to stretch
-        contentPane.add(usernameField, gbc);
-        gbc.gridy++;
-        contentPane.add(passwordLabel, gbc);
-        gbc.gridy++;
-        contentPane.add(passwordField, gbc);
-        gbc.gridy++;
-        gbc.gridwidth = 2; // Span two columns
-        contentPane.add(loginButton, gbc);
+		// Set layout manager for content pane
+		cardPanel = new JPanel();
+		cardLayout = new CardLayout();
+		cardPanel.setLayout(cardLayout);
+		cardPanel.setBackground(new Color(45, 45, 45));
 
-        // Create welcome panel
-        WelcomePage welcomePanel = new WelcomePage(this);
+		JPanel contentPane = new JPanel(new GridBagLayout());
+		contentPane.setBackground(new Color(45, 45, 45));
+		// Create constraints for centering
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new java.awt.Insets(5, 5, 5, 5); // Add some padding
 
-        // Add panels to cardPanel
-        cardPanel.add(contentPane, "login");
-        cardPanel.add(welcomePanel, "welcome");
+		// Add components to the content pane
+		contentPane.add(titleLabel, gbc);
+		gbc.gridy++;
+		gbc.fill = GridBagConstraints.HORIZONTAL; // Allow the component to expand horizontally
+		contentPane.add(usernameLabel, gbc);
+		gbc.gridy++;
+		gbc.weightx = 0; // Do not allow the component to stretch
+		contentPane.add(usernameField, gbc);
+		gbc.gridy++;
+		contentPane.add(passwordLabel, gbc);
+		gbc.gridy++;
+		contentPane.add(passwordField, gbc);
+		gbc.gridy++;
+		gbc.gridwidth = 2; // Span two columns
+		contentPane.add(loginButton, gbc);
 
-        // Set contentPane to cardPanel
-        setContentPane(cardPanel);
+		// Create welcome panel
+		WelcomePage welcomePanel = new WelcomePage(this);
 
-        pack();
-        setLocationRelativeTo(null); // Center the frame on the screen
+		// Add panels to cardPanel
+		cardPanel.add(contentPane, "login");
+		cardPanel.add(welcomePanel, "welcome");
 
-        // Add action listener to the login button
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Check username and password
-                String username = usernameField.getText();
-                char[] password = passwordField.getPassword();
-                String enteredPassword = new String(password);
+		// Set contentPane to cardPanel
+		setContentPane(cardPanel);
 
-                // For simplicity, let's use a hardcoded username and password for demonstration
-                if (username.equals("user") && enteredPassword.equals("password")) {
-                    cardLayout.show(cardPanel, "welcome");
-                } else {
-                    JOptionPane.showMessageDialog(LoginPage.this, "Login failed. Please try again.");
-                }
+		pack();
+		setLocationRelativeTo(null); // Center the frame on the screen
 
-                // Clear the fields after checking
-                usernameField.setText("");
-                passwordField.setText("");
-            }
-        });
-    }
+		// Add action listener to the login button
+		loginButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Check username and password
+				String username = getUsername();
+				String password = getPassword();
 
-    public void signOut(){
-        cardLayout.show(cardPanel, "login");
-    }
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new LoginPage().setVisible(true);
-        });
-    }
+				// Perform login action
+				if (login(username, password)) {
+					cardLayout.show(cardPanel, "welcome");
+				} else {
+					JOptionPane.showMessageDialog(LoginPage.this, "Login failed! Please try again.");
+				}
+
+				// Clear the fields after checking
+				setUsername("");
+				setPassword("");
+			}
+		});
+	}
+
+	public void signOut(){
+		cardLayout.show(cardPanel, "login");
+	}
+
+	// Methods to Set and Get the Username
+	public void setUsername (String username) {
+		usernameField.setText(username);
+	}
+
+	public String getUsername() {
+		return usernameField.getText();
+	}
+
+	// Methods to Set and Get the Password
+	public void setPassword (String password) {
+		passwordField.setText(password);
+	}
+
+	public String getPassword() {
+		return passwordField.getText();
+	}
+
+
+	public static void main(String[] args) {
+		javax.swing.SwingUtilities.invokeLater(() -> {
+			new LoginPage().setVisible(true);
+		});
+		
+		// Retrieve user credentials from the database using DatabaseHandler
+		DatabaseHandler dbHandler = new DatabaseHandler();
+        dbHandler.retrieveUserCredentials();
+	}
 }
