@@ -2,26 +2,26 @@ package front;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Window.Type;
 
 public class LoginPage extends JFrame {
-	private static JTextField usernameField;
+	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
-    private DatabaseHandler dbHandler;
+	private DatabaseHandler dbHandler;
 
 	public boolean login(String username, String password) {
 		// For simplicity, let's use a hardcoded username and password for demonstration
-//		return username.equals("user") && password.equals("password");
+		//		return username.equals("user") && password.equals("password");
 		boolean login = dbHandler.authenticateUser(username, password) || username.equals("user") && password.equals("password");
-		
-        return login;
 
+		return login;
 	}
 
 	public LoginPage() {
-        dbHandler = new DatabaseHandler();
-		setTitle("Login");
+		dbHandler = new DatabaseHandler();
+		setTitle("Show Tracking Application");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create components
@@ -34,7 +34,7 @@ public class LoginPage extends JFrame {
 
 		// Label Properties
 		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 24));
+		titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 30));
 		usernameLabel.setForeground(Color.WHITE); 
 		passwordLabel.setForeground(Color.WHITE);
 
@@ -70,16 +70,19 @@ public class LoginPage extends JFrame {
 
 		// Create welcome panel
 		WelcomePage welcomePanel = new WelcomePage(this);
+		dashBoard dbPanel = new dashBoard(this);
 
 		// Add panels to cardPanel
 		cardPanel.add(contentPane, "login");
 		cardPanel.add(welcomePanel, "welcome");
+		cardPanel.add(dbPanel, "dashBoard");
 
 		// Set contentPane to cardPanel
 		setContentPane(cardPanel);
 
 		pack();
 		setLocationRelativeTo(null); // Center the frame on the screen
+
 
 		// Add action listener to the login button
 		loginButton.addActionListener(new ActionListener() {
@@ -90,10 +93,10 @@ public class LoginPage extends JFrame {
 				String password = getPassword();
 
 				// Perform login action
-				if (login(username, password)) {
-					cardLayout.show(cardPanel, "welcome");
+				if (login(username, password)) {	                	
+					cardLayout.show(cardPanel, "dashBoard");
 				} else {
-					JOptionPane.showMessageDialog(LoginPage.this, "Login failed! Please try again.");
+					JOptionPane.showMessageDialog(LoginPage.this, "Login failed. Please try again.");
 				}
 
 				// Clear the fields after checking
@@ -128,11 +131,15 @@ public class LoginPage extends JFrame {
 
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(() -> {
-			new LoginPage().setVisible(true);
+			LoginPage loginPage = new LoginPage();
+			loginPage.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set the frame to full size
+			loginPage.setVisible(true);
+
 		});
-		
+
 		// Retrieve user credentials from the database using DatabaseHandler
 		DatabaseHandler dbHandler = new DatabaseHandler();
-        dbHandler.retrieveUserCredentials();
+		dbHandler.retrieveUserCredentials();
 	}
 }
+
