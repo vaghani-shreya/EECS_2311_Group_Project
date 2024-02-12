@@ -77,17 +77,20 @@ public class dashBoard extends JPanel{
 		});
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			dashBoard dashboard = new dashBoard(login);
-			JFrame frame = new JFrame();
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.getContentPane().add(dashboard);
-			frame.pack();
-			frame.setVisible(true);
-			// dashboard.setVisible(true);
-		});
-	}
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            dashBoard dashboard = new dashBoard(login);
+            JFrame frame = new JFrame();
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().add(dashboard);
+            frame.pack();
+            frame.setVisible(true);
+           // dashboard.setVisible(true);
+        });
+    }
+
 
 }
 
