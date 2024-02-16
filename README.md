@@ -47,14 +47,23 @@ Java Swing
 Java
 
 ## Getting Started
-give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
+   
 ### Prerequisites
 
- list things you need to use the software and how to install them.
+Before you begin, ensure you have the following software installed on your system:
+
+1. Java Development Kit (JDK) version 8 or above: JDK is required to compile and run the Java application. Ensure JDK 8 or later is installed on your system. [Download JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+
+2. Maven: This project uses Maven for managing dependencies and building the application. Maven simplifies the process of including external libraries such as JDBC drivers for SQLite, JFreeChart, and JavaMail API in the project. Ensure Maven is installed on your system. [Download Maven](https://maven.apache.org/download.cgi)
+
 
 ### Installation
+To run Show Tracking web app, ensure you have Java installed on your system. Follow these steps:
+1. Clone the repository: `git clone https://github.com/vaghani-shreya/EECS_2311_Group_Project.git`
+2. Navigate to the project directory: `cd EECS_2311_Group_Project`
+3. Run Maven Build: Execute `mvn clean install` to build the project and download the necessary dependencies automatically.
+4. Run the application: Use the command `java -cp target/classes front.loginpage` to run the application.
 
 
 ## Usage
