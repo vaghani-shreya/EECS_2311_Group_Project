@@ -1,22 +1,9 @@
 package front;
-
-
 import java.sql.*;
-
-
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-
 class netflixTest {
 	
-	
-//	@BeforeEach
-//	void init() throws ClassNotFoundException {
-//		 String path = "jdbc:sqlite:database/Netflix.db";
-//	     String query = "SELECT * FROM netflix_titles WHERE title LIKE ?;";
-//	}
 	//Testing a show that exists in the database
 	@Test
 	void test1() {
