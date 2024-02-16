@@ -78,15 +78,18 @@ To run Show Tracking web app, ensure you have Java installed on your system. Fol
 
 ### Creating A Pull Request
 
-
 ## License
-
-
 
 ## Authors
 
-
+- Mai: Implemented The Netflix “Discover Weekly” page where users can search for a certain show from Netflix.
+- Elizabeth: Implementing the login page
+- Anusha: Implemented the Forgot Password Function
+- David: Implemented the Favourites Page
+- Shreya: Implementing the dashboard with all the different pages
+- Huiling: Implementing the detailed page for each entry 
 
 ## Acknowledgements
 
-
+- Thanks to Hadi Hemmati, the EECS 2311 instructor and Hamed Taherkhani, the TA, for their invaluable guidance.
+- Special thanks to [JFreeChart](http://www.jfree.org/jfreechart/) for the charting tools.
