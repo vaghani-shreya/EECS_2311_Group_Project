@@ -5,10 +5,23 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class netflix_trial {
+	public List<String> listOfRating;
+	private Map<String, Integer> ratingCountMap;
+	
+	public netflix_trial() {
+		listOfRating = new ArrayList<>();
+		ratingCountMap = new HashMap<>();
+	}
 	
 public void netflix_data() {
+//	 listOfRating = new ArrayList<>();
+//	 ratingCountMap = new HashMap<>();
 		
 		
 		String path = "jdbc:sqlite:database/Netflix.db";
@@ -24,8 +37,12 @@ public void netflix_data() {
 	            while (resultSet.next()) {
 	                String id = resultSet.getString("show_id");
 	                String title = resultSet.getString("title");
+	                String rating = resultSet.getString("rating");
+	                listOfRating.add(rating);
+	                ratingCountMap.put(rating, ratingCountMap.getOrDefault(rating, 0) + 1);
 
-	                System.out.println("Show_id: " + id + ", title: " + title);
+	                System.out.println("Show_id: " + id + ", title: " + title + "rating" + rating);
+	                //System.out.println(listOfRating.size());
 	                // You can add more details here if needed
 	            }
 	        } catch (SQLException e) {
@@ -34,11 +51,29 @@ public void netflix_data() {
 				
 				e.printStackTrace();
 			}
+		
+		
 }
+
+	public List<String> getListOfRating() {
+	return listOfRating;
+}
+	
+	
+public void setListOfRating(List<String> listOfRating) {
+	this.listOfRating = listOfRating;
+}
+
+public int getCountOfRating(String rating) {
+	return ratingCountMap.getOrDefault(rating, 0);
+}
+
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		netflix_trial n1 = new netflix_trial();
 		n1.netflix_data();
+		
 
 	}
 
