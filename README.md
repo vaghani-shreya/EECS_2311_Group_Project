@@ -1,7 +1,6 @@
 <br/>
 <p align="center">
   <a href="">
-    <img src="" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">ReadME</h3>
@@ -9,7 +8,7 @@
   <p align="center">
    This is the ReadMe File for EECS 2311 Group 1 Winter 2024
     <br/>
-    <a href="https://github.com/ShaanCoding/ReadME-Generator"><strong>»</strong></a>
+    <a href="https://github.com/ShaanCoding/ReadME-Generator"><strong></strong></a>
     <br/>
     <br/>
     <a href="">View Demo</a>
