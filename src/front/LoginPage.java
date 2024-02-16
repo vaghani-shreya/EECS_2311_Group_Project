@@ -31,6 +31,7 @@ public class LoginPage extends JFrame {
 		usernameField = new JTextField(20); 
 		passwordField = new JPasswordField(20); 
 		JButton loginButton = new JButton("Login");
+		JButton ForgotPasswordButton = new JButton("Forgot my password");
 
 		// Label Properties
 		titleLabel.setForeground(Color.WHITE);
@@ -67,15 +68,20 @@ public class LoginPage extends JFrame {
 		gbc.gridy++;
 		gbc.gridwidth = 2; // Span two columns
 		contentPane.add(loginButton, gbc);
+		gbc.gridy++;
+		gbc.gridwidth = 2; // Span two columns
+		contentPane.add(ForgotPasswordButton, gbc);
 
 		// Create welcome panel
 		WelcomePage welcomePanel = new WelcomePage(this);
 		dashBoard dbPanel = new dashBoard(this);
+		ForgotPasswordPage fpPanel = new ForgotPasswordPage(this);
 
 		// Add panels to cardPanel
 		cardPanel.add(contentPane, "login");
 		cardPanel.add(welcomePanel, "welcome");
 		cardPanel.add(dbPanel, "dashBoard");
+		cardPanel.add(fpPanel, "ForgotPasswordPage");
 
 		// Set contentPane to cardPanel
 		setContentPane(cardPanel);
@@ -104,6 +110,15 @@ public class LoginPage extends JFrame {
 				setPassword("");
 			}
 		});
+		
+		// Add action listener to the forget password button
+		ForgotPasswordButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(cardPanel, "ForgotPasswordPage");
+			}
+		});
+	
 	}
 
 	public void signOut(){
