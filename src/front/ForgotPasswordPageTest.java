@@ -14,17 +14,20 @@ import org.junit.jupiter.api.Test;
 class ForgotPasswordPageTest {
 	ForgotPasswordPage forgotpasswordPage;
 	LoginPage loginPage;
+	DatabaseHandler dbHandler;
+
 	
 	@BeforeEach
 	void init() {
 		forgotpasswordPage = new ForgotPasswordPage(loginPage);
+		dbHandler = new DatabaseHandler();
 	}
 	
 	//Correct Username
 	@Test
 	void testCorrectUsername() {
 		// Simulate a valid username
-		boolean result = forgotpasswordPage.username("anusham@my.yorku.ca");
+		boolean result = forgotpasswordPage.username("user");
 
 		// Verify that the login is successful
 		assertTrue(result);

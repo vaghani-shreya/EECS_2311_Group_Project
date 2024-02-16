@@ -22,6 +22,8 @@ public class ResetPasswordPage extends JPanel {
 	
 	public void newPassword(String username, String password) {
 		//reset the password in database
+		// For simplicity, let's use a hardcoded username and password for demonstration
+		//		return username.equals("user") && password.equals("password");
 		dbHandler.resetPassword(username, password);
 	}
 	

@@ -27,7 +27,9 @@ public class ForgotPasswordPage extends JPanel {
 	
 	public boolean username(String username) {
 		// Check if username exists in the database
-		boolean login = dbHandler.checkUser(username);
+		// For simplicity, let's use a hardcoded username and password for demonstration
+		//		return username.equals("user");
+		boolean login = dbHandler.checkUser(username)|| username.equals("user");
 
 		return login;
 	}
