@@ -1,4 +1,4 @@
-package front;
+package testCases;
 import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
