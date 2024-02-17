@@ -38,7 +38,6 @@
 
 ## About The Project
 
-![Screen Shot](images/screenshot.png)
 
 The Show/movie Tracking web app is designed for users who do not have streaming subscriptions but would still like to know about upcoming movies/TV shows. The web app provides an in-time notification up to their preference, recommends trending shows on major streaming platforms like Netflix, Prime, etc., and gives users a thread-like comment place that allows users to develop deep discussions to share their thoughts with friends or people who are also into the shows. It also functions as an integrated hub that saves users the trouble of jumping from one platform to another.
 
