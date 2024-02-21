@@ -50,13 +50,12 @@ Java
 DB Browser(Database)
 
 ## Getting Started
-give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
+   
 ### Prerequisites
 
 Before you begin, ensure you have the following software installed on your system:
- 
+
 1. Git - Version Control
 
 2. Eclipse Community edition - The IDE to asociate the code with. Here, eclipse is primarily used.
@@ -66,8 +65,12 @@ Before you begin, ensure you have the following software installed on your syste
 4. Maven: This project uses Maven for managing dependencies and building the application. Maven simplifies the process of including external libraries such as JDBC drivers for SQLite, JFreeChart, and JavaMail API in the project. Ensure Maven is installed on your system. [Download Maven](https://maven.apache.org/download.cgi)
 
 
-
 ### Installation
+To run Show Tracking web app, ensure you have Java installed on your system. Follow these steps:
+1. Clone the repository: `git clone https://github.com/vaghani-shreya/EECS_2311_Group_Project.git`
+2. Navigate to the project directory: `cd EECS_2311_Group_Project`
+3. Run Maven Build: Execute `mvn clean install` to build the project and download the necessary dependencies automatically.
+4. Run the application: Use the command `java -cp target/classes front.loginpage` to run the application.
 
  GitHub - https://git-scm.com/
  Eclipse Community edition - https://www.eclipse.org/community/
@@ -148,6 +151,7 @@ After Logging into the Main Application, you can click on the different tabs to 
 
 To Sign out from the Mainn application, click on the Sign out button on the right hand side of the application.
 
+<<<<<<< HEAD
  ![figure 9](Images/Image8.png)
 
  **NOTE** - There is no sign out button to the netflix application as it will be a component of the Main application for the next iteration.
@@ -165,3 +169,20 @@ To Sign out from the Mainn application, click on the Sign out button on the righ
 ## Acknowledgements
 - Thanks to Hadi Hemmati, the EECS 2311 instructor and Hamed Taherkhani, the TA, for their invaluable guidance.
 
+=======
+## License
+
+## Authors
+
+- Mai: Implemented The Netflix “Discover Weekly” page where users can search for a certain show from Netflix.
+- Elizabeth: Implementing the login page
+- Anusha: Implemented the Forgot Password Function
+- David: Implemented the Favourites Page
+- Shreya: Implementing the dashboard with all the different pages
+- Huiling: Implementing the detailed page for each entry 
+
+## Acknowledgements
+
+- Thanks to Hadi Hemmati, the EECS 2311 instructor and Hamed Taherkhani, the TA, for their invaluable guidance.
+- Special thanks to [JFreeChart](http://www.jfree.org/jfreechart/) for the charting tools.
+>>>>>>> d2c9357061c05c44d93b3e9f4a61d3cdd7883354
