@@ -1,5 +1,6 @@
 package front;
 
+import java.util.ArrayList;
 import java.sql.*;
 
 public class DatabaseHandler {
@@ -213,5 +214,37 @@ public class DatabaseHandler {
 //        
 //		return movies;
 //    }
+    public String getFavoriteGenreForUser(String username) {
+        // implement the logic later on, being hard coded for now
+        return "Comedy"; 
+    }
+    public Object[][] retrieveRecommendations(String username) {
+        String path = "jdbc:sqlite:database/Netflix.db";
+        // 
+        String favoriteGenre = getFavoriteGenreForUser(username); // based on the genre from user's fav list， being hard coded for now
+        if (favoriteGenre == null) {
+            favoriteGenre = "Drama"; // if user have not added anything, use Drama by default
+        }
+        String query = "SELECT * FROM netflix_titles WHERE title like ? ORDER BY rating;"; // need genre column to substitute title
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            try (Connection conn = DriverManager.getConnection(path);
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, "%" + favoriteGenre + "%");
+                ResultSet resultSet = pstmt.executeQuery();
+                
+                ArrayList<Object[]> tempList = new ArrayList<>();
+                while (resultSet.next()) {
+                    tempList.add(new Object[]{resultSet.getString("title"), resultSet.getString("rating"), resultSet.getString("description")}); //add "resultSet.getString("genre")," back as a second parameter 
+                }
+                
+                return tempList.toArray(new Object[0][]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[0][];
+        }
+    }
 
 }

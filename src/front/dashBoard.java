@@ -16,7 +16,9 @@ public class dashBoard extends JPanel{
 	private DatabaseHandler dbHandler;
 	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
 	private JComboBox filterList = new JComboBox(filterNames);
-
+	// Create tabbed pane
+	private JTabbedPane tabbedPane = new JTabbedPane();
+	//   cardLayout = new CardLayout();
 
 	public static dashBoard getInstance() {
 		if (instance == null)
@@ -33,16 +35,21 @@ public class dashBoard extends JPanel{
 		setLayout(new BorderLayout());
 		//  setLocationRelativeTo(null); // Center the window
 
-		// Create tabbed pane
-		JTabbedPane tabbedPane = new JTabbedPane();
-		//   cardLayout = new CardLayout();
+		
+		
+		//initialize a databaseHandler instance
+		dbHandler = new DatabaseHandler();
 
 		// Create tabs
 		JPanel tab1 = new JPanel();
 		tab1.add(new JLabel("This is our main dashboard"));
-
-		JPanel tab2 = new JPanel();
-		tab2.add(new JLabel("These are the recommendations for the user"));
+		
+		
+		
+//		JPanel tab2 = new JPanel();
+//		tab2.add(new JLabel("These are the recommendations for the user"));
+//      Recommendation tab method is defined below
+		
 
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
@@ -52,7 +59,7 @@ public class dashBoard extends JPanel{
 // Favourites Page
 		
 		// Retrieves Favourites list with filter from the database
-		DatabaseHandler dbHandler = new DatabaseHandler();
+		//DatabaseHandler dbHandler = new DatabaseHandler();
 		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
 		
 		// Adding Text and Buttons
@@ -88,7 +95,8 @@ public class dashBoard extends JPanel{
 
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
-		tabbedPane.addTab("Recommendations", tab2);
+		//tabbedPane.addTab("Recommendations", re);
+		createRecommendationsTab(loginPage.getUsername());
 		tabbedPane.addTab("Ratings", tab3);
 		tabbedPane.addTab("Favourites", tab4);
 		tabbedPane.addTab("Analytics", tab5);
@@ -119,6 +127,23 @@ public class dashBoard extends JPanel{
 	
 	
 	
+    private void createRecommendationsTab(String username) {
+		// TODO Auto-generated method stub
+    	Object[][] recommendationsData = dbHandler.retrieveRecommendations(username);
+	    String[] columnNames = {"Title", "Genre", "Rating"};
+
+	    JTable recommendationsTable = new JTable(recommendationsData, columnNames);
+	    JScrollPane scrollPane = new JScrollPane(recommendationsTable);
+	    
+	    // replace tab2
+	    JPanel recommendationsPanel = new JPanel(new BorderLayout());
+	    recommendationsPanel.add(scrollPane, BorderLayout.CENTER);
+	    
+	    // insert the content under the tab
+	    tabbedPane.addTab("Recommendations", recommendationsPanel);
+	}
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             dashBoard dashboard = new dashBoard(login);

@@ -173,6 +173,7 @@ public class netflix extends JFrame {
             @Override
             public void run() {
                 new netflix().setVisible(true);
+                
             }
         });
     }
