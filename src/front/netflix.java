@@ -55,17 +55,17 @@ public class netflix extends JFrame {
     // Allows the user to see the shows in descending order of release year
     private void NetflixDataBase() {
         String path = "jdbc:sqlite:database/Netflix.db";
-        // extract data from netflix database by descending order in terms of release year
-        String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC;";
+     // extract data from netflix database by descending order in terms of release year
+        String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC;"; 
 
         try {
-            //call the JDBC driver
+        	//call the JDBC driver
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(path);
             Statement stmt = conn.createStatement();
 
             ResultSet resultSet = stmt.executeQuery(query);
-            //loop through all data required from the database
+          //loop through all data required from the database
             while (resultSet.next()) {
                 String id = resultSet.getString("show_id");
                 String title = resultSet.getString("title");
@@ -75,14 +75,14 @@ public class netflix extends JFrame {
                 String cast = resultSet.getString("cast");
                 String description = resultSet.getString("description");
                 String date_added = resultSet.getString("date_added");
-                //prints the specified show / movie and the corresponding information
+              //prints the specified show / movie and the corresponding information
                 JLabel showLabel = new JLabel("Show ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
-                showLabel.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        showDetails(id, title, dateAdded, releaseYear,director, description, cast, date_added);
-                    }
-                });
+              showLabel.addMouseListener(new MouseAdapter() {
+              @Override
+              public void mouseClicked(MouseEvent e) {
+                  showDetails(id, title, dateAdded, releaseYear,director, description, cast, date_added);
+              }
+          });
                 showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 showPanel.add(showLabel);
@@ -120,7 +120,7 @@ public class netflix extends JFrame {
                 String description = resultSet.getString("description");
                 String date_added = resultSet.getString("date_added");
                 //prints the specified show / movie and the corresponding information
-
+            
                 JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
                 showLabel.addMouseListener(new MouseAdapter() {
                     @Override
@@ -128,11 +128,11 @@ public class netflix extends JFrame {
                         showDetails(id, title, dateAdded, releaseYear, director, description, cast, date_added);
                     }
                 });
-
+                
                 showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 showPanel.add(showLabel);
-                showPanel.add(Box.createVerticalStrut(10));
+                showPanel.add(Box.createVerticalStrut(10)); 
             }
 
             conn.close();
@@ -143,28 +143,28 @@ public class netflix extends JFrame {
         showPanel.revalidate(); // Refresh layout
         showPanel.repaint(); // Repaint the panel
     }
+    
+  private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+  // Open a new page to display more details about a specific show/movie
+  JFrame detailsFrame = new JFrame("Show Details");
+  JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+  JTextArea detailsTextArea = new JTextArea();
+  detailsTextArea.append("Show ID: " + showId + "\n");
+  detailsTextArea.append("Title: " + title + "\n");
+  detailsTextArea.append("Date Added: " + dateAdded + "\n");
+  detailsTextArea.append("Release Year: " + releaseYear + "\n");
+  detailsTextArea.append("Director: " + director + "\n");
+  detailsTextArea.append("Description : " + description + "\n");
+  detailsTextArea.append("Cast: " + cast + "\n");
 
-    private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
-        // Open a new page to display more details about a specific show/movie
-        JFrame detailsFrame = new JFrame("Show Details");
-        JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
-        JTextArea detailsTextArea = new JTextArea();
-        detailsTextArea.append("Show ID: " + showId + "\n");
-        detailsTextArea.append("Title: " + title + "\n");
-        detailsTextArea.append("Date Added: " + dateAdded + "\n");
-        detailsTextArea.append("Release Year: " + releaseYear + "\n");
-        detailsTextArea.append("Director: " + director + "\n");
-        detailsTextArea.append("Description : " + description + "\n");
-        detailsTextArea.append("Cast: " + cast + "\n");
 
+  detailsPanel.add(detailsTextArea);
+  detailsFrame.add(detailsPanel);
 
-        detailsPanel.add(detailsTextArea);
-        detailsFrame.add(detailsPanel);
-
-        detailsFrame.setSize(300, 200);
-        detailsFrame.setLocationRelativeTo(null);
-        detailsFrame.setVisible(true);
-    }
+  detailsFrame.setSize(300, 200);
+  detailsFrame.setLocationRelativeTo(null);
+  detailsFrame.setVisible(true);
+}
 
 
 
