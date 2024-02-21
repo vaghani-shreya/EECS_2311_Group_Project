@@ -77,12 +77,21 @@ public class netflix extends JFrame {
                 String date_added = resultSet.getString("date_added");
                 //prints the specified show / movie and the corresponding information
                 JLabel showLabel = new JLabel("Show ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
+<<<<<<< HEAD
                 showLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         showDetails(id, title, dateAdded, releaseYear,director, description, cast, date_added);
                     }
                 });
+=======
+              showLabel.addMouseListener(new MouseAdapter() {
+              @Override
+              public void mouseClicked(MouseEvent e) {
+                  showDetails(id, title, dateAdded, releaseYear,director, description, cast, date_added);
+              }
+          });
+>>>>>>> 9158e5f04aa82b19ac463be153510dd8abe5de58
                 showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 showPanel.add(showLabel);
@@ -120,7 +129,11 @@ public class netflix extends JFrame {
                 String description = resultSet.getString("description");
                 String date_added = resultSet.getString("date_added");
                 //prints the specified show / movie and the corresponding information
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 9158e5f04aa82b19ac463be153510dd8abe5de58
                 JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
                 showLabel.addMouseListener(new MouseAdapter() {
                     @Override
@@ -128,7 +141,11 @@ public class netflix extends JFrame {
                         showDetails(id, title, dateAdded, releaseYear, director, description, cast, date_added);
                     }
                 });
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 9158e5f04aa82b19ac463be153510dd8abe5de58
                 showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 showPanel.add(showLabel);
@@ -143,6 +160,28 @@ public class netflix extends JFrame {
         showPanel.revalidate(); // Refresh layout
         showPanel.repaint(); // Repaint the panel
     }
+    
+  private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+  // Open a new page to display more details about a specific show/movie
+  JFrame detailsFrame = new JFrame("Show Details");
+  JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+  JTextArea detailsTextArea = new JTextArea();
+  detailsTextArea.append("Show ID: " + showId + "\n");
+  detailsTextArea.append("Title: " + title + "\n");
+  detailsTextArea.append("Date Added: " + dateAdded + "\n");
+  detailsTextArea.append("Release Year: " + releaseYear + "\n");
+  detailsTextArea.append("Director: " + director + "\n");
+  detailsTextArea.append("Description : " + description + "\n");
+  detailsTextArea.append("Cast: " + cast + "\n");
+
+
+  detailsPanel.add(detailsTextArea);
+  detailsFrame.add(detailsPanel);
+
+  detailsFrame.setSize(300, 200);
+  detailsFrame.setLocationRelativeTo(null);
+  detailsFrame.setVisible(true);
+}
 
     private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
         // Open a new page to display more details about a specific show/movie

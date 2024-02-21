@@ -17,7 +17,7 @@ public class ShowAppSwing {
     }
 
     private static void addComponentsToPane(Container pane) {
-        String showName = "Good Wife";
+        String showName = "Good Fight";
         String showDescription = "The Good Fight is an American legal and political drama television series produced for CBS's streaming service CBS All Access. It is CBS All Access's first original scripted series. The series—created by Robert King, Michelle King, and Phil Alden Robinson—is a spin-off and sequel to The Good Wife, which was created by the Kings. The first season contains 10 episodes, and premiered on February 19, 2017, with the first episode airing on CBS and the following nine episodes on CBS All Access. The series was initially scheduled to air in May 2017 but was moved up after production delays forced CBS to postpone the premiere of the new series Star Trek: Discovery. The series' second season premiered on March 4, 2018, and its third on March 14, 2019. The series was renewed for a fourth season on April 23, 2019, which premiered on April 9, 2020. The series was renewed for a fifth season on October 28, 2020, which premiered on June 24, 2021. The series was renewed for a sixth season on November 24, 2021.";
         double rating = 4.5;
         String releaseDate = "February 19, 2017";
