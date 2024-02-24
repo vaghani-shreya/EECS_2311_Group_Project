@@ -4,38 +4,100 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import java.util.List;
 
+import front.LoginPage;
 import front.netflix_trial;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ratingAnalytics extends JFrame {
+	private static JButton signOutButton;
+	private LoginPage loginPage;
+	
+	
+	public ratingAnalytics() {
+    	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    	     
+        
+        String path = "jdbc:sqlite:database/Netflix.db";
+		String query = "SELECT rating,COUNT(*) AS count FROM netflix_titles GROUP BY rating;";
 
-    public ratingAnalytics() {
-        netflix_trial dataNetflix = new netflix_trial();
-        dataNetflix.netflix_data();
+		try {Class.forName("org.sqlite.JDBC");
+		Connection conn = DriverManager.getConnection(path);
+		PreparedStatement pstmt = conn.prepareStatement(query);
 
-        List<String> ListRatings = dataNetflix.getListOfRating();
+		ResultSet resultSet = pstmt.executeQuery();
 
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (int i = 0; i < ListRatings.size(); i++) {
-            String rating = ListRatings.get(i);
-            int count = dataNetflix.getCountOfRating(rating);
-            dataset.addValue(count, "Rating", rating);
-        }
 
-        JFreeChart chart = ChartFactory.createBarChart("Rating Analysis", "Rating", "Count", dataset);
+		while (resultSet.next()) {
+			String rating = resultSet.getString("rating");
+            int count = resultSet.getInt("count");
+            if(rating == null || rating.equals("66 min") || rating.equals("74 min") || rating.equals("84 min")) {
+            	continue;
+            }
+            dataset.addValue(count, "Count", rating);
+            //System.out.println( "rating: " + rating + "  count: " + count);
+		
+		}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 
-        ChartPanel chartPanel = new ChartPanel(chart);
-        setContentPane(chartPanel);
+			e.printStackTrace();
+		}
 
-        // Set frame properties
-        setTitle("Bar Chart from ArrayList");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null);
+    	 JFreeChart chart = ChartFactory.createBarChart("Rating Analysis", "Rating", "Count", dataset);
+
+         ChartPanel chartPanel = new ChartPanel(chart);
+         setContentPane(chartPanel);
+
+         // Set frame properties
+         setTitle("Bar Chart from Database");
+         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         setSize(1200, 1000);
+         setLocationRelativeTo(null);
+         
+         
+         
+ //    	signOutButton = new JButton("Sign Out");
+//
+//		JPanel signOutPanel = new JPanel();
+//		signOutPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+//		signOutPanel.add(signOutButton);
+//
+//		// Add sign-out button panel to the frame
+//		add(signOutPanel, BorderLayout.NORTH);
+//
+//		// Add tabbed pane to content pane
+//		add(tabbedPane, BorderLayout.CENTER);
+//
+//		signOutButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// Call the signOut method in LoginPage to switch to the login page
+//				loginPage.signOut();
+//			}
+//		});
+    	
     }
+	
+	
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -43,4 +105,6 @@ public class ratingAnalytics extends JFrame {
             frame.setVisible(true);
         });
     }
+    
+   
 }
