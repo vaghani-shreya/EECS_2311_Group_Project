@@ -7,6 +7,9 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
+import analytics.ratingAnalytics;
+import recommendation.RecommendationPanel;
+
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
 	private static JButton signOutButton;
@@ -42,15 +45,17 @@ public class dashBoard extends JPanel{
 
 		// Create tabs
 		JPanel tab1 = new JPanel();
-		tab1.add(new JLabel("This is our main dashboard"));
+		tab1.setLayout(new BorderLayout());
+		netflix net = new netflix();
+		tab1.add(net.getContentPane());
+		tabbedPane.add("Dashboard Movies/Shows", tab1);
+		add(tabbedPane, BorderLayout.CENTER);
 		
+		JPanel tab2 = new JPanel();
+		RecommendationPanel recommendationPanel = new RecommendationPanel(tabbedPane, dbHandler, loginPage.getUsername());
+		tab2.add(recommendationPanel); 
+		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
 		
-		
-//		JPanel tab2 = new JPanel();
-//		tab2.add(new JLabel("These are the recommendations for the user"));
-//      Recommendation tab method is defined below
-		
-
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
 		
@@ -91,12 +96,12 @@ public class dashBoard extends JPanel{
 /******************************************************************************************************************************/	
 
 		JPanel tab5 = new JPanel();
-		tab5.add(new JLabel("User's Analytics are displayed here"));
-
+		ratingAnalytics ratingChart = new ratingAnalytics();
+	    tab5.add(ratingChart.getContentPane());
+	    
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
-		//tabbedPane.addTab("Recommendations", re);
-		createRecommendationsTab(loginPage.getUsername());
+		tabbedPane.addTab("Recommendations", tab2);
 		tabbedPane.addTab("Ratings", tab3);
 		tabbedPane.addTab("Favourites", tab4);
 		tabbedPane.addTab("Analytics", tab5);
@@ -125,23 +130,6 @@ public class dashBoard extends JPanel{
 		
 
 	
-	
-	
-    private void createRecommendationsTab(String username) {
-		// TODO Auto-generated method stub
-    	Object[][] recommendationsData = dbHandler.retrieveRecommendations(username);
-	    String[] columnNames = {"Title", "Genre", "Rating"};
-
-	    JTable recommendationsTable = new JTable(recommendationsData, columnNames);
-	    JScrollPane scrollPane = new JScrollPane(recommendationsTable);
-	    
-	    // replace tab2
-	    JPanel recommendationsPanel = new JPanel(new BorderLayout());
-	    recommendationsPanel.add(scrollPane, BorderLayout.CENTER);
-	    
-	    // insert the content under the tab
-	    tabbedPane.addTab("Recommendations", recommendationsPanel);
-	}
 
 
     public static void main(String[] args) {

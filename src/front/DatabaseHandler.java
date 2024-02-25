@@ -214,29 +214,54 @@ public class DatabaseHandler {
 //        
 //		return movies;
 //    }
+    
     public String getFavoriteGenreForUser(String username) {
-        // implement the logic later on, being hard coded for now
-        return "Comedy"; 
-    }
-    public Object[][] retrieveRecommendations(String username) {
-        String path = "jdbc:sqlite:database/Netflix.db";
-        // 
-        String favoriteGenre = getFavoriteGenreForUser(username); // based on the genre from user's fav list， being hard coded for now
-        if (favoriteGenre == null) {
-            favoriteGenre = "Drama"; // if user have not added anything, use Drama by default
-        }
-        String query = "SELECT * FROM netflix_titles WHERE title like ? ORDER BY rating;"; // need genre column to substitute title
-
+    	// get genre info from user's favorite list
+    	String path = "jdbc:sqlite:database/Favourites.db";
+        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouriteMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
+        
         try {
             Class.forName("org.sqlite.JDBC");
             try (Connection conn = DriverManager.getConnection(path);
                  PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setString(1, "%" + favoriteGenre + "%");
+                ResultSet resultSet = pstmt.executeQuery();
+                
+                if (resultSet.next()) {
+                    return resultSet.getString("Genre");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return "Drama"; // Default genre if none found
+    }
+    
+    public Object[][] retrieveRecommendations(String username) {
+        String path = "jdbc:sqlite:database/Netflix.db";
+        String favoriteGenre = getFavoriteGenreForUser(username); 
+        
+        String query = "SELECT * FROM netflix_titles ORDER BY rating DESC LIMIT 10;"; 
+        // netflix.db does not have a 'genre' column
+        // see if a genre column can be added to netflix.db
+        // if added, use follow sql
+        //String query = "SELECT * FROM netflix_titles ;"; 
+        
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            try (Connection conn = DriverManager.getConnection(path);
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
                 ResultSet resultSet = pstmt.executeQuery();
                 
                 ArrayList<Object[]> tempList = new ArrayList<>();
                 while (resultSet.next()) {
-                    tempList.add(new Object[]{resultSet.getString("title"), resultSet.getString("rating"), resultSet.getString("description")}); //add "resultSet.getString("genre")," back as a second parameter 
+                    tempList.add(new Object[]{
+                        resultSet.getString("title"),
+                        // column “listed_in” is the content of "genre"
+                        resultSet.getString("listed_in"),
+                        resultSet.getString("description")
+                    });
                 }
                 
                 return tempList.toArray(new Object[0][]);
