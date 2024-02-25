@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class DatabaseHandler {
+	
+	
     public boolean authenticateUser(String username, String password) {
         String path = "jdbc:sqlite:database/UserCredentials.db";
         String query = "SELECT * FROM UserCred WHERE username = ? AND password = ?;";
@@ -95,6 +97,7 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+    
     public void resetPassword(String username, String password) {
         String path = "jdbc:sqlite:database/UserCredentials.db";
         String query = "UPDATE UserCred SET password = ? WHERE username = ?;";

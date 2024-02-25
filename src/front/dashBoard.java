@@ -10,6 +10,7 @@ import javax.swing.event.ChangeEvent;
 import analytics.ratingAnalytics;
 import recommendation.RecommendationPanel;
 
+
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
 	private static JButton signOutButton;
@@ -19,9 +20,7 @@ public class dashBoard extends JPanel{
 	private DatabaseHandler dbHandler;
 	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
 	private JComboBox filterList = new JComboBox(filterNames);
-	// Create tabbed pane
-	private JTabbedPane tabbedPane = new JTabbedPane();
-	//   cardLayout = new CardLayout();
+
 
 	public static dashBoard getInstance() {
 		if (instance == null)
@@ -31,17 +30,17 @@ public class dashBoard extends JPanel{
 	}
 
 	public dashBoard(LoginPage loginPage) {
-
 		// setTitle("Dashboard");
 		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 900);
 		setLayout(new BorderLayout());
 		//  setLocationRelativeTo(null); // Center the window
 
-		
-		
 		//initialize a databaseHandler instance
 		dbHandler = new DatabaseHandler();
+		// Create tabbed pane
+		JTabbedPane tabbedPane = new JTabbedPane();
+		
 
 		// Create tabs
 		JPanel tab1 = new JPanel();
@@ -98,13 +97,14 @@ public class dashBoard extends JPanel{
 		JPanel tab5 = new JPanel();
 		ratingAnalytics ratingChart = new ratingAnalytics();
 	    tab5.add(ratingChart.getContentPane());
-	    
+
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
 		tabbedPane.addTab("Recommendations", tab2);
 		tabbedPane.addTab("Ratings", tab3);
 		tabbedPane.addTab("Favourites", tab4);
 		tabbedPane.addTab("Analytics", tab5);
+		 
 
 		signOutButton = new JButton("Sign Out");
 
@@ -116,7 +116,7 @@ public class dashBoard extends JPanel{
 		add(signOutPanel, BorderLayout.NORTH);
 
 		// Add tabbed pane to content pane
-		add(tabbedPane, BorderLayout.CENTER);
+	//	add(tabbedPane, BorderLayout.CENTER);
 
 		signOutButton.addActionListener(new ActionListener() {
 			@Override
@@ -128,10 +128,6 @@ public class dashBoard extends JPanel{
 	}
 		
 		
-
-	
-
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             dashBoard dashboard = new dashBoard(login);
