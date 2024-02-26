@@ -10,6 +10,7 @@ public class LoginPage extends JFrame {
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	private DatabaseHandler dbHandler;
+	private static LoginPage instance;
 
 	public boolean login(String username, String password) {
 		// For simplicity, let's use a hardcoded username and password for demonstration
@@ -17,6 +18,13 @@ public class LoginPage extends JFrame {
 		boolean login = dbHandler.authenticateUser(username, password) || username.equals("user") && password.equals("password");
 
 		return login;
+	}
+	
+public static LoginPage getInstance() {
+		if (instance == null)
+			instance = new LoginPage();
+
+		return instance;
 	}
 
 	public LoginPage() {
@@ -157,7 +165,11 @@ public class LoginPage extends JFrame {
 		// Retrieve user credentials from the database using DatabaseHandler
 		DatabaseHandler dbHandler = new DatabaseHandler();
 		dbHandler.retrieveUserCredentials();
+		
+		
 	}
+
+	
 
 }
 
