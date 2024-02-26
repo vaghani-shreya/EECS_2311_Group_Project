@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
+import analytics.ratingAnalytics;
+
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
 	private static JButton signOutButton;
@@ -16,6 +18,7 @@ public class dashBoard extends JPanel{
 	private DatabaseHandler dbHandler;
 	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
 	private JComboBox filterList = new JComboBox(filterNames);
+	
 
 
 	public static dashBoard getInstance() {
@@ -26,7 +29,6 @@ public class dashBoard extends JPanel{
 	}
 
 	public dashBoard(LoginPage loginPage) {
-
 		// setTitle("Dashboard");
 		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 900);
@@ -35,12 +37,16 @@ public class dashBoard extends JPanel{
 
 		// Create tabbed pane
 		JTabbedPane tabbedPane = new JTabbedPane();
-		//   cardLayout = new CardLayout();
+		
 
 		// Create tabs
 		JPanel tab1 = new JPanel();
-		tab1.add(new JLabel("This is our main dashboard"));
-
+		tab1.setLayout(new BorderLayout());
+		netflix net = new netflix();
+		tab1.add(net.getContentPane());
+		tabbedPane.add("Dashboard Movies/Shows", tab1);
+		add(tabbedPane, BorderLayout.CENTER);
+		
 		JPanel tab2 = new JPanel();
 		tab2.add(new JLabel("These are the recommendations for the user"));
 
@@ -84,7 +90,9 @@ public class dashBoard extends JPanel{
 /******************************************************************************************************************************/	
 
 		JPanel tab5 = new JPanel();
-		tab5.add(new JLabel("User's Analytics are displayed here"));
+		ratingAnalytics ratingChart = new ratingAnalytics();
+	    tab5.add(ratingChart.getContentPane());
+		
 
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
@@ -92,6 +100,7 @@ public class dashBoard extends JPanel{
 		tabbedPane.addTab("Ratings", tab3);
 		tabbedPane.addTab("Favourites", tab4);
 		tabbedPane.addTab("Analytics", tab5);
+		 
 
 		signOutButton = new JButton("Sign Out");
 
@@ -103,7 +112,7 @@ public class dashBoard extends JPanel{
 		add(signOutPanel, BorderLayout.NORTH);
 
 		// Add tabbed pane to content pane
-		add(tabbedPane, BorderLayout.CENTER);
+	//	add(tabbedPane, BorderLayout.CENTER);
 
 		signOutButton.addActionListener(new ActionListener() {
 			@Override
@@ -115,9 +124,6 @@ public class dashBoard extends JPanel{
 	}
 		
 		
-
-	
-	
 	
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
