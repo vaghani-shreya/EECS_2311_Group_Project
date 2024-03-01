@@ -12,9 +12,10 @@ public class dashBoard extends JPanel{
 	private CardLayout cardLayout;
 	public static dashBoard instance;
 	private static LoginPage login;
-	private DatabaseHandler dbHandler;
-	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
-	private JComboBox filterList = new JComboBox(filterNames);
+	protected DatabaseHandler dbHandler;
+	private FavouritesPageDatabaseHandler fpdbHandler;
+	protected static String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
+	protected static JComboBox filterList = new JComboBox(filterNames);
 
 
 	public static dashBoard getInstance() {
@@ -51,8 +52,8 @@ public class dashBoard extends JPanel{
 // Favourites Page
 		
 		// Retrieves Favourites list with filter from the database
-		DatabaseHandler dbHandler = new DatabaseHandler();
-		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
+		FavouritesPageDatabaseHandler fpdbHandler = new FavouritesPageDatabaseHandler();
+		JTable list = new JTable(fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
 		
 		// Adding Text and Buttons
 		JButton refreshPageButton = new JButton("Refresh Page");
@@ -71,14 +72,14 @@ public class dashBoard extends JPanel{
 //		tabbedPane.add(tab4, "Favourites");
 //		
 //	    // Refresh Page Button's action
-//	    refreshPageButton.addActionListener(new ActionListener() {
-//	   
-//	   	 @Override 
-//	   	 public void actionPerformed(ActionEvent e) {
-//	   		 tabbedPane.show();
-//	   	 }
-//	   	 
-//	    });		
+	    refreshPageButton.addActionListener(new ActionListener() {
+	   
+	   	 @Override 
+	   	 public void actionPerformed(ActionEvent e) {
+	   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
+	   	 }
+	   	 
+	    });		
 		
 /******************************************************************************************************************************/	
 
