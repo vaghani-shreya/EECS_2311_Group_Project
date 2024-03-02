@@ -1,9 +1,11 @@
-package front;
+package testCases;
 
 import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import front.LoginPage;
 
 class LoginPageTest {
 	LoginPage loginPage;
