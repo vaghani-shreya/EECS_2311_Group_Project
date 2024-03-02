@@ -112,8 +112,6 @@ public class DatabaseHandler {
         }
     }
 
-    
-    
 //    public Object[][] deleteFavourites(String filter) {
 //    	
 //    	Object[][] movies = null;
