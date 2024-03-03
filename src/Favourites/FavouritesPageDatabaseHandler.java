@@ -1,4 +1,4 @@
-package front;
+package Favourites;
 
 import java.sql.*;
 
@@ -6,7 +6,7 @@ public class FavouritesPageDatabaseHandler {
 	
 	 public Object[][] retrieveFavouritesList(String filter) {
 	    	
-	    	Object[][] movies = null;
+	    	Object[][] movies = new Object[10][6];
 	    	
 	    	String path = "jdbc:sqlite:database/Favourites.db";
 	    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
@@ -18,7 +18,6 @@ public class FavouritesPageDatabaseHandler {
 
 	            ResultSet resultSet = pstmt.executeQuery();
 	            
-	            movies = new Object[10][6];
 	            String categories[] = {"Name", "Length", "Genre", "DateAdded", "Rating", "ReleaseDate"};
 	            
 	            int i = 0;
@@ -40,12 +39,6 @@ public class FavouritesPageDatabaseHandler {
 	            	
 	            	i++;
 	            	
-//	            	System.out.println(movie_name);
-//	                String movie_name = resultSet.getString("username");
-//	                String password = resultSet.getString("password");
-
-	            //    System.out.println("Username: " + username + ", Password: " + password);
-	                // You can add more details here if needed
 	            }
 	           
 	        } 
@@ -69,35 +62,7 @@ public class FavouritesPageDatabaseHandler {
 //        PreparedStatement pstmt = conn.prepareStatement(query);
 //
 //        ResultSet resultSet = pstmt.executeQuery();
-//        
-//        movies = new Object[10][6];
-//        String categories[] = {"Name", "Length", "Genre", "DateAdded", "Rating", "ReleaseDate"};
-//        
-//        int i = 0;
-//        while (resultSet.next()) {
-//        	
-//        	String name = resultSet.getString("Name");
-//        	double length = resultSet.getDouble("Length");
-//        	String genre = resultSet.getString("Genre");
-//        	Date da = resultSet.getDate("DateAdded");
-//        	String rating = resultSet.getString("Rating");
-//        	Date rd = resultSet.getDate("ReleaseDate");
-//        	
-//        	movies[i][0] = name;
-//        	movies[i][1] = length;
-//        	movies[i][2] = genre;
-//        	movies[i][3] = da;
-//        	movies[i][4] = rating;
-//        	movies[i][5] = rd;
-//        	
-//        	i++;
-//        	
-////        	System.out.println(movie_name);
-////            String movie_name = resultSet.getString("username");
-////            String password = resultSet.getString("password");
-//
-//        //    System.out.println("Username: " + username + ", Password: " + password);
-//            // You can add more details here if needed
+//       
 //        }
 //       
 //    } 

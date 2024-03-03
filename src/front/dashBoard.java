@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
+import Favourites.FavouritesPageDatabaseHandler;
 import analytics.ratingAnalytics;
+import Favourites.*;
 
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
@@ -15,10 +17,9 @@ public class dashBoard extends JPanel{
 	private CardLayout cardLayout;
 	public static dashBoard instance;
 	private static LoginPage login;
-	protected DatabaseHandler dbHandler;
-	private FavouritesPageDatabaseHandler fpdbHandler;
-	protected static String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
-	protected static JComboBox filterList = new JComboBox(filterNames);
+	private DatabaseHandler dbHandler;
+	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
+	private JComboBox filterList = new JComboBox(filterNames);
 
 	public static dashBoard getInstance() {
 		if (instance == null)
