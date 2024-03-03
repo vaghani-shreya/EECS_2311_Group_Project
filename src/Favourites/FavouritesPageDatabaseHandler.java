@@ -73,6 +73,44 @@ public class FavouritesPageDatabaseHandler {
 //	return movies;
 //}
 	 
+//	    // Example of a simple JDBC refresh function
+//	    private static void performJDBCRefresh() {
+//	        try {
+//	            // Load the JDBC driver
+//	            Class.forName("com.mysql.cj.jdbc.Driver");
+//
+//	            // Connect to the database
+//	            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/exampledb", "username", "password");
+//
+//	            // Execute a query to fetch data
+//	            String query = "SELECT * FROM exampletable";
+//	            PreparedStatement statement = connection.prepareStatement(query);
+//	            ResultSet resultSet = statement.executeQuery();
+//
+//	            // Clear the existing data in the table model
+//	            tableModel.setRowCount(0);
+//
+//	            // Populate the table model with new data from the result set
+//	            while (resultSet.next()) {
+//	                Object[] rowData = {
+//	                        resultSet.getString("column1"),
+//	                        resultSet.getInt("column2"),
+//	                        resultSet.getString("column3")
+//	                        // Add more columns as needed
+//	                };
+//	                tableModel.addRow(rowData);
+//	            }
+//
+//	            // Close resources
+//	            resultSet.close();
+//	            statement.close();
+//	            connection.close();
+//	        } catch (ClassNotFoundException | SQLException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+//	}
+	 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

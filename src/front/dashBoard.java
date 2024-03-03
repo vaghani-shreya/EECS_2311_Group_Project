@@ -38,7 +38,6 @@ public class dashBoard extends JPanel{
 		// Create tabbed pane
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-
 		// Create tabs
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
@@ -57,13 +56,16 @@ public class dashBoard extends JPanel{
 		
 // Favourites Page
 		
+		JPanel tab4 = new JPanel();
+		
 		// Retrieves Favourites list with filter from the database
 		FavouritesPageDatabaseHandler fpdbHandler = new FavouritesPageDatabaseHandler();
 		JTable list = new JTable(fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
+		list.setBounds(10, 20, 80, 25);
 		
 		// Adding Text and Buttons
 		JButton refreshPageButton = new JButton("Refresh Page");
-		JPanel tab4 = new JPanel();
+		
 		tab4.add(new JLabel("Sorted By:"));
 		
 		// Adds drop down menu for filtering
@@ -76,16 +78,16 @@ public class dashBoard extends JPanel{
 		tab4.add(list);
 		
 //		tabbedPane.add(tab4, "Favourites");
-//		
-//	    // Refresh Page Button's action
-//	    refreshPageButton.addActionListener(new ActionListener() {
-//	   
-//	   	 @Override 
-//	   	 public void actionPerformed(ActionEvent e) {
-//	   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
-//	   	 }
-//	   	 
-//	    });		
+		
+	    // Refresh Page Button's action
+	    refreshPageButton.addActionListener(new ActionListener() {
+	   
+	   	 @Override 
+	   	 public void actionPerformed(ActionEvent e) {
+	   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
+	   	 }
+	   	 
+	    });		
 		
 /******************************************************************************************************************************/	
 
