@@ -126,7 +126,6 @@ public static LoginPage getInstance() {
 				cardLayout.show(cardPanel, "ForgotPasswordPage");
 			}
 		});
-	
 	}
 
 	public void signOut(){
@@ -151,7 +150,6 @@ public static LoginPage getInstance() {
 		return passwordField.getText();
 	}
 
-
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(() -> {
 			LoginPage loginPage = new LoginPage();
@@ -159,17 +157,10 @@ public static LoginPage getInstance() {
 			loginPage.setVisible(true);
 
 		});
-
-
   
 		// Retrieve user credentials from the database using DatabaseHandler
 		DatabaseHandler dbHandler = new DatabaseHandler();
 		dbHandler.retrieveUserCredentials();
-		
-		
 	}
-
-	
-
 }
 
