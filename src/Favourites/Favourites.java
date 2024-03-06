@@ -67,6 +67,10 @@ public class Favourites {
 		
 	}
 	
+	public void addToFavouritesList() {
+		
+	}
+	
 	public Object[][] retrieveFavouritesList(String user) {
 		
 		String path = "jdbc:sqlite:database/Favourites.db";
@@ -122,6 +126,14 @@ public class Favourites {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+		
+	}
+	
+	public void deleteFromFavouritesList(String movieName) {
+		
+	}
+	
+	public void clearFavouritesList() {
 		
 	}
 
