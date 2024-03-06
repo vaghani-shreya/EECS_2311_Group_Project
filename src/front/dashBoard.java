@@ -36,16 +36,27 @@ public class dashBoard extends JPanel{
 		//  setLocationRelativeTo(null); // Center the window
 
 		// Create tabbed pane
-		JTabbedPane tabbedPane = new JTabbedPane();
+		JTabbedPane maintabbedPane = new JTabbedPane();
 
 
 		// Create tabs
+		
 		JPanel tab1 = new JPanel();
+		JTabbedPane subTabbedPanel = new JTabbedPane();
 		tab1.setLayout(new BorderLayout());
-		netflix net = new netflix();
-		tab1.add(net.getContentPane());
-		tabbedPane.add("Dashboard Movies/Shows", tab1);
-		add(tabbedPane, BorderLayout.CENTER);
+			
+		
+		netflix net = netflix.getInstance();
+		Disney net2 = Disney.getInstance();
+		Amazon net3 = Amazon.getInstance();
+		 
+		subTabbedPanel.addTab("Discover on Netflix",net);
+		subTabbedPanel.addTab("Discover on Disney",net2);
+		subTabbedPanel.addTab("Discover on Amazon",net3);
+		tab1.add(subTabbedPanel);
+		maintabbedPane.addTab("Dashboard", tab1);
+		add(maintabbedPane, BorderLayout.CENTER);
+		
 
 		JPanel tab2 = new JPanel();
 		tab2.add(new JLabel("These are the recommendations for the user"));
@@ -95,11 +106,11 @@ public class dashBoard extends JPanel{
 
 
 		// Add tabs to tabbed pane
-		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
-		tabbedPane.addTab("Recommendations", tab2);
-		tabbedPane.addTab("Ratings", tab3);
-		tabbedPane.addTab("Favourites", tab4);
-		tabbedPane.addTab("Analytics", tab5);
+		//tabbedPane.addTab("Dashboard Movies/Shows", tab1);
+		maintabbedPane.addTab("Recommendations", tab2);
+		maintabbedPane.addTab("Ratings", tab3);
+		maintabbedPane.addTab("Favourites", tab4);
+		maintabbedPane.addTab("Analytics", tab5);
 
 
 		signOutButton = new JButton("Sign Out");

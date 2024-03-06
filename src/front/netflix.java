@@ -4,17 +4,27 @@ import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
-public class netflix extends JFrame {
+public class netflix extends JPanel {
 	private JPanel showPanel;
 	private JScrollPane scrollPane;
 	private JComboBox<String> filterComboBox;
 	private JComboBox<String> sortComboBox;
-
-	public netflix() {
-		setTitle("Netflix Discover Weekly");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private static netflix instance;
+	
+	private netflix() {
+		initComponents();
+		NetflixDataBase();
+	}
+	 public static netflix getInstance() {
+	        if (instance == null)
+	            instance = new netflix();
+	        return instance;
+	    }
+	private void initComponents(){
+//		setTitle("Netflix Discover Weekly");
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
-		setLocationRelativeTo(null);
+//		setLocationRelativeTo(null);
 		//create a search panel
 		JPanel searchPanel = new JPanel();
 		JTextField searchField = new JTextField(20);
@@ -54,22 +64,78 @@ public class netflix extends JFrame {
 			}
 		});
 
-		add(searchPanel, BorderLayout.NORTH);
+			scrollPane = new JScrollPane();
+	        showPanel = new JPanel();
+	        showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
+	        scrollPane.setViewportView(showPanel);
 
-		scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
+	        // Add components to this JPanel
+	        setLayout(new BorderLayout());
+	        add(searchPanel, BorderLayout.NORTH);
+	        add(scrollPane, BorderLayout.CENTER);
 
-		showPanel = new JPanel();
-		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
-		scrollPane.setViewportView(showPanel);
-
-		NetflixDataBase();
-	}
+	 }
+//	public netflix() {
+////		setTitle("Netflix Discover Weekly");
+////		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setSize(800, 600);
+////		setLocationRelativeTo(null);
+//		//create a search panel
+//		JPanel searchPanel = new JPanel();
+//		JTextField searchField = new JTextField(20);
+//		// create search button
+//		JButton searchButton = new JButton("Search");
+//
+//		// Filter menu feature
+//		String[] filterOptions = {"Title", "Genre", "Type", "Ratings"};
+//		filterComboBox = new JComboBox<>(filterOptions);
+//
+//		// Sort menu feature
+//		String[] sortOptions = {"Release Date", "Title", "Date Added"};
+//		sortComboBox = new JComboBox<>(sortOptions);
+//
+//		searchPanel.add(searchField);
+//		searchPanel.add(filterComboBox);
+//		searchPanel.add(searchButton);
+//		searchPanel.add(new JLabel("Sort By:"));
+//		searchPanel.add(sortComboBox);
+//
+//		// Add action listener to the search button
+//		searchButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String searchFor = searchField.getText();
+//				String selectedFilter = (String) filterComboBox.getSelectedItem();
+//				searchNetflixDatabase(searchFor, selectedFilter);
+//			}
+//		});
+//
+//		// Add action listener to the sort button
+//		sortComboBox.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String selectedSort = (String) sortComboBox.getSelectedItem();
+//				sortNetflixDatabase(selectedSort);
+//			}
+//		});
+//
+//		add(searchPanel, BorderLayout.NORTH);
+//
+//		scrollPane = new JScrollPane();
+//	//	getContentPane().add(scrollPane, BorderLayout.CENTER);
+//
+//		showPanel = new JPanel();
+//		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
+//		scrollPane.setViewportView(showPanel);
+//
+//		NetflixDataBase();
+//	}
 	// Allows the user to see the shows in descending order of release year
 	private void NetflixDataBase() {
 		String path = "jdbc:sqlite:database/Netflix.db";
 		// extract data from netflix database by descending order in terms of release year
-		String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC;"; 
+		String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC LIMIT 10;";
+
 
 		try {
 			//call the JDBC driver
