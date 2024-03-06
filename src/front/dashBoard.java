@@ -60,7 +60,8 @@ public class dashBoard extends JPanel{
 		
 		// Retrieves Favourites list with filter from the database
 		FavouritesPageDatabaseHandler fpdbHandler = new FavouritesPageDatabaseHandler();
-		JTable list = new JTable(fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
+		int index = filterList.getSelectedIndex();
+		JTable list = new JTable(fpdbHandler.retrieveFavouritesList(filterNames[index]), filterNames);
 		list.setBounds(10, 20, 80, 25);
 		
 		// Adding Text and Buttons
@@ -80,14 +81,28 @@ public class dashBoard extends JPanel{
 //		tabbedPane.add(tab4, "Favourites");
 		
 	    // Refresh Page Button's action
-	    refreshPageButton.addActionListener(new ActionListener() {
-	   
-	   	 @Override 
-	   	 public void actionPerformed(ActionEvent e) {
-	   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
-	   	 }
-	   	 
-	    });		
+		
+		refreshPageButton.addActionListener(new ActionListener() {
+			
+		   	 @Override 
+		   	 public void actionPerformed(ActionEvent e) {
+		   		 
+		   		 
+		   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
+//		   		 fpdbHandler.refreshTable(filterNames[filterList.getSelectedIndex()]);
+		   	 }
+		   	 
+		    });
+		
+//	    refreshPageButton.addActionListener(new ActionListener() {
+//	   
+//	   	 @Override 
+//	   	 public void actionPerformed(ActionEvent e) {
+////	   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
+//	   		 fpdbHandler.refreshTable(filterNames[filterList.getSelectedIndex()]);
+//	   	 }
+//	   	 
+//	    });		
 		
 /******************************************************************************************************************************/	
 
