@@ -42,7 +42,7 @@ public class dashBoard extends JPanel{
 		dbHandler = new DatabaseHandler();
 		// Create tabbed pane
 		JTabbedPane tabbedPane = new JTabbedPane();
-		
+
 		// Create tabs
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new BorderLayout());
@@ -50,7 +50,7 @@ public class dashBoard extends JPanel{
 		tab1.add(net.getContentPane());
 		tabbedPane.add("Dashboard Movies/Shows", tab1);
 		add(tabbedPane, BorderLayout.CENTER);
-		
+
 		JPanel tab2 = new JPanel();
 		RecommendationPanel recommendationPanel = new RecommendationPanel(tabbedPane, dbHandler, loginPage.getUsername());
 		tab2.add(recommendationPanel); 
@@ -58,14 +58,13 @@ public class dashBoard extends JPanel{
 		
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
+
 		
 /******************************************************************************************************************************/
 		
 // Favourites Page
 		
 		JPanel tab4 = new JPanel();
-		
-		// Retrieves Favourites list with filter from the database
 
 		FavouritesPageDatabaseHandler fpdbHandler = new FavouritesPageDatabaseHandler();
 		int index = filterList.getSelectedIndex();
@@ -75,19 +74,24 @@ public class dashBoard extends JPanel{
 		//DatabaseHandler dbHandler = new DatabaseHandler();
 //		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
 		
+
+		DatabaseHandler dbHandler = new DatabaseHandler();
+//		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
+
 		// Adding Text and Buttons
 		JButton refreshPageButton = new JButton("Refresh Page");
 		
 		tab4.add(new JLabel("Sorted By:"));
-		
+
 		// Adds drop down menu for filtering
 		tab4.add(filterList);
-		
+
 		// Refresh Button Does Not Work
 		tab4.add(refreshPageButton);
-		
+
 		// Adds list to tab
 		tab4.add(list);
+
 		
 //		tabbedPane.add(tab4, "Favourites");
 		
@@ -117,9 +121,28 @@ public class dashBoard extends JPanel{
 		
 /******************************************************************************************************************************/	
 
+
+		//		tabbedPane.add(tab4, "Favourites");
+		//		
+		//	    // Refresh Page Button's action
+		//	    refreshPageButton.addActionListener(new ActionListener() {
+		//	   
+		//	   	 @Override 
+		//	   	 public void actionPerformed(ActionEvent e) {
+		//	   		 tabbedPane.show();
+		//	   	 }
+		//	   	 
+		//	    });		
+
+		/******************************************************************************************************************************/	
+
+
 		JPanel tab5 = new JPanel();
 		ratingAnalytics ratingChart = new ratingAnalytics();
+
 	    tab5.add(ratingChart.getContentPane());
+
+		tab5.add(ratingChart.getContentPane());
 
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
@@ -127,7 +150,7 @@ public class dashBoard extends JPanel{
 		tabbedPane.addTab("Ratings", tab3);
 		tabbedPane.addTab("Favourites", tab4);
 		tabbedPane.addTab("Analytics", tab5);
-		 
+
 
 		signOutButton = new JButton("Sign Out");
 
@@ -139,7 +162,7 @@ public class dashBoard extends JPanel{
 		add(signOutPanel, BorderLayout.NORTH);
 
 		// Add tabbed pane to content pane
-	//	add(tabbedPane, BorderLayout.CENTER);
+		//	add(tabbedPane, BorderLayout.CENTER);
 
 		signOutButton.addActionListener(new ActionListener() {
 			@Override
@@ -149,6 +172,7 @@ public class dashBoard extends JPanel{
 			}
 		});
 	}
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
