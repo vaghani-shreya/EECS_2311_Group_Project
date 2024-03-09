@@ -9,7 +9,10 @@ import javax.swing.event.ChangeEvent;
 
 import Favourites.FavouritesPageDatabaseHandler;
 import analytics.ratingAnalytics;
+
 import Favourites.*;
+
+import recommendation.RecommendationPanel;
 
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
@@ -35,6 +38,8 @@ public class dashBoard extends JPanel{
 		setLayout(new BorderLayout());
 		//  setLocationRelativeTo(null); // Center the window
 
+		//initialize a databaseHandler instance
+		dbHandler = new DatabaseHandler();
 		// Create tabbed pane
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
@@ -47,8 +52,10 @@ public class dashBoard extends JPanel{
 		add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel tab2 = new JPanel();
-		tab2.add(new JLabel("These are the recommendations for the user"));
-
+		RecommendationPanel recommendationPanel = new RecommendationPanel(tabbedPane, dbHandler, loginPage.getUsername());
+		tab2.add(recommendationPanel); 
+		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
+		
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
 		
@@ -59,10 +66,14 @@ public class dashBoard extends JPanel{
 		JPanel tab4 = new JPanel();
 		
 		// Retrieves Favourites list with filter from the database
+
 		FavouritesPageDatabaseHandler fpdbHandler = new FavouritesPageDatabaseHandler();
 		int index = filterList.getSelectedIndex();
 		JTable list = new JTable(fpdbHandler.retrieveFavouritesList(filterNames[index]), filterNames);
 		list.setBounds(10, 20, 80, 25);
+
+		//DatabaseHandler dbHandler = new DatabaseHandler();
+//		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
 		
 		// Adding Text and Buttons
 		JButton refreshPageButton = new JButton("Refresh Page");
@@ -109,7 +120,7 @@ public class dashBoard extends JPanel{
 		JPanel tab5 = new JPanel();
 		ratingAnalytics ratingChart = new ratingAnalytics();
 	    tab5.add(ratingChart.getContentPane());
-		
+
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
 		tabbedPane.addTab("Recommendations", tab2);
