@@ -71,9 +71,13 @@ public class Favourites extends JFrame {
 		};
 		
 		JTable favouritedMovieList = new JTable(movieList);
-		favouritedMovieList.setBounds(0, 300, 300, 300);
+		favouritedMovieList.setBounds(0, 500, 300, 300);
 		favouritesPanel.add(favouritedMovieList);
 		favouritesPanel.add(new JScrollPane(favouritedMovieList));
+		
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.setBounds(10, 30, 80, 25);
+		favouritesPanel.add(deleteButton);
 		
 		dashboard.setVisible(true);
 		testFrame.setVisible(true);
@@ -132,14 +136,14 @@ public class Favourites extends JFrame {
 	                String cast = resultSet.getString("cast");
 	                String description = resultSet.getString("description");
 	                
-	                JLabel showLabel = new JLabel("Show ID: "
-	                + id 
-	                + ", Title: " 
-	                + title 
-	                + ", Date Added: " 
-	                + dateAdded + 
-	                ", Release Year: " 
-	                + releaseYear);
+	                JLabel showLabel = new JLabel("Show ID: " + id 
+	                + ", Title: " + title	                 
+	                + ", Date Added: " + dateAdded
+	                + ", Release Year: " + releaseYear
+	                + ", Director: " + director
+	                + ", Cast: " + cast
+	                + ", Description: " + description
+	                );
 	                
 	            }
 
@@ -156,15 +160,6 @@ public class Favourites extends JFrame {
 	public void addToFavouritesList(String username, String title) {
 		// If there is no favourites table, make a new one then add the movie to it
 		
-		/*"CREATE TABLE IF NOT EXISTS '" + user + " Favourited Movies' ("
-				+ "'Show ID' VARCHAR(255),"
-				+ "Title VARCHAR(255),"
-				+ "'Date Added' VARCHAR(255),"
-				+ "'Release Year' VARCHAR(255),"
-				+ "Director VARCHAR(255),"
-				+ "Cast VARCHAR(255),"
-				+ "Description VARCHAR(255)"
-				+ ");";*/
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "CREATE TABLE IF NOT EXISTS '" + username + " Favourited Movies' ("
 				+ "'Show ID' VARCHAR(255),"
@@ -175,6 +170,7 @@ public class Favourites extends JFrame {
 				+ "Cast VARCHAR(255),"
 				+ "Description VARACHR(255)"
 				+ ");"
+				
 				+ "INSERT INTO '" + username + " Favourited Movies'"
 				+ "VALUES ("
 				+ "" // Show ID
@@ -196,6 +192,8 @@ public class Favourites extends JFrame {
 	
 	public void deleteFromFavouritesList(String username, String title) {
 		
+		String path = "jdbc:sqlite:database/Favourites.db";
+		String query = "DELETE FROM '" + username + " Favourited Movies' WHERE Title = '" + title + "';";
 	}
 	
 	public void clearFavouritesList(String username) {
