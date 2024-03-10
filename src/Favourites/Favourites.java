@@ -166,7 +166,7 @@ public class Favourites extends JFrame {
 	}
 	
 	
-	public void addToFavouritesList(String username, String title) {
+	public void addToFavouritesList(String showId, String username, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
 		// If there is no favourites table, make a new one then add the movie to it
 		
 		String path = "jdbc:sqlite:database/Favourites.db";
@@ -182,15 +182,29 @@ public class Favourites extends JFrame {
 				
 				+ "INSERT INTO '" + username + " Favourited Movies'"
 				+ "VALUES ("
-				+ "" // Show ID
+				+ showId // Show ID
 				+ title // Title
-				+ "" // Date Added
-				+ "" // Release Year
-				+ "" // Director
-				+ "" // Cast
-				+ "" // Description
+				+ dateAdded // Date Added
+				+ releaseYear // Release Year
+				+ director // Director
+				+ cast // Cast
+				+ description // Description
 				+ ");";
 		
+		try {
+        	//call the JDBC driver
+            Class.forName("org.sqlite.JDBC");
+            Connection connection = DriverManager.getConnection(path);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            connection.close();
+            statement.close();
+            resultSet.close();
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 		// If you added the movie name to the list, add the movie's attributes along with it
 		// Pull from the Netflix Database the movie's attributes and place them into the Favourites Database
 	}
