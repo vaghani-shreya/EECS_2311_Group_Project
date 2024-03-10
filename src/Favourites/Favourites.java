@@ -3,10 +3,14 @@ package Favourites;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,76 +22,69 @@ import front.*;
 
 public class Favourites extends JFrame {
 	
-	private static JFrame testFrame;
-	
-	private String[] filterNames = {
-			"Show ID",
-			"Title",
-			"Date Added",
-			"Release Year",
-			"Director",
-			"Cast",
-			"Description"
-	};
+	private JPanel showPanel;
+	private JScrollPane scrollPane;
+	private JComboBox<String> filterComboBox;
 	
 	// Create an Instance of LoginPage and dashBoard
-	private static LoginPage user = new LoginPage();
-	private static dashBoard dashboard = new dashBoard(user);
+//	private static LoginPage user = new LoginPage();
+//	private static String username = user.getUsername();
 	
-	private static String username = user.getUsername();
-	
-	
-	
-	public Favourites(LoginPage loginPage) {
+	public Favourites(String username) {
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(800, 600);
+		setLocationRelativeTo(null);
 		// Creates a Favourites List if not already created; Retrieves Favourites List from database
 		createUserFavouritesTable(username);
 		retrieveFavouritesList(username);
 		
-		testFrame = new JFrame("Favourites Frame");
-		testFrame.setSize(900, 900);
-		
-		JPanel favouritesPanel = new JPanel();
-		dashboard.add(favouritesPanel);
-		
-		testFrame.add(favouritesPanel);
-		
-		JLabel sortedBy = new JLabel("Sorted By:");
-		sortedBy.setBounds(10, 20, 80, 25);
-		favouritesPanel.add(sortedBy, BorderLayout.NORTH);
-		
-		JComboBox<String> filterList = new JComboBox<String>(filterNames);
-		filterList.setBounds(30, 20, 80, 25);
-		favouritesPanel.add(filterList, BorderLayout.NORTH);
-		
-		DefaultTableModel movieList = new DefaultTableModel(null, filterNames) {
-			
-			// Makes the table uneditable
-			@Override
-			public boolean isCellEditable(int row, int col) {
-				return false;
-			}
-			
-		};
-		
-		JTable favouritedMovieList = new JTable(movieList);
-		favouritedMovieList.setBounds(0, 500, 300, 300);
-		favouritesPanel.add(favouritedMovieList);
-		favouritesPanel.add(new JScrollPane(favouritedMovieList));
-		
+		JPanel optionsPanel = new JPanel();
+		JTextField searchField = new JTextField(20);
+		JButton searchButton = new JButton("Search");
 		JButton deleteButton = new JButton("Delete");
-		deleteButton.setBounds(10, 30, 80, 25);
-		favouritesPanel.add(deleteButton);
 		
-		dashboard.setVisible(true);
-		testFrame.setVisible(true);
+		String[] filterNames = {"Show ID", "Title", "Date Added", "Release Year", "Director", "Cast", "Description"};
+		filterComboBox = new JComboBox<>(filterNames);
+
+		optionsPanel.add(new JLabel("Sort By:"));
+		optionsPanel.add(filterComboBox);
+		optionsPanel.add(searchField);
+		optionsPanel.add(searchButton);
+		optionsPanel.add(deleteButton);
+		
+		filterComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String selectedSort = (String) filterComboBox.getSelectedItem();
+				sortFavouritesList(username, selectedSort);
+			}
+		});
+		
+		searchButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String searchFor = searchField.getText();
+				searchFavouritedMovie(username, searchFor);
+			}
+		});
+		
+		add(optionsPanel, BorderLayout.NORTH);
+		
+		scrollPane = new JScrollPane();
+		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		
+		showPanel = new JPanel();
+		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
+		scrollPane.setViewportView(showPanel);
 		
 	}
 	
-	public void createUserFavouritesTable(String user) {
+	public void createUserFavouritesTable(String username) {
 		
 		String path = "jdbc:sqlite:database/Favourites.db";
-		String query = "CREATE TABLE IF NOT EXISTS '" + user + " Favourited Movies' ("
+		String query = "CREATE TABLE IF NOT EXISTS '" + username + " Favourited Movies' ("
 				+ "'Show ID' VARCHAR(255),"
 				+ "Title VARCHAR(255),"
 				+ "'Date Added' VARCHAR(255),"
@@ -135,6 +132,7 @@ public class Favourites extends JFrame {
 	                String director = resultSet.getString("director");
 	                String cast = resultSet.getString("cast");
 	                String description = resultSet.getString("description");
+	                String date_added = resultSet.getString("date_added");
 	                
 	                JLabel showLabel = new JLabel("Show ID: " + id 
 	                + ", Title: " + title	                 
@@ -143,13 +141,24 @@ public class Favourites extends JFrame {
 	                + ", Director: " + director
 	                + ", Cast: " + cast
 	                + ", Description: " + description
+	                + ", Date Added: " + date_added
 	                );
+	                
+					showLabel.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							showDetails(id, title, dateAdded, releaseYear, director, description, cast, date_added);
+						}
+					});
+					
+					showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					showPanel.add(showLabel);
+					showPanel.add(Box.createVerticalStrut(10)); 
 	                
 	            }
 
 	            connection.close();
-	            statement.close();
-	            resultSet.close();
 	            
 	       	} catch (SQLException | ClassNotFoundException e) {
 	            e.printStackTrace();
@@ -186,18 +195,147 @@ public class Favourites extends JFrame {
 		// Pull from the Netflix Database the movie's attributes and place them into the Favourites Database
 	}
 	
-	public void searchFavouritedMovie(String username, String title) {
-		
+	public void searchFavouritedMovie(String username, String searchFor) {
+		showPanel.removeAll(); // Clear existing shows/movies
+
+		String path = "jdbc:sqlite:database/Favourites.db";
+		String query = "SELECT * FROM '" + username + " Favourited Movies' WHERE '" + searchFor + "' LIKE ?;";
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection(path);
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%" + searchFor + "%");
+
+			ResultSet resultSet = pstmt.executeQuery();
+
+			while (resultSet.next()) {
+				String id = resultSet.getString("show_id");
+				String title = resultSet.getString("title");
+				String dateAdded = resultSet.getString("date_added");
+				String releaseYear = resultSet.getString("release_year");
+				String director = resultSet.getString("director");
+				String cast = resultSet.getString("cast");
+				String description = resultSet.getString("description");
+				String date_added = resultSet.getString("date_added");
+				//prints the specified show / movie and the corresponding information
+
+				JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
+				showLabel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						showDetails(id, title, dateAdded, releaseYear, director, description, cast, date_added);
+					}
+				});
+
+				showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				showPanel.add(showLabel);
+				showPanel.add(Box.createVerticalStrut(10)); 
+			}
+
+			conn.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		showPanel.revalidate(); // Refresh layout
+		showPanel.repaint(); // Repaint the panel
 	}
 	
-	public void deleteFromFavouritesList(String username, String title) {
-		
+	public void sortFavouritesList(String username, String filterName) {
 		String path = "jdbc:sqlite:database/Favourites.db";
-		String query = "DELETE FROM '" + username + " Favourited Movies' WHERE Title = '" + title + "';";
+		String query = "SELECT * FROM '" + username + " Favourited Movies' ORDER BY " + filterName + " DESC;";
+
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection(path);
+			Statement stmt = conn.createStatement();
+
+			ResultSet resultSet = stmt.executeQuery(query);
+			showPanel.removeAll();
+
+			while (resultSet.next()) {
+				String id = resultSet.getString("show_id");
+				String title = resultSet.getString("title");
+				String dateAdded = resultSet.getString("date_added");
+				String releaseYear = resultSet.getString("release_year");
+				String director = resultSet.getString("director");
+				String cast = resultSet.getString("cast");
+				String description = resultSet.getString("description");
+				String date_added = resultSet.getString("date_added");
+				//prints the specified show / movie and the corresponding information
+
+				JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
+				showLabel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						showDetails(id, title, dateAdded, releaseYear, director, description, cast, date_added);
+					}
+				});
+
+				showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				showPanel.add(showLabel);
+				showPanel.add(Box.createVerticalStrut(10)); 
+			}
+
+			conn.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		showPanel.revalidate(); // Refresh layout
+		showPanel.repaint(); // Repaint the panel
+	}
+	
+	public void deleteFromFavouritesList(String username, String searchFor) {
+		String path = "jdbc:sqlite:database/Favourites.db";
+		String query = "DELETE FROM '" + username + " Favourited Movies' WHERE Title = '" + searchFor + "';";
+		
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection(path);
+			Statement stmt = conn.createStatement();
+
+			ResultSet resultSet = stmt.executeQuery(query);
+			showPanel.removeAll();
+
+			while (resultSet.next()) {
+				String id = resultSet.getString("show_id");
+				String title = resultSet.getString("title");
+				String dateAdded = resultSet.getString("date_added");
+				String releaseYear = resultSet.getString("release_year");
+				String director = resultSet.getString("director");
+				String cast = resultSet.getString("cast");
+				String description = resultSet.getString("description");
+				String date_added = resultSet.getString("date_added");
+				//prints the specified show / movie and the corresponding information
+
+				JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
+				showLabel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						showDetails(id, title, dateAdded, releaseYear, director, description, cast, date_added);
+					}
+				});
+
+				showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				showPanel.add(showLabel);
+				showPanel.add(Box.createVerticalStrut(10)); 
+			}
+
+			conn.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		showPanel.revalidate(); // Refresh layout
+		showPanel.repaint(); // Repaint the panel
 	}
 	
 	public void clearFavouritesList(String username) {
-
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "DROP TABLE " + username + ";";
 		
@@ -217,11 +355,38 @@ public class Favourites extends JFrame {
         }
 		
 	}
+	
+	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+		// Open a new page to display more details about a specific show/movie
+		JFrame detailsFrame = new JFrame("Show Details");
+		JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+		JTextArea detailsTextArea = new JTextArea();
+		detailsTextArea.append("Show ID: " + showId + "\n");
+		detailsTextArea.append("Title: " + title + "\n");
+		detailsTextArea.append("Date Added: " + dateAdded + "\n");
+		detailsTextArea.append("Release Year: " + releaseYear + "\n");
+		detailsTextArea.append("Director: " + director + "\n");
+		detailsTextArea.append("Description : " + description + "\n");
+		detailsTextArea.append("Cast: " + cast + "\n");
 
-	public static void main(String[] args) {
-		
-		// Must Create New Instance of Object in Order to Show The Page
-		Favourites favouritesTab = new Favourites(user);
+
+		detailsPanel.add(detailsTextArea);
+		detailsFrame.add(detailsPanel);
+
+		detailsFrame.setSize(300, 200);
+		detailsFrame.setLocationRelativeTo(null);
+		detailsFrame.setVisible(true);
+	}
+
+	public static void main(String[] args) {	
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            	LoginPage loginPage = new LoginPage();
+            	String username = loginPage.getUsername();
+                new Favourites(username).setVisible(true);     
+            }
+        });
 	}
 
 }

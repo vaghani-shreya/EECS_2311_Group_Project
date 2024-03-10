@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
-import Favourites.FavouritesPageDatabaseHandler;
 import analytics.ratingAnalytics;
 
 import Favourites.*;
@@ -58,84 +57,10 @@ public class dashBoard extends JPanel{
 		
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
-
-		
-/******************************************************************************************************************************/
-		
-// Favourites Page
 		
 		JPanel tab4 = new JPanel();
-
-		FavouritesPageDatabaseHandler fpdbHandler = new FavouritesPageDatabaseHandler();
-		int index = filterList.getSelectedIndex();
-		JTable list = new JTable(fpdbHandler.retrieveFavouritesList(filterNames[index]), filterNames);
-		list.setBounds(10, 20, 80, 25);
-
-		//DatabaseHandler dbHandler = new DatabaseHandler();
-//		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
-		
-
-		DatabaseHandler dbHandler = new DatabaseHandler();
-//		JTable list = new JTable(dbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]), filterNames);
-
-		// Adding Text and Buttons
-		JButton refreshPageButton = new JButton("Refresh Page");
-		
-		tab4.add(new JLabel("Sorted By:"));
-
-		// Adds drop down menu for filtering
-		tab4.add(filterList);
-
-		// Refresh Button Does Not Work
-		tab4.add(refreshPageButton);
-
-		// Adds list to tab
-		tab4.add(list);
-
-		
-//		tabbedPane.add(tab4, "Favourites");
-		
-	    // Refresh Page Button's action
-		
-		refreshPageButton.addActionListener(new ActionListener() {
-			
-		   	 @Override 
-		   	 public void actionPerformed(ActionEvent e) {
-		   		 
-		   		 
-		   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
-//		   		 fpdbHandler.refreshTable(filterNames[filterList.getSelectedIndex()]);
-		   	 }
-		   	 
-		    });
-		
-//	    refreshPageButton.addActionListener(new ActionListener() {
-//	   
-//	   	 @Override 
-//	   	 public void actionPerformed(ActionEvent e) {
-////	   		 fpdbHandler.retrieveFavouritesList(filterNames[filterList.getSelectedIndex()]);
-//	   		 fpdbHandler.refreshTable(filterNames[filterList.getSelectedIndex()]);
-//	   	 }
-//	   	 
-//	    });		
-		
-/******************************************************************************************************************************/	
-
-
-		//		tabbedPane.add(tab4, "Favourites");
-		//		
-		//	    // Refresh Page Button's action
-		//	    refreshPageButton.addActionListener(new ActionListener() {
-		//	   
-		//	   	 @Override 
-		//	   	 public void actionPerformed(ActionEvent e) {
-		//	   		 tabbedPane.show();
-		//	   	 }
-		//	   	 
-		//	    });		
-
-		/******************************************************************************************************************************/	
-
+		Favourites fav = new Favourites(loginPage.getUsername());
+		tab4.add(fav.getContentPane());
 
 		JPanel tab5 = new JPanel();
 		ratingAnalytics ratingChart = new ratingAnalytics();
