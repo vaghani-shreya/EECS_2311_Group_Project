@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Window.Type;
+import Favourites.*;
 
 public class LoginPage extends JFrame {
 	private JTextField usernameField;
@@ -11,6 +12,9 @@ public class LoginPage extends JFrame {
 	private CardLayout cardLayout;
 	private DatabaseHandler dbHandler;
 	private static LoginPage instance;
+	private  static String usernameForDB;
+
+	
 
 	public boolean login(String username, String password) {
 		// For simplicity, let's use a hardcoded username and password for demonstration
@@ -106,8 +110,9 @@ public static LoginPage getInstance() {
 				String username = getUsername();
 				String password = getPassword();
 
+				usernameForDB = username;
 				// Perform login action
-				if (login(username, password)) {	                	
+				if (login(username, password)) {
 					cardLayout.show(cardPanel, "dashBoard");
 				} else {
 					JOptionPane.showMessageDialog(LoginPage.this, "Login failed. Please try again.");
@@ -126,7 +131,6 @@ public static LoginPage getInstance() {
 				cardLayout.show(cardPanel, "ForgotPasswordPage");
 			}
 		});
-	
 	}
 
 	public void signOut(){
@@ -150,7 +154,14 @@ public static LoginPage getInstance() {
 	public String getPassword() {
 		return passwordField.getText();
 	}
+	
+	public static String getUsernameForDB() {
+		return usernameForDB;
+	}
 
+	public static void setUsernameForDB(String usernameForDB) {
+		LoginPage.usernameForDB = usernameForDB;
+	}
 
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(() -> {
@@ -159,17 +170,10 @@ public static LoginPage getInstance() {
 			loginPage.setVisible(true);
 
 		});
-
-
   
 		// Retrieve user credentials from the database using DatabaseHandler
 		DatabaseHandler dbHandler = new DatabaseHandler();
 		dbHandler.retrieveUserCredentials();
-		
-		
 	}
-
-	
-
 }
 

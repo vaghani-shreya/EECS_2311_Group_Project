@@ -1,5 +1,6 @@
 package front;
 
+import java.util.ArrayList;
 import java.sql.*;
 
 public class DatabaseHandler {
@@ -111,14 +112,13 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
-
     
     public Object[][] retrieveFavouritesList(String filter) {
     	
     	Object[][] movies = null;
     	
     	String path = "jdbc:sqlite:database/Favourites.db";
-    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
+    	//String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
     	
         try {
             Class.forName("org.sqlite.JDBC");
@@ -216,5 +216,61 @@ public class DatabaseHandler {
 //        
 //		return movies;
 //    }
+    
+    public String getFavoriteGenreForUser(String username) {
+    	// get genre info from user's favorite list
+    	String path = "jdbc:sqlite:database/Favourites.db";
+        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouriteMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            try (Connection conn = DriverManager.getConnection(path);
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+                ResultSet resultSet = pstmt.executeQuery();
+                
+                if (resultSet.next()) {
+                    return resultSet.getString("Genre");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return "Drama"; // Default genre if none found
+    }
+    
+    public Object[][] retrieveRecommendations(String username) {
+        String path = "jdbc:sqlite:database/Netflix.db";
+        String favoriteGenre = getFavoriteGenreForUser(username); 
+        // listed_in column in netflix.db is Genre
+        String query = "SELECT * FROM netflix_titles WHERE listed_in like ? ORDER BY NumRatings DESC LIMIT 10;"; 
+        
+        
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            try (Connection conn = DriverManager.getConnection(path);
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, "%" + favoriteGenre + "%");
+            	ResultSet resultSet = pstmt.executeQuery();
+                
+                ArrayList<Object[]> tempList = new ArrayList<>();
+                while (resultSet.next()) {
+                    tempList.add(new Object[]{
+                        resultSet.getString("title"),
+                        // column “listed_in” is the content of "genre"
+                        //resultSet.getString("listed_in"),
+                        resultSet.getString("NumRatings"),
+                        resultSet.getString("description")
+                    });
+                }
+                
+                return tempList.toArray(new Object[0][]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[0][];
+        }
+    }
 
 }

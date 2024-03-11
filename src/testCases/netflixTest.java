@@ -9,7 +9,7 @@ class netflixTest {
 	void test1() {
 		 String path = "jdbc:sqlite:database/Netflix.db";
 	     String query = "SELECT * FROM netflix_titles WHERE title LIKE ?;";
-		String expected = "My Little Pony: A New Generation";
+	     String expected = "My Little Pony: A New Generation";
 
 	        try {
 	            Class.forName("org.sqlite.JDBC");
