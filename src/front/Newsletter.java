@@ -62,7 +62,8 @@ public class Newsletter {
         
 
         // Schedule the email sender to run every week
-        //scheduler.scheduleAtFixedRate(() -> sendEmail(), 0, 7, TimeUnit.DAYS);
+//		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+//        scheduler.scheduleAtFixedRate(() -> sendEmail(email, "Newsletter", "empty"), 0, 7, TimeUnit.DAYS);
     }
 	
 	//Send an email
