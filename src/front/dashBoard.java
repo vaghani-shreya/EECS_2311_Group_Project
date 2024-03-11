@@ -63,7 +63,7 @@ public class dashBoard extends JPanel{
 
 		JPanel tab2 = new JPanel();
 
-		RecommendationPanel recommendationPanel = new RecommendationPanel(tabbedPane, dbHandler, loginPage.getUsername());
+		RecommendationPanel recommendationPanel = new RecommendationPanel(maintabbedPane, dbHandler, loginPage.getUsername());
 		tab2.add(recommendationPanel); 
 		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
 		
