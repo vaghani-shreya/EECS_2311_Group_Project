@@ -48,7 +48,11 @@ public class ratingAnalytics extends JFrame {
     	 JFreeChart chart = ChartFactory.createBarChart("Rating Analysis", "Rating", "Count", dataset);
 
          ChartPanel chartPanel = new ChartPanel(chart);
-         setContentPane(chartPanel);
+         
+         // Create a JScrollPane and add the chartPanel to it
+         JScrollPane scrollPanel = new JScrollPane(chartPanel);
+         
+         setContentPane(scrollPanel);
 
          // Set frame properties
          setTitle("Bar Chart from Database");
