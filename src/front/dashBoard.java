@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
 import analytics.ratingAnalytics;
+import rating.ratings;
 
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
@@ -60,13 +61,28 @@ public class dashBoard extends JPanel{
 
 		JPanel tab2 = new JPanel();
 		tab2.add(new JLabel("These are the recommendations for the user"));
+				
 
 		JPanel tab3 = new JPanel();
+
 		tab3.add(new JLabel("User can rate here"));
 
 		/******************************************************************************************************************************/
 
 		// Favourites Page
+
+
+		tab3.setLayout(new BorderLayout());
+		ratings rate = new ratings();
+		tab3.add(rate.getContentPane());
+		maintabbedPane.add("User Ratings", tab3);
+		add(maintabbedPane, BorderLayout.CENTER);
+		//tab3.add(new JLabel("User can rate here"));
+		
+/******************************************************************************************************************************/
+		
+// Favourites Page
+		
 
 		// Retrieves Favourites list with filter from the database
 		DatabaseHandler dbHandler = new DatabaseHandler();

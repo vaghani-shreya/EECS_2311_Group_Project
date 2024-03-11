@@ -11,6 +11,9 @@ public class LoginPage extends JFrame {
 	private CardLayout cardLayout;
 	private DatabaseHandler dbHandler;
 	private static LoginPage instance;
+	private  static String usernameForDB;
+
+	
 
 	public boolean login(String username, String password) {
 		// For simplicity, let's use a hardcoded username and password for demonstration
@@ -106,6 +109,7 @@ public static LoginPage getInstance() {
 				String username = getUsername();
 				String password = getPassword();
 
+				usernameForDB = username;
 				// Perform login action
 				if (login(username, password)) {	                	
 					cardLayout.show(cardPanel, "dashBoard");
@@ -148,6 +152,14 @@ public static LoginPage getInstance() {
 
 	public String getPassword() {
 		return passwordField.getText();
+	}
+	
+	public static String getUsernameForDB() {
+		return usernameForDB;
+	}
+
+	public static void setUsernameForDB(String usernameForDB) {
+		LoginPage.usernameForDB = usernameForDB;
 	}
 
 	public static void main(String[] args) {
