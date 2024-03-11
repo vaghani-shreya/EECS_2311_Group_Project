@@ -113,57 +113,57 @@ public class DatabaseHandler {
         }
     }
     
-    public Object[][] retrieveFavouritesList(String filter) {
-    	
-    	Object[][] movies = null;
-    	
-    	String path = "jdbc:sqlite:database/Favourites.db";
-    	//String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
-    	
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection(path);
-            PreparedStatement pstmt = conn.prepareStatement(query);
-
-            ResultSet resultSet = pstmt.executeQuery();
-            
-            movies = new Object[10][6];
-            String categories[] = {"Name", "Length", "Genre", "DateAdded", "Rating", "ReleaseDate"};
-            
-            int i = 0;
-            while (resultSet.next()) {
-            	
-            	String name = resultSet.getString("Name");
-            	double length = resultSet.getDouble("Length");
-            	String genre = resultSet.getString("Genre");
-            	Date da = resultSet.getDate("DateAdded");
-            	String rating = resultSet.getString("Rating");
-            	Date rd = resultSet.getDate("ReleaseDate");
-            	
-            	movies[i][0] = name;
-            	movies[i][1] = length;
-            	movies[i][2] = genre;
-            	movies[i][3] = da;
-            	movies[i][4] = rating;
-            	movies[i][5] = rd;
-            	
-            	i++;
-            	
-//            	System.out.println(movie_name);
-//                String movie_name = resultSet.getString("username");
-//                String password = resultSet.getString("password");
-
-            //    System.out.println("Username: " + username + ", Password: " + password);
-                // You can add more details here if needed
-            }
-           
-        } 
-        catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        
-		return movies;
-    }
+//    public Object[][] retrieveFavouritesList(String filter) {
+//    	
+//    	Object[][] movies = null;
+//    	
+//    	String path = "jdbc:sqlite:database/Favourites.db";
+//    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
+//    	
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//            Connection conn = DriverManager.getConnection(path);
+//            PreparedStatement pstmt = conn.prepareStatement(query);
+//
+//            ResultSet resultSet = pstmt.executeQuery();
+//            
+//            movies = new Object[10][6];
+//            String categories[] = {"Name", "Length", "Genre", "DateAdded", "Rating", "ReleaseDate"};
+//            
+//            int i = 0;
+//            while (resultSet.next()) {
+//            	
+//            	String name = resultSet.getString("Name");
+//            	double length = resultSet.getDouble("Length");
+//            	String genre = resultSet.getString("Genre");
+//            	Date da = resultSet.getDate("DateAdded");
+//            	String rating = resultSet.getString("Rating");
+//            	Date rd = resultSet.getDate("ReleaseDate");
+//            	
+//            	movies[i][0] = name;
+//            	movies[i][1] = length;
+//            	movies[i][2] = genre;
+//            	movies[i][3] = da;
+//            	movies[i][4] = rating;
+//            	movies[i][5] = rd;
+//            	
+//            	i++;
+//            	
+////            	System.out.println(movie_name);
+////                String movie_name = resultSet.getString("username");
+////                String password = resultSet.getString("password");
+//
+//            //    System.out.println("Username: " + username + ", Password: " + password);
+//                // You can add more details here if needed
+//            }
+//           
+//        } 
+//        catch (SQLException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        
+//		return movies;
+//    }
     
 //    public Object[][] deleteFavourites(String filter) {
 //    	
@@ -220,7 +220,7 @@ public class DatabaseHandler {
     public String getFavoriteGenreForUser(String username) {
     	// get genre info from user's favorite list
     	String path = "jdbc:sqlite:database/Favourites.db";
-        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouriteMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
+        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouritedMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -258,7 +258,7 @@ public class DatabaseHandler {
                 while (resultSet.next()) {
                     tempList.add(new Object[]{
                         resultSet.getString("title"),
-                        // column “listed_in” is the content of "genre"
+                        // column â€œlisted_inâ€� is the content of "genre"
                         //resultSet.getString("listed_in"),
                         resultSet.getString("NumRatings"),
                         resultSet.getString("description")
