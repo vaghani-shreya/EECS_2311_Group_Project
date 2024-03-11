@@ -22,9 +22,11 @@ import front.*;
 
 public class Favourites extends JFrame {
 	
+//	private String username;
 	private JPanel showPanel;
 	private JScrollPane scrollPane;
 	private JComboBox<String> filterComboBox;
+//	String username = LoginPage.getUsername();
 	
 	// Create an Instance of LoginPage and dashBoard
 //	private static LoginPage user = new LoginPage();
@@ -67,6 +69,14 @@ public class Favourites extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String searchFor = searchField.getText();
 				searchFavouritedMovie(username, searchFor);
+			}
+		});
+		
+		deleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String searchFor = searchField.getText();
+				deleteFromFavouritesList(username, searchFor);
 			}
 		});
 		
@@ -166,9 +176,9 @@ public class Favourites extends JFrame {
 	}
 	
 	
-	public void addToFavouritesList(String showId, String username, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
+	public void addToFavouritesList(String username, String showId, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
 		// If there is no favourites table, make a new one then add the movie to it
-		
+
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "CREATE TABLE IF NOT EXISTS '" + username + " Favourited Movies' ("
 				+ "'Show ID' VARCHAR(255),"
@@ -182,12 +192,12 @@ public class Favourites extends JFrame {
 				
 				+ "INSERT INTO '" + username + " Favourited Movies'"
 				+ "VALUES ("
-				+ showId // Show ID
-				+ title // Title
-				+ dateAdded // Date Added
-				+ releaseYear // Release Year
-				+ director // Director
-				+ cast // Cast
+				+ showId + ", " // Show ID
+				+ title + ", " // Title
+				+ dateAdded + ", " // Date Added
+				+ releaseYear + ", " // Release Year
+				+ director + ", " // Director
+				+ cast + ", " // Cast
 				+ description // Description
 				+ ");";
 		
@@ -211,7 +221,7 @@ public class Favourites extends JFrame {
 	
 	public void searchFavouritedMovie(String username, String searchFor) {
 		showPanel.removeAll(); // Clear existing shows/movies
-
+		
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "SELECT * FROM '" + username + " Favourited Movies' WHERE '" + searchFor + "' LIKE ?;";
 
@@ -258,6 +268,7 @@ public class Favourites extends JFrame {
 	}
 	
 	public void sortFavouritesList(String username, String filterName) {
+		
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "SELECT * FROM '" + username + " Favourited Movies' ORDER BY " + filterName + " DESC;";
 
@@ -304,6 +315,7 @@ public class Favourites extends JFrame {
 	}
 	
 	public void deleteFromFavouritesList(String username, String searchFor) {
+		
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "DELETE FROM '" + username + " Favourited Movies' WHERE Title = '" + searchFor + "';";
 		
@@ -350,6 +362,7 @@ public class Favourites extends JFrame {
 	}
 	
 	public void clearFavouritesList(String username) {
+		
 		String path = "jdbc:sqlite:database/Favourites.db";
 		String query = "DROP TABLE " + username + ";";
 		
@@ -392,15 +405,13 @@ public class Favourites extends JFrame {
 		detailsFrame.setVisible(true);
 	}
 
-	public static void main(String[] args) {	
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-            	LoginPage loginPage = new LoginPage();
-            	String username = loginPage.getUsername();
-                new Favourites(username).setVisible(true);     
-            }
-        });
-	}
+//	public static void main(String[] args) {	
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                new Favourites(username).setVisible(true);     
+//            }
+//        });
+//	}
 
 }

@@ -9,7 +9,7 @@ import javax.swing.event.ChangeEvent;
 
 import analytics.ratingAnalytics;
 
-import Favourites.*;
+import Favourites.Favourites;
 
 import recommendation.RecommendationPanel;
 

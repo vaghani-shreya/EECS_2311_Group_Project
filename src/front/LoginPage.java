@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Window.Type;
+import Favourites.*;
 
 public class LoginPage extends JFrame {
 	private JTextField usernameField;
@@ -107,7 +108,7 @@ public static LoginPage getInstance() {
 				String password = getPassword();
 
 				// Perform login action
-				if (login(username, password)) {	                	
+				if (login(username, password)) {
 					cardLayout.show(cardPanel, "dashBoard");
 				} else {
 					JOptionPane.showMessageDialog(LoginPage.this, "Login failed. Please try again.");
