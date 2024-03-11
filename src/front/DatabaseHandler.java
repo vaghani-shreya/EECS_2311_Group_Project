@@ -112,7 +112,6 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
-
     
     public Object[][] retrieveFavouritesList(String filter) {
     	
