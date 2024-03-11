@@ -19,7 +19,7 @@ public class RecommendationPanel extends JPanel {
 
 	    private void initUI(String username) {
 	        Object[][] recommendationsData = recommendationService.getRecommendations(username);
-	        String[] columnNames = {"Title", "Genre", "Description"};
+	        String[] columnNames = {"Title", "Rating", "Description"};
 
 	        JTable recommendationsTable = new JTable(recommendationsData, columnNames);
 	        recommendationsTable.setDefaultEditor(Object.class, null); // Disable cell editing
@@ -27,8 +27,8 @@ public class RecommendationPanel extends JPanel {
 //	        recommendationsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 	        TableColumnModel columnModel = recommendationsTable.getColumnModel();
-	        columnModel.getColumn(0).setPreferredWidth(150); // title column width
-	        columnModel.getColumn(1).setPreferredWidth(150); // genre column width
+	        columnModel.getColumn(0).setPreferredWidth(20); // title column width
+	        columnModel.getColumn(1).setPreferredWidth(20); // genre column width
 	        columnModel.getColumn(2).setPreferredWidth(600);
 	        
 	        JScrollPane scrollPane = new JScrollPane(recommendationsTable);

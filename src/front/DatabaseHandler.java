@@ -118,7 +118,7 @@ public class DatabaseHandler {
     	Object[][] movies = null;
     	
     	String path = "jdbc:sqlite:database/Favourites.db";
-    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
+    	//String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
     	
         try {
             Class.forName("org.sqlite.JDBC");
@@ -242,26 +242,25 @@ public class DatabaseHandler {
     public Object[][] retrieveRecommendations(String username) {
         String path = "jdbc:sqlite:database/Netflix.db";
         String favoriteGenre = getFavoriteGenreForUser(username); 
+        // listed_in column in netflix.db is Genre
+        String query = "SELECT * FROM netflix_titles WHERE listed_in like ? ORDER BY NumRatings DESC LIMIT 10;"; 
         
-        String query = "SELECT * FROM netflix_titles ORDER BY rating DESC LIMIT 10;"; 
-        // netflix.db does not have a 'genre' column
-        // see if a genre column can be added to netflix.db
-        // if added, use follow sql
-        //String query = "SELECT * FROM netflix_titles ;"; 
         
 
         try {
             Class.forName("org.sqlite.JDBC");
             try (Connection conn = DriverManager.getConnection(path);
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                ResultSet resultSet = pstmt.executeQuery();
+                pstmt.setString(1, "%" + favoriteGenre + "%");
+            	ResultSet resultSet = pstmt.executeQuery();
                 
                 ArrayList<Object[]> tempList = new ArrayList<>();
                 while (resultSet.next()) {
                     tempList.add(new Object[]{
                         resultSet.getString("title"),
                         // column “listed_in” is the content of "genre"
-                        resultSet.getString("listed_in"),
+                        //resultSet.getString("listed_in"),
+                        resultSet.getString("NumRatings"),
                         resultSet.getString("description")
                     });
                 }
