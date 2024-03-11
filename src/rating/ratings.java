@@ -38,12 +38,15 @@ public class ratings  extends JFrame {
 	 private JPanel showPanel;
 	 private JScrollPane scrollPane;
 	 private rating_DAO rating_dao;
+	// private int rateNumber;
+	
 	// private LoginPage login;
 	 //private String user =  login.getUsername();
 	 
 	 
 	 public ratings() {
-		 setTitle("User Add Ratings");
+		
+		setTitle("User Add Ratings");
 	     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	     setSize(800, 600);
 	     setLocationRelativeTo(null);
@@ -171,8 +174,9 @@ public class ratings  extends JFrame {
 	        showPanel.repaint(); // Repaint the panel
 	    }
 	    
-	  private void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN) {
+	  public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN) {
 		  String user = LoginPage.getUsernameForDB();
+		
 	  // Open a new page to display more details about a specific show/movie
 	 // setSize(400, 400);
 	  JFrame detailsFrame = new JFrame("Add Ratings");
@@ -201,7 +205,8 @@ public class ratings  extends JFrame {
 	     saveButton.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                String ratingText = rateField.getText();	          
+	            	String ratingText = rateField.getText();	
+	            	 
 	                try {
 	                	
 	                	int rating = Integer.parseInt(ratingText);
@@ -212,6 +217,7 @@ public class ratings  extends JFrame {
 	                	rating_dao.updateRatingdb(rating,show_id);
 	                	rating_dao.insertIntoUserMediadb(user,show_id,title,releaseYear,ratingNAN,rating);
 	                	detailsFrame.dispose();
+	                	//rateNumber = rating;
 	                }
 	                catch(NumberFormatException ex) {
 	                	JOptionPane.showMessageDialog(detailsFrame, "Please enter the rating between 0 and 10.");
@@ -227,7 +233,9 @@ public class ratings  extends JFrame {
 
 	  detailsFrame.setSize(600, 400);
 	  detailsFrame.setLocationRelativeTo(null);
-	  detailsFrame.setVisible(true);
+	  detailsFrame.setVisible(true);	  
+	
+	 
 
 	 }
 	  	  

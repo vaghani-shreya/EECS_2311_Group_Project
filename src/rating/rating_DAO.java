@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class rating_DAO {
+	public int userRating;
+	public int updaterate;
 	
 	
 	public rating_DAO() {
@@ -14,7 +16,8 @@ public class rating_DAO {
 	}
 	
 	
-	 public void updateRatingdb(int userRating, String id) {
+	 public int updateRatingdb(int userRating, String id) {
+		 updaterate = userRating;
 		  
 		  String path = "jdbc:sqlite:database/Netflix.db";
 	        //Finds the specified title and extracts from database
@@ -37,7 +40,7 @@ public class rating_DAO {
 			}
 	        
 	        
-	        
+	        return updaterate;
 		  
 		  
 	  }
@@ -45,9 +48,10 @@ public class rating_DAO {
 	 // rating is the general TV rating such as "TV-18", "TV-MA".
 	 //numRating is the numerical rating by the user.
 	 
-	 public void insertIntoUserMediadb(String userName,String showid, String title, String releaseYear, String rating, int numRating) {
+	 public int insertIntoUserMediadb(String userName,String showid, String title, String releaseYear, String rating, int numRating) {
 		 int numRate = -1;
 		 int rowsAffected = 0;
+		 userRating = numRating;
 		
 		 
 		 String path = "jdbc:sqlite:database/userDetails.db";
@@ -56,6 +60,10 @@ public class rating_DAO {
 		 String query3 = "UPDATE userMedia SET NumRating = ? WHERE title = ?;";
 		 
 		  try {
+			  
+			  if(userRating > 10 || userRating < 0) {
+				  throw new IllegalArgumentException();
+			  }
 				Class.forName("org.sqlite.JDBC");
 				Connection conn = DriverManager.getConnection(path);
 				PreparedStatement pstmt1 = conn.prepareStatement(query1);
@@ -96,8 +104,9 @@ public class rating_DAO {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}	        			
+			}       			
 		 		 
+		  return userRating;
 	 }
 
 	 
