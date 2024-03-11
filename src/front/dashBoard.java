@@ -67,8 +67,6 @@ public class dashBoard extends JPanel{
 
 	    tab5.add(ratingChart.getContentPane());
 
-		tab5.add(ratingChart.getContentPane());
-
 		// Add tabs to tabbed pane
 		tabbedPane.addTab("Dashboard Movies/Shows", tab1);
 		tabbedPane.addTab("Recommendations", tab2);
