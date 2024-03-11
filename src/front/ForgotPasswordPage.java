@@ -165,7 +165,7 @@ public class ForgotPasswordPage extends JPanel {
 	//Send an email
 	public static void sendEmail(String to, String subject, String body) {
         final String from = "eecs2311group1@gmail.com";
-        final String password = "enter-password";
+        final String password = "enter-passwrod";
 
         // Setup mail server properties
         Properties properties = new Properties();

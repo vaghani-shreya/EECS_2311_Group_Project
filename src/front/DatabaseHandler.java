@@ -118,7 +118,7 @@ public class DatabaseHandler {
     	Object[][] movies = null;
     	
     	String path = "jdbc:sqlite:database/Favourites.db";
-    	//String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
+    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
     	
         try {
             Class.forName("org.sqlite.JDBC");
@@ -258,7 +258,7 @@ public class DatabaseHandler {
                 while (resultSet.next()) {
                     tempList.add(new Object[]{
                         resultSet.getString("title"),
-                        // column “listed_in” is the content of "genre"
+                        // column "listed in" is the content of "genre"
                         //resultSet.getString("listed_in"),
                         resultSet.getString("NumRatings"),
                         resultSet.getString("description")
