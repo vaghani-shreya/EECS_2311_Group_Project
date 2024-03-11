@@ -8,10 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
 import analytics.ratingAnalytics;
-<<<<<<< HEAD
 import recommendation.RecommendationPanel;
-
-=======
 import rating.ratings;
 
 public class dashBoard extends JPanel{
@@ -169,7 +166,6 @@ public class dashBoard extends JPanel{
 
 		});
 	}
-
 
 }
 
