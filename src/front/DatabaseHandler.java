@@ -118,7 +118,7 @@ public class DatabaseHandler {
     	Object[][] movies = null;
     	
     	String path = "jdbc:sqlite:database/Favourites.db";
-    	//String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
+    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
     	
         try {
             Class.forName("org.sqlite.JDBC");
