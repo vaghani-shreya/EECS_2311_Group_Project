@@ -69,7 +69,18 @@ public class dashBoard extends JPanel{
 		JPanel tab3 = new JPanel();
 
 		tab3.add(new JLabel("User can rate here"));
+		/******************************************************************************************************************************/
 
+		// Favourites Page
+
+
+		tab3.setLayout(new BorderLayout());
+		ratings rate = new ratings();
+		tab3.add(rate.getContentPane());
+		maintabbedPane.add("User Ratings", tab3);
+		add(maintabbedPane, BorderLayout.CENTER);
+		//tab3.add(new JLabel("User can rate here"));
+		
 		JPanel tab4 = new JPanel();
 		Favourites fav = new Favourites(loginPage.getUsername());
 		tab4.add(fav.getContentPane());
