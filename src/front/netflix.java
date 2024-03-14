@@ -305,6 +305,17 @@ public class netflix extends JPanel {
 
 
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new netflix().setVisible(true);
+                
+            }
+        });
+    }
+
+
 	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
@@ -328,14 +339,6 @@ public class netflix extends JPanel {
 	}
 
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new netflix().setVisible(true);
-			}
-		});
-	}
 }
 
 

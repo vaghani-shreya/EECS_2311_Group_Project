@@ -120,7 +120,7 @@ public class ForgotPasswordPage extends JPanel {
 					//Change the old code in the database to the new one
 					changeCode(username, code);
 					//Send and email to the user with the new code
-					//sendEmail(username, "Verification Code", "Your verification code is");
+					sendEmail(username, "Verification Code", "Your verification code is "+code);
 					//Show the verification panel
 					cardLayout.show(cardPanel, "verification");
 				} else {
@@ -164,8 +164,8 @@ public class ForgotPasswordPage extends JPanel {
 	
 	//Send an email
 	public static void sendEmail(String to, String subject, String body) {
-        final String from = "your-email@gmail.com";
-        final String password = "your-password";
+        final String from = "eecs2311group1@gmail.com";
+        final String password = "enter-password";	// change password for testing purposes
 
         // Setup mail server properties
         Properties properties = new Properties();
