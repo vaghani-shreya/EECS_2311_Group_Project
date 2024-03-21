@@ -220,7 +220,7 @@ public class DatabaseHandler {
     public String getFavoriteGenreForUser(String username) {
     	// get genre info from user's favorite list
     	String path = "jdbc:sqlite:database/Favourites.db";
-        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouriteMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
+    	String query = "SELECT Genre, COUNT(Genre) as count FROM FavouritedMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -258,8 +258,6 @@ public class DatabaseHandler {
                 while (resultSet.next()) {
                     tempList.add(new Object[]{
                         resultSet.getString("title"),
-                        // column “listed_in” is the content of "genre"
-                        //resultSet.getString("listed_in"),
                         resultSet.getString("NumRatings"),
                         resultSet.getString("description")
                     });
