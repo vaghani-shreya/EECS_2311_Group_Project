@@ -38,7 +38,7 @@ public class Favourites extends JFrame {
 		setSize(800, 600);
 		setLocationRelativeTo(null);
 		// Creates a Favourites List if not already created; Retrieves Favourites List from database
-		createUserFavouritesTable(username);
+		// createUserFavouritesTable(username);
 		retrieveFavouritesList(username);
 		
 		JPanel optionsPanel = new JPanel();
@@ -91,35 +91,35 @@ public class Favourites extends JFrame {
 		
 	}
 	
-	public void createUserFavouritesTable(String username) {
-		
-		String path = "jdbc:sqlite:database/Favourites.db";
-		String query = "CREATE TABLE IF NOT EXISTS '" + username + " Favourited Movies' ("
-				+ "'Show ID' VARCHAR(255),"
-				+ "Title VARCHAR(255),"
-				+ "'Date Added' VARCHAR(255),"
-				+ "'Release Year' VARCHAR(255),"
-				+ "Director VARCHAR(255),"
-				+ "Cast VARCHAR(255),"
-				+ "Description VARCHAR(255)"
-				+ ");";
-		
-        try {
-        	//call the JDBC driver
-            Class.forName("org.sqlite.JDBC");
-            Connection connection = DriverManager.getConnection(path);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-
-            connection.close();
-            statement.close();
-            resultSet.close();
-            
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-		
-	}
+//	public void createUserFavouritesTable(String username) {
+//		
+//		String path = "jdbc:sqlite:database/Favourites.db";
+//		String query = "CREATE TABLE IF NOT EXISTS '" + username + " Favourited Movies' ("
+//				+ "'Show ID' VARCHAR(255),"
+//				+ "Title VARCHAR(255),"
+//				+ "'Date Added' VARCHAR(255),"
+//				+ "'Release Year' VARCHAR(255),"
+//				+ "Director VARCHAR(255),"
+//				+ "Cast VARCHAR(255),"
+//				+ "Description VARCHAR(255)"
+//				+ ");";
+//		
+//        try {
+//        	//call the JDBC driver
+//            Class.forName("org.sqlite.JDBC");
+//            Connection connection = DriverManager.getConnection(path);
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery(query);
+//
+//            connection.close();
+//            statement.close();
+//            resultSet.close();
+//            
+//        } catch (SQLException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//		
+//	}
 	
 	public void retrieveFavouritesList(String username) {
 		

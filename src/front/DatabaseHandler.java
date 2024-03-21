@@ -219,22 +219,23 @@ public class DatabaseHandler {
     
     public String getFavoriteGenreForUser(String username) {
     	// get genre info from user's favorite list
-    	String path = "jdbc:sqlite:database/Favourites.db";
-    	String query = "SELECT Genre, COUNT(Genre) as count FROM FavouritedMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
-        
-        try {
-            Class.forName("org.sqlite.JDBC");
-            try (Connection conn = DriverManager.getConnection(path);
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                ResultSet resultSet = pstmt.executeQuery();
-                
-                if (resultSet.next()) {
-                    return resultSet.getString("Genre");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//    	String path = "jdbc:sqlite:database/Favourites.db";
+//    	String query = "SELECT show_id as count FROM F WHERE user_id = ? ORDER BY count DESC LIMIT 1;";
+//        
+//    	
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//            try (Connection conn = DriverManager.getConnection(path);
+//                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+//                ResultSet resultSet = pstmt.executeQuery();
+//                
+//                if (resultSet.next()) {
+//                    return resultSet.getString("Genre");
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
         return "Drama"; // Default genre if none found
     }
