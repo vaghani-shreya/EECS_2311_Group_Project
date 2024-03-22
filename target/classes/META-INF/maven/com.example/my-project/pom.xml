@@ -27,5 +27,17 @@
   			<artifactId>gson</artifactId>
   			<version>2.10.1</version>
 		</dependency>
-    </dependencies>
+		<!-- For sending HTTP requests -->
+		<dependency>
+	        <groupId>org.apache.httpcomponents.client5</groupId>
+	        <artifactId>httpclient5</artifactId>
+	        <version>5.1</version>
+	    </dependency>
+	    <!-- For JSON processing -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	        <version>2.12.3</version>
+	    </dependency>
+	    </dependencies>
 </project>
