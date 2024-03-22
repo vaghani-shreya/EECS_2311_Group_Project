@@ -2,14 +2,15 @@ package front;
 
 import java.util.ArrayList;
 import java.sql.*;
+
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+
 import com.google.gson.Gson;
 import java.util.Arrays;
 
@@ -17,6 +18,7 @@ public class Newsletter {
 
 	public static void main(String[] args) {
         //Database connections
+
         String path = "jdbc:sqlite:database/UserCredentials.db";
         String query = "SELECT username FROM UserCred";
         
@@ -91,7 +93,7 @@ public class Newsletter {
 	                return new PasswordAuthentication(from, password);
 	            }
 	        });
-	        
+   
 	     // Convert 2D array to JSON string
 	        Gson gson = new Gson();
 	        String json = gson.toJson(body);
@@ -108,8 +110,8 @@ public class Newsletter {
 
 	            // Set Subject: header field
 	            message.setSubject(subject);
-
-	         // Now set the actual message
+	            
+	            // Now set the actual message
 	            String text = "Here are some reccomended movies/tv shows for you: \n\n " + formatData(body);
 	            message.setText(text);
 
@@ -120,7 +122,7 @@ public class Newsletter {
 	            System.out.println("Failed to send email: " + e.getMessage());
 	        }
 		}
-		
+
 		 // Format data to display each object on a new line
 	    private static String formatData(Object[][] data) {
 	        StringBuilder sb = new StringBuilder();
@@ -132,4 +134,5 @@ public class Newsletter {
 	        }
 	        return sb.toString();
 	    }
+
 }

@@ -217,59 +217,79 @@ public class DatabaseHandler {
 //		return movies;
 //    }
     
-    public String getFavoriteGenreForUser(String username) {
+    public String getFavoriteGenre(String username) {
     	// get genre info from user's favorite list
-    	String path = "jdbc:sqlite:database/Favourites.db";
-        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouritedMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
-        
-        try {
-            Class.forName("org.sqlite.JDBC");
-            try (Connection conn = DriverManager.getConnection(path);
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                ResultSet resultSet = pstmt.executeQuery();
-                
-                if (resultSet.next()) {
-                    return resultSet.getString("Genre");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//    	String path = "jdbc:sqlite:database/Favourites.db";
+//    	String query = "SELECT show_id as count FROM F WHERE user_id = ? ORDER BY count DESC LIMIT 1;";
+//        
+//    	
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//            try (Connection conn = DriverManager.getConnection(path);
+//                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+//                ResultSet resultSet = pstmt.executeQuery();
+//                
+//                if (resultSet.next()) {
+//                    return resultSet.getString("Genre");
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
         return "Drama"; // Default genre if none found
     }
     
+    public String getClickGenre(String username) {
+    	return "Comedies";
+    }
+    public int getFavCount(String username) {
+    	return 0;
+    }
+    
+    public int getClickCount(String username) {
+    	return 1;
+    }
+    
+    public String getGenre(String username) {
+    	int fav_count = getFavCount(username);
+    	int click_count = getClickCount(username);
+    	
+    	if (fav_count >= click_count) return getFavoriteGenre(username);
+    	else return getClickGenre(username);
+    }
+    
     public Object[][] retrieveRecommendations(String username) {
         String path = "jdbc:sqlite:database/Netflix.db";
-        String favoriteGenre = getFavoriteGenreForUser(username); 
+        String basedGenre = getGenre(username); 
         // listed_in column in netflix.db is Genre
-        String query = "SELECT * FROM netflix_titles WHERE listed_in like ? ORDER BY NumRatings DESC LIMIT 10;"; 
+        String query = "SELECT title, NumRatings FROM netflix_titles WHERE listed_in like ? ORDER BY NumRatings DESC LIMIT 30;"; 
         
-        
-
         try {
             Class.forName("org.sqlite.JDBC");
             try (Connection conn = DriverManager.getConnection(path);
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setString(1, "%" + favoriteGenre + "%");
+                pstmt.setString(1, "%" + basedGenre + "%");
             	ResultSet resultSet = pstmt.executeQuery();
                 
                 ArrayList<Object[]> tempList = new ArrayList<>();
                 while (resultSet.next()) {
                     tempList.add(new Object[]{
                         resultSet.getString("title"),
-                        //resultSet.getString("listed_in"),
-                        resultSet.getString("NumRatings"),
-                        resultSet.getString("description")
+                        resultSet.getInt("NumRatings")                     
                     });
                 }
                 
                 return tempList.toArray(new Object[0][]);
             }
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
+            System.err.println("JDBC Driver not found.");
             e.printStackTrace();
-            return new Object[0][];
+        } catch (SQLException e) {
+            System.err.println("Database access error.");
+            e.printStackTrace();
         }
+        return new Object[0][];
     }
 
 }

@@ -1,10 +1,18 @@
 package rating;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class rating_DAO {
 	public int userRating;
@@ -108,6 +116,30 @@ public class rating_DAO {
 		 		 
 		  return userRating;
 	 }
+	 
+	 
+	 
+	 public JPanel commentMedia(JFrame frame) {
+	        JPanel commentPanel = new JPanel();
+	        JLabel commentLabel = new JLabel("Add Comment:");
+	        JTextField commentField = new JTextField(30);
+	        JButton saveCommentButton = new JButton("Save Comment");
+
+	        commentPanel.add(commentLabel);
+	        commentPanel.add(commentField);
+	        commentPanel.add(saveCommentButton);
+
+	        saveCommentButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                String comment = commentField.getText();
+	                // Save the comment here
+	            //    JOptionPane.showMessageDialog(frame, "Comment saved: " + comment);
+	            }
+	        });
+	 
+	        return commentPanel;
+	    }
 
 	 
 //	 public static void main(String[] args) {
