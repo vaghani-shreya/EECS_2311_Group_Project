@@ -75,7 +75,7 @@ public class dashBoard extends JPanel{
 
 		tab3.setLayout(new BorderLayout());
 		ratings rate = new ratings();
-		tab3.add(rate.getContentPane());
+		tab3.add(rate.getRootPane());
 		maintabbedPane.add("User Ratings", tab3);
 		add(maintabbedPane, BorderLayout.CENTER);
 		//tab3.add(new JLabel("User can rate here"));

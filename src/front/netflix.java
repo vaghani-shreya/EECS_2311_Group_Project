@@ -75,61 +75,7 @@ public class netflix extends JPanel {
 	        add(scrollPane, BorderLayout.CENTER);
 
 	 }
-//	public netflix() {
-////		setTitle("Netflix Discover Weekly");
-////		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setSize(800, 600);
-////		setLocationRelativeTo(null);
-//		//create a search panel
-//		JPanel searchPanel = new JPanel();
-//		JTextField searchField = new JTextField(20);
-//		// create search button
-//		JButton searchButton = new JButton("Search");
-//
-//		// Filter menu feature
-//		String[] filterOptions = {"Title", "Genre", "Type", "Ratings"};
-//		filterComboBox = new JComboBox<>(filterOptions);
-//
-//		// Sort menu feature
-//		String[] sortOptions = {"Release Date", "Title", "Date Added"};
-//		sortComboBox = new JComboBox<>(sortOptions);
-//
-//		searchPanel.add(searchField);
-//		searchPanel.add(filterComboBox);
-//		searchPanel.add(searchButton);
-//		searchPanel.add(new JLabel("Sort By:"));
-//		searchPanel.add(sortComboBox);
-//
-//		// Add action listener to the search button
-//		searchButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String searchFor = searchField.getText();
-//				String selectedFilter = (String) filterComboBox.getSelectedItem();
-//				searchNetflixDatabase(searchFor, selectedFilter);
-//			}
-//		});
-//
-//		// Add action listener to the sort button
-//		sortComboBox.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String selectedSort = (String) sortComboBox.getSelectedItem();
-//				sortNetflixDatabase(selectedSort);
-//			}
-//		});
-//
-//		add(searchPanel, BorderLayout.NORTH);
-//
-//		scrollPane = new JScrollPane();
-//	//	getContentPane().add(scrollPane, BorderLayout.CENTER);
-//
-//		showPanel = new JPanel();
-//		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
-//		scrollPane.setViewportView(showPanel);
-//
-//		NetflixDataBase();
-//	}
+
 	// Allows the user to see the shows in descending order of release year
 	private void NetflixDataBase() {
 		String path = "jdbc:sqlite:database/Netflix.db";

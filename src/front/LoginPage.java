@@ -12,7 +12,7 @@ public class LoginPage extends JFrame {
 	private CardLayout cardLayout;
 	private DatabaseHandler dbHandler;
 	private static LoginPage instance;
-	private  static String usernameForDB;
+	private static String usernameForDB;
 
 	
 

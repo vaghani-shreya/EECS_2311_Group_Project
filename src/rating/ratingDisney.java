@@ -179,7 +179,7 @@ public class ratingDisney extends JPanel{
 	}
 
 	public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN) {
-		 String user = "user"; // LoginPage.getUsernameForDB();
+		 String user =  LoginPage.getUsernameForDB();
 		 rating_dao = new rating_DAO();
 		
 		JFrame detailsFrame = new JFrame("Add Ratings");
@@ -217,7 +217,7 @@ public class ratingDisney extends JPanel{
 						throw new NumberFormatException();
 					}
 					//System.out.println(rating);
-				//	rating_dao.updateRatingdb(rating,show_id,"disney");
+					rating_dao.updateRatingdb(rating,show_id,"disney");
 					rating_dao.insertIntoUserMediadb(user,show_id,title,releaseYear,ratingNAN,rating);
 					detailsFrame.dispose();
 					//rateNumber = rating;

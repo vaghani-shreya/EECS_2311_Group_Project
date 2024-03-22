@@ -24,7 +24,8 @@ class rating_DAOTest {
     	 ratingDAO = new rating_DAO();
         int userRating = 8;
         String id = "s4";
-        int updatedRating = ratingDAO.updateRatingdb(userRating, id);
+        String platform = "netflix";
+        int updatedRating = ratingDAO.updateRatingdb(userRating, id, platform);
 
         // Assert that the rating is updated successfully
         assertEquals("Rating should be updated to 8", userRating, updatedRating);

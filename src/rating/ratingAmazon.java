@@ -178,7 +178,7 @@ public class ratingAmazon extends JPanel{
 	    
 	    
 public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN) {
-		  String user = "user"; // LoginPage.getUsernameForDB();
+		  String user =  LoginPage.getUsernameForDB();
 		  rating_dao = new rating_DAO();
 		
 	  JFrame detailsFrame = new JFrame("Add Ratings");
@@ -216,7 +216,7 @@ public void rateMedia(String show_id,String title, String dateAdded, String rele
 	                	if(rating < 0 || rating > 10) {
 	                		throw new NumberFormatException();
 	                	}
-	             //   	rating_dao.updateRatingdb(rating,show_id,"amazon");
+	                	rating_dao.updateRatingdb(rating,show_id,"amazon");
 	                	rating_dao.insertIntoUserMediadb(user,show_id,title,releaseYear,ratingNAN,rating);
 	                	JOptionPane.showMessageDialog(detailsFrame, "The Movie/show was rated a rating of " + rating );
 	                    //detailsFrame.dispose();

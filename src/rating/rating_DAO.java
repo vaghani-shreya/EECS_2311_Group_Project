@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,12 +27,29 @@ public class rating_DAO {
 	}
 	
 	
-	 public int updateRatingdb(int userRating, String id) {
+	 public int updateRatingdb(int userRating, String id, String platform) {
 		 updaterate = userRating;
 		  
-		  String path = "jdbc:sqlite:database/Netflix.db";
+		 String netflix = "netflix";
+		 String amazon = "amazon";
+		 String disney = "disney";
+		 String path = null;
+		 String query = null;
+		if(platform.equals(netflix)) {			
+		  path = "jdbc:sqlite:database/Netflix.db";
 	        //Finds the specified title and extracts from database
-	        String query = "UPDATE netflix_titles SET NumRatings = ? WHERE show_id = ?;";
+	         query = "UPDATE netflix_titles SET NumRatings = ? WHERE show_id = ?;";
+		} 
+		if(platform.equals(amazon)) {			
+			  path = "jdbc:sqlite:database/Amazon.db";
+		        //Finds the specified title and extracts from database
+		         query = "UPDATE amazon_prime_titles SET NumRatings = ? WHERE show_id = ?;";
+			}
+		if(platform.equals(disney)) {			
+			  path = "jdbc:sqlite:database/Disney.db";
+		        //Finds the specified title and extracts from database
+		         query = "UPDATE disney_plus_titles SET NumRatings = ? WHERE show_id = ?;";
+			}
 	        
 	        try {
 				Class.forName("org.sqlite.JDBC");
@@ -117,40 +137,39 @@ public class rating_DAO {
 		  return userRating;
 	 }
 	 
-	 
-	 
+
 	 public JPanel commentMedia(JFrame frame) {
-	        JPanel commentPanel = new JPanel();
+			
+	    	JPanel commentPanel = new JPanel();
 	        JLabel commentLabel = new JLabel("Add Comment:");
 	        JTextField commentField = new JTextField(30);
 	        JButton saveCommentButton = new JButton("Save Comment");
-
+	        
 	        commentPanel.add(commentLabel);
 	        commentPanel.add(commentField);
 	        commentPanel.add(saveCommentButton);
+	        
 
 	        saveCommentButton.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                String comment = commentField.getText();
 	                // Save the comment here
-	            //    JOptionPane.showMessageDialog(frame, "Comment saved: " + comment);
+
+	                JOptionPane.showMessageDialog(frame, "Comment saved: " + comment);
 	            }
 	        });
-	 
+	        
+	        
+	        frame.add(commentPanel);       
 	        return commentPanel;
-	    }
+	          
+	    	
+	 }
+
 
 	 
-//	 public static void main(String[] args) {
-////		 rating_DAO r = new rating_DAO();
-////		// r.updateRatingdb(2, "s100");
-////		 
-////	 }
-//	 rating_DAO r = new rating_DAO();
-//	 r.insertIntoUserMediadb("user", "s1", "himym", "2000", "TV-18", 6);
-//	 
-//	 }
+
 }
 
 
