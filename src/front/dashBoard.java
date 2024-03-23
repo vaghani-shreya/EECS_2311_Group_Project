@@ -9,8 +9,10 @@ import javax.swing.event.ChangeEvent;
 
 import analytics.ratingAnalytics;
 import rating.ratings;
-import Favourites.Favourites;
+
 import recommendation.RecommendationPanel;
+
+
 
 public class dashBoard extends JPanel{
 	private JPanel cardPanel;
@@ -61,38 +63,30 @@ public class dashBoard extends JPanel{
 		
 
 		JPanel tab2 = new JPanel();
-
 		RecommendationPanel recommendationPanel = new RecommendationPanel(dbHandler, loginPage.getUsername());
+
 		tab2.add(recommendationPanel); 
 		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
 		
 		JPanel tab3 = new JPanel();
-
 		tab3.add(new JLabel("User can rate here"));
-		/******************************************************************************************************************************/
-
-		// Favourites Page
-
-
 		tab3.setLayout(new BorderLayout());
 		ratings rate = new ratings();
-		tab3.add(rate.getContentPane());
+		tab3.add(rate.getRootPane());
 		maintabbedPane.add("User Ratings", tab3);
 		add(maintabbedPane, BorderLayout.CENTER);
-		//tab3.add(new JLabel("User can rate here"));
 		
 		JPanel tab4 = new JPanel();
-		Favourites fav = new Favourites(loginPage.getUsername());
+		Favourites fav = new Favourites();
 		tab4.add(fav.getContentPane());
 
 		JPanel tab5 = new JPanel();
 		ratingAnalytics ratingChart = new ratingAnalytics();
-
 		tab5.add(ratingChart.getContentPane());
 
 
 		// Add tabs to tabbed pane
-		//tabbedPane.addTab("Dashboard Movies/Shows", tab1);
+		
 		maintabbedPane.addTab("Recommendations", tab2);
 		maintabbedPane.addTab("Ratings", tab3);
 		maintabbedPane.addTab("Favourites", tab4);
@@ -119,6 +113,7 @@ public class dashBoard extends JPanel{
 			}
 		});
 	}
+
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {

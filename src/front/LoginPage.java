@@ -3,18 +3,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Window.Type;
-import Favourites.*;
 
 public class LoginPage extends JFrame {
-	private JTextField usernameField;
-	private JPasswordField passwordField;
+	private static JTextField usernameField;
+	private static JPasswordField passwordField;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	private DatabaseHandler dbHandler;
 	private static LoginPage instance;
-	private  static String usernameForDB;
+	private static String usernameForDB;
+	//private JButton registerButton;
+	private static String passwordForDB;
 
 	
+
 
 	public boolean login(String username, String password) {
 		// For simplicity, let's use a hardcoded username and password for demonstration
@@ -23,8 +25,8 @@ public class LoginPage extends JFrame {
 
 		return login;
 	}
-	
-public static LoginPage getInstance() {
+
+	public static LoginPage getInstance() {
 		if (instance == null)
 			instance = new LoginPage();
 
@@ -40,6 +42,7 @@ public static LoginPage getInstance() {
 		JLabel titleLabel = new JLabel("Shows Tracking Application");
 		JLabel usernameLabel = new JLabel("Username:");
 		JLabel passwordLabel = new JLabel("Password:");
+		JButton registerButton = new JButton("Register");
 		usernameField = new JTextField(20); 
 		passwordField = new JPasswordField(20); 
 		JButton loginButton = new JButton("Login");
@@ -83,6 +86,8 @@ public static LoginPage getInstance() {
 		gbc.gridy++;
 		gbc.gridwidth = 2; // Span two columns
 		contentPane.add(ForgotPasswordButton, gbc);
+		gbc.gridy++;
+		contentPane.add(registerButton, gbc);
 
 		// Create welcome panel
 		WelcomePage welcomePanel = new WelcomePage(this);
@@ -111,6 +116,7 @@ public static LoginPage getInstance() {
 				String password = getPassword();
 
 				usernameForDB = username;
+				passwordForDB = password;
 				// Perform login action
 				if (login(username, password)) {
 					cardLayout.show(cardPanel, "dashBoard");
@@ -123,12 +129,47 @@ public static LoginPage getInstance() {
 				setPassword("");
 			}
 		});
-		
+
 		// Add action listener to the forget password button
 		ForgotPasswordButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(cardPanel, "ForgotPasswordPage");
+			}
+		});
+
+		// Add action listener to the register button
+		registerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Retrieve username and password 
+				String username = getUsername();
+				String password = getPassword();
+
+				// Check if username or password is empty
+				if (username.isEmpty() || password.isEmpty()) {
+					JOptionPane.showMessageDialog(LoginPage.this, "Please enter both username and password.");
+					return; // Exit the action listener if fields are empty
+				}
+
+				// Check if the username already exists in the database
+				boolean usernameExists = dbHandler.checkUser(username);
+				if (usernameExists) {
+					JOptionPane.showMessageDialog(LoginPage.this, "Username already exists. Please choose a different username.");
+					return; // Exit the action listener if username already exists
+				}
+
+				// Insert new user credentials into the database
+				boolean success = dbHandler.insertUserCredentials(username, password);
+				if (success) {
+					JOptionPane.showMessageDialog(LoginPage.this, "Registration successful. You can now login.");
+				} else {
+					JOptionPane.showMessageDialog(LoginPage.this, "Registration failed. Please try again.");
+				}
+
+				// Clear the fields after registration
+				setUsername("");
+				setPassword("");
 			}
 		});
 	}
@@ -140,9 +181,10 @@ public static LoginPage getInstance() {
 	// Methods to Set and Get the Username
 	public void setUsername (String username) {
 		usernameField.setText(username);
+		usernameForDB = username;
 	}
 
-	public String getUsername() {
+	public static String getUsername() {
 		return usernameField.getText();
 	}
 
@@ -151,16 +193,22 @@ public static LoginPage getInstance() {
 		passwordField.setText(password);
 	}
 
-	public String getPassword() {
+	public static String getPassword() {
 		return passwordField.getText();
 	}
-	
+
 	public static String getUsernameForDB() {
 		return usernameForDB;
 	}
 
 	public static void setUsernameForDB(String usernameForDB) {
 		LoginPage.usernameForDB = usernameForDB;
+	}
+	public static void passwordForDB(String passwordForDB) {
+		LoginPage.passwordForDB = passwordForDB;
+	}
+	public static String getPasswordForDB() {
+	    return passwordForDB;
 	}
 
 	public static void main(String[] args) {
@@ -170,7 +218,7 @@ public static LoginPage getInstance() {
 			loginPage.setVisible(true);
 
 		});
-  
+
 		// Retrieve user credentials from the database using DatabaseHandler
 		DatabaseHandler dbHandler = new DatabaseHandler();
 		dbHandler.retrieveUserCredentials();

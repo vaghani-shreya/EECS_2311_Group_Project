@@ -1,5 +1,4 @@
 package recommendation;
-
 import javax.swing.*;
 import java.awt.*;
 import front.DatabaseHandler;

@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
+
+
 public class Amazon extends JPanel {
 	private JPanel showPanel;
 	private JScrollPane scrollPane;
@@ -74,61 +76,7 @@ public class Amazon extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
 	 }
-//	public Amazon() {
-////		setTitle("Netflix Discover Weekly");
-////		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setSize(800, 600);
-////		setLocationRelativeTo(null);
-//		//create a search panel
-//		JPanel searchPanel = new JPanel();
-//		JTextField searchField = new JTextField(20);
-//		// create search button
-//		JButton searchButton = new JButton("Search");
-//
-//		// Filter menu feature
-//		String[] filterOptions = {"Title", "Genre", "Type", "Ratings"};
-//		filterComboBox = new JComboBox<>(filterOptions);
-//
-//		// Sort menu feature
-//		String[] sortOptions = {"Release Date", "Title", "Date Added"};
-//		sortComboBox = new JComboBox<>(sortOptions);
-//
-//		searchPanel.add(searchField);
-//		searchPanel.add(filterComboBox);
-//		searchPanel.add(searchButton);
-//		searchPanel.add(new JLabel("Sort By:"));
-//		searchPanel.add(sortComboBox);
-//
-//		// Add action listener to the search button
-//		searchButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String searchFor = searchField.getText();
-//				String selectedFilter = (String) filterComboBox.getSelectedItem();
-//				searchNetflixDatabase(searchFor, selectedFilter);
-//			}
-//		});
-//
-//		// Add action listener to the sort button
-//		sortComboBox.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String selectedSort = (String) sortComboBox.getSelectedItem();
-//				sortNetflixDatabase(selectedSort);
-//			}
-//		});
-//
-//		add(searchPanel, BorderLayout.NORTH);
-//
-//		scrollPane = new JScrollPane();
-//	//	getContentPane().add(scrollPane, BorderLayout.CENTER);
-//
-//		showPanel = new JPanel();
-//		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
-//		scrollPane.setViewportView(showPanel);
-//
-//		AmazonDataBase();
-//	}
+
 	// Allows the user to see the shows in descending order of release year
 	private void NetflixDataBase() {
 		String path = "jdbc:sqlite:database/Amazon.db";
@@ -305,9 +253,13 @@ public class Amazon extends JPanel {
 
 
 	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+		String username = LoginPage.getUsernameForDB();
+		
+		Favourites favourites = new Favourites();
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
-		JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+		 JPanel detailsPanel = new JPanel(); // Use a grid layout
+		 detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 		JTextArea detailsTextArea = new JTextArea();
 		detailsTextArea.append("Show ID: " + showId + "\n");
 		detailsTextArea.append("Title: " + title + "\n");
@@ -316,7 +268,10 @@ public class Amazon extends JPanel {
 		detailsTextArea.append("Director: " + director + "\n");
 		detailsTextArea.append("Description : " + description + "\n");
 		detailsTextArea.append("Cast: " + cast + "\n");
-
+		JButton likeButton = new JButton("Add to Favourites");
+	    likeButton.setPreferredSize(new Dimension(20,40));
+	  
+	    detailsPanel.add(likeButton);
 
 		detailsPanel.add(detailsTextArea);
 		detailsFrame.add(detailsPanel);
@@ -324,6 +279,13 @@ public class Amazon extends JPanel {
 		detailsFrame.setSize(300, 200);
 		detailsFrame.setLocationRelativeTo(null);
 		detailsFrame.setVisible(true);
+		likeButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // Call addToFavouritesList method when the button is clicked
+	            favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
+	        }
+	    });
 	}
 
 
