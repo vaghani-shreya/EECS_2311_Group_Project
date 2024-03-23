@@ -70,32 +70,24 @@ public class dashBoard extends JPanel{
 		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
 		
 		JPanel tab3 = new JPanel();
-
 		tab3.add(new JLabel("User can rate here"));
-
 		tab3.setLayout(new BorderLayout());
 		ratings rate = new ratings();
 		tab3.add(rate.getRootPane());
 		maintabbedPane.add("User Ratings", tab3);
 		add(maintabbedPane, BorderLayout.CENTER);
-		//tab3.add(new JLabel("User can rate here"));
 		
-
-
-
 		JPanel tab4 = new JPanel();
 		Favourites fav = new Favourites(loginPage.getUsername());
 		tab4.add(fav.getContentPane());
 
 		JPanel tab5 = new JPanel();
 		ratingAnalytics ratingChart = new ratingAnalytics();
-
-
 		tab5.add(ratingChart.getContentPane());
 
 
 		// Add tabs to tabbed pane
-		//tabbedPane.addTab("Dashboard Movies/Shows", tab1);
+		
 		maintabbedPane.addTab("Recommendations", tab2);
 		maintabbedPane.addTab("Ratings", tab3);
 		maintabbedPane.addTab("Favourites", tab4);
