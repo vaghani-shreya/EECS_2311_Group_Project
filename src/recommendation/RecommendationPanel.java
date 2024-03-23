@@ -57,7 +57,8 @@ public class RecommendationPanel extends JPanel {
 	                    
 	                    int rating = rec.getRating(); 
 	    	            
-	    	            label.addMouseListener(new MouseAdapter() {
+	                    // mouse over review n rating
+	    	        	label.addMouseListener(new MouseAdapter() {
 	    	                @Override
 	    	                public void mouseEntered(MouseEvent e) {
 	    	                    JPopupMenu popupMenu = new JPopupMenu();
@@ -77,11 +78,6 @@ public class RecommendationPanel extends JPanel {
 	                    e.printStackTrace();
 	                }
 	            }
-	        	
-	        	// mouse over review n rating
-	        	
-	            
-	           
 	        }
 	        
 	        columnsPanel.revalidate();
