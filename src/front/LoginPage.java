@@ -2,16 +2,21 @@ package front;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Window.Type;
 
 public class LoginPage extends JFrame {
-	private JTextField usernameField;
-	private JPasswordField passwordField;
+	private static JTextField usernameField;
+	private static JPasswordField passwordField;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	private DatabaseHandler dbHandler;
 	private static LoginPage instance;
 	private static String usernameForDB;
-	//	private JButton registerButton;
+	//private JButton registerButton;
+	private static String passwordForDB;
+
+	
+
 
 	public boolean login(String username, String password) {
 		// For simplicity, let's use a hardcoded username and password for demonstration
@@ -111,6 +116,7 @@ public class LoginPage extends JFrame {
 				String password = getPassword();
 
 				usernameForDB = username;
+				passwordForDB = password;
 				// Perform login action
 				if (login(username, password)) {
 					cardLayout.show(cardPanel, "dashBoard");
@@ -175,9 +181,10 @@ public class LoginPage extends JFrame {
 	// Methods to Set and Get the Username
 	public void setUsername (String username) {
 		usernameField.setText(username);
+		usernameForDB = username;
 	}
 
-	public String getUsername() {
+	public static String getUsername() {
 		return usernameField.getText();
 	}
 
@@ -186,7 +193,7 @@ public class LoginPage extends JFrame {
 		passwordField.setText(password);
 	}
 
-	public String getPassword() {
+	public static String getPassword() {
 		return passwordField.getText();
 	}
 
@@ -196,6 +203,12 @@ public class LoginPage extends JFrame {
 
 	public static void setUsernameForDB(String usernameForDB) {
 		LoginPage.usernameForDB = usernameForDB;
+	}
+	public static void passwordForDB(String passwordForDB) {
+		LoginPage.passwordForDB = passwordForDB;
+	}
+	public static String getPasswordForDB() {
+	    return passwordForDB;
 	}
 
 	public static void main(String[] args) {

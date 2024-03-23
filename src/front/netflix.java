@@ -5,7 +5,7 @@ import java.sql.*;
 import javax.swing.*;
 
 public class netflix extends JPanel {
-	private JPanel showPanel;
+	private static JPanel showPanel;
 	private JScrollPane scrollPane;
 	private JComboBox<String> filterComboBox;
 	private JComboBox<String> sortComboBox;
@@ -77,7 +77,7 @@ public class netflix extends JPanel {
 	 }
 
 	// Allows the user to see the shows in descending order of release year
-	private void NetflixDataBase() {
+	public static void NetflixDataBase() {
 		String path = "jdbc:sqlite:database/Netflix.db";
 		// extract data from netflix database by descending order in terms of release year
 		String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC LIMIT 10;";
@@ -262,10 +262,16 @@ public class netflix extends JPanel {
     }
 
 
-	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+
+	
+	private static void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+		String username = LoginPage.getUsernameForDB();
+		Favourites favourites = new Favourites();
+
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
-		JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+		 JPanel detailsPanel = new JPanel(); // Use a grid layout
+		 detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 		JTextArea detailsTextArea = new JTextArea();
 		detailsTextArea.append("Show ID: " + showId + "\n");
 		detailsTextArea.append("Title: " + title + "\n");
@@ -275,7 +281,16 @@ public class netflix extends JPanel {
 		detailsTextArea.append("Description : " + description + "\n");
 		detailsTextArea.append("Cast: " + cast + "\n");
 
-
+		JButton likeButton = new JButton("Add to Favourites");
+	    likeButton.setPreferredSize(new Dimension(20,40));
+	    likeButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // Call addToFavouritesList method when the button is clicked
+	           favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
+	        }
+	    });
+	    detailsPanel.add(likeButton);
 		detailsPanel.add(detailsTextArea);
 		detailsFrame.add(detailsPanel);
 
