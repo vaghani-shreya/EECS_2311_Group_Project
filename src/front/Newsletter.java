@@ -39,8 +39,8 @@ public class Newsletter {
                 while (resultSet.next()) {
                     String to = resultSet.getString("email");
 					DatabaseHandler dbHandler = new DatabaseHandler();
-					Object[][] message = dbHandler.retrieveRecommendations(to);
-                    sendEmail(to, "Newsletter", message);
+					//Object[][] message = dbHandler.retrieveRecommendations(to);
+                    //sendEmail(to, "Newsletter", message);
                 }
 
                 // Close JDBC resources

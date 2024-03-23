@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
+
+
 public class Amazon extends JPanel {
 	private JPanel showPanel;
 	private JScrollPane scrollPane;
@@ -305,9 +307,13 @@ public class Amazon extends JPanel {
 
 
 	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+		String username = LoginPage.getUsernameForDB();
+		
+		Favourites favourites = new Favourites();
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
-		JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+		 JPanel detailsPanel = new JPanel(); // Use a grid layout
+		 detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 		JTextArea detailsTextArea = new JTextArea();
 		detailsTextArea.append("Show ID: " + showId + "\n");
 		detailsTextArea.append("Title: " + title + "\n");
@@ -316,7 +322,10 @@ public class Amazon extends JPanel {
 		detailsTextArea.append("Director: " + director + "\n");
 		detailsTextArea.append("Description : " + description + "\n");
 		detailsTextArea.append("Cast: " + cast + "\n");
-
+		JButton likeButton = new JButton("Add to Favourites");
+	    likeButton.setPreferredSize(new Dimension(20,40));
+	  
+	    detailsPanel.add(likeButton);
 
 		detailsPanel.add(detailsTextArea);
 		detailsFrame.add(detailsPanel);
@@ -324,6 +333,13 @@ public class Amazon extends JPanel {
 		detailsFrame.setSize(300, 200);
 		detailsFrame.setLocationRelativeTo(null);
 		detailsFrame.setVisible(true);
+		likeButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // Call addToFavouritesList method when the button is clicked
+	            favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
+	        }
+	    });
 	}
 
 
