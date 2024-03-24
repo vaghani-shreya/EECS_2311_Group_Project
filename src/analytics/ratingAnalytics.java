@@ -5,87 +5,64 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import front.LoginPage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
 public class ratingAnalytics extends JFrame {
-	private static JButton signOutButton;
-	private LoginPage loginPage;
-	
-	
-	public ratingAnalytics() {
-    	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    	     
-        
-        String path = "jdbc:sqlite:database/Netflix.db";
-		String query = "SELECT rating,COUNT(*) AS count FROM netflix_titles GROUP BY rating;";
+   
+    public ratingAnalytics() {
+        JPanel containerPanel = new JPanel(new GridLayout(1, 3));
 
-		try {Class.forName("org.sqlite.JDBC");
-		Connection conn = DriverManager.getConnection(path);
-		PreparedStatement pstmt = conn.prepareStatement(query);
+        String[] paths = {
+                "jdbc:sqlite:database/Netflix.db",
+                "jdbc:sqlite:database/Amazon.db",
+                "jdbc:sqlite:database/Disney.db"
+        };
 
-		ResultSet resultSet = pstmt.executeQuery();
+        String[] queries = {
+                "SELECT rating, COUNT(*) AS count FROM (SELECT rating FROM netflix_titles ORDER BY release_year DESC LIMIT 10) AS Aquery GROUP BY rating;",
+                "SELECT rating, COUNT(*) AS count FROM (SELECT rating FROM amazon_prime_titles ORDER BY release_year DESC LIMIT 10) AS Aquery GROUP BY rating;",
+                "SELECT rating, COUNT(*) AS count FROM (SELECT rating FROM disney_plus_titles ORDER BY release_year DESC LIMIT 10) AS Aquery GROUP BY rating;"
+        };
 
+        String[] titles = {"Netflix", "Amazon Prime", "Disney Plus"};
 
-		while (resultSet.next()) {
-			String rating = resultSet.getString("rating");
-            int count = resultSet.getInt("count");
-            if(rating == null || rating.equals("66 min") || rating.equals("74 min") || rating.equals("84 min")) {
-            	continue;
+        for (int i = 0; i < queries.length; i++) {
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            try {
+                Class.forName("org.sqlite.JDBC");
+                Connection conn = DriverManager.getConnection(paths[i]);
+                PreparedStatement pstmt = conn.prepareStatement(queries[i]);
+                ResultSet resultSet = pstmt.executeQuery();
+
+                while (resultSet.next()) {
+                    String categories = resultSet.getString("rating");
+                    int count = resultSet.getInt("count");
+                    if (categories == null || categories.equals("66 min") || categories.equals("74 min") || categories.equals("84 min")) {
+                        continue;
+                    }
+                    dataset.addValue(count, "Number of TV Shows/Movies", categories);
+                }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
-            dataset.addValue(count, "Count", rating);
-            //System.out.println( "rating: " + rating + "  count: " + count);
-		
-		}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 
-			e.printStackTrace();
-		}
+            JFreeChart chart = ChartFactory.createBarChart(titles[i], "Category", "Media Number", dataset);
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(750, 700));
+            containerPanel.add(chartPanel);
+        }
 
-    	 JFreeChart chart = ChartFactory.createBarChart("Rating Analysis", "Rating", "Count", dataset);
+        JScrollPane scrollPanel = new JScrollPane(containerPanel);
+        setContentPane(scrollPanel);
 
-         ChartPanel chartPanel = new ChartPanel(chart);
-         
-         // Create a JScrollPane and add the chartPanel to it
-         JScrollPane scrollPanel = new JScrollPane(chartPanel);
-         
-         setContentPane(scrollPanel);
-
-         // Set frame properties
-         setTitle("Bar Chart from Database");
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setSize(1200, 1000);
-         setLocationRelativeTo(null);
-         
-         
-         
- //    	signOutButton = new JButton("Sign Out");
-//
-//		JPanel signOutPanel = new JPanel();
-//		signOutPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-//		signOutPanel.add(signOutButton);
-//
-//		// Add sign-out button panel to the frame
-//		add(signOutPanel, BorderLayout.NORTH);
-//
-//		// Add tabbed pane to content pane
-//		add(tabbedPane, BorderLayout.CENTER);
-//
-//		signOutButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// Call the signOut method in LoginPage to switch to the login page
-//				loginPage.signOut();
-//			}
-//		});
-    	
+        setTitle("Rating Analysis");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1200, 1000);
+        setLocationRelativeTo(null);
     }
-	
-	
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -93,5 +70,8 @@ public class ratingAnalytics extends JFrame {
             frame.setVisible(true);
         });
     }
-    
 }
+
+
+
+
