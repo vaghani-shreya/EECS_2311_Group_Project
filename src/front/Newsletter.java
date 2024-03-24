@@ -23,62 +23,62 @@ public class Newsletter {
         String query = "SELECT username FROM UserCred";
         
         // Create a scheduled executor service
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+       // ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         // Schedule the email sending task to run every day
-        scheduler.scheduleAtFixedRate(() -> {
-            try (Connection conn = DriverManager.getConnection(path);
+        //scheduler.scheduleAtFixedRate(() -> {
+          //  try (Connection conn = DriverManager.getConnection(path);
             		
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+          //       PreparedStatement pstmt = conn.prepareStatement(query)) {
                 // Connect to the database
             	//Connection conn = DriverManager.getConnection(path);
 
                 // Execute query to fetch email addresses
             	//PreparedStatement pstmt = conn.prepareStatement(query);
-                ResultSet resultSet = pstmt.executeQuery(query);
+//                ResultSet resultSet = pstmt.executeQuery(query);
 
                 // Iterate over the results and send email for each address
-                while (resultSet.next()) {
-                    String to = resultSet.getString("email");
-					DatabaseHandler dbHandler = new DatabaseHandler();
-					//Object[][] message = dbHandler.retrieveRecommendations(to);
-                    //sendEmail(to, "Newsletter", message);
-                }
-
-                // Close JDBC resources
-                resultSet.close();
-                pstmt.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.exit(0);
-        }, 0, 7, TimeUnit.DAYS); // Run every week
-
-        // Shutdown the scheduler gracefully when the program exits
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            scheduler.shutdown();
-            try {
-                scheduler.awaitTermination(5, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }));
+//                while (resultSet.next()) {
+//                    String to = resultSet.getString("email");
+//					DatabaseHandler dbHandler = new DatabaseHandler();
+//					//Object[][] message = dbHandler.retrieveRecommendations(to);
+//                    //sendEmail(to, "Newsletter", message);
+//                }
+//
+//                // Close JDBC resources
+//                resultSet.close();
+//                pstmt.close();
+//                conn.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            System.exit(0);
+//        }, 0, 7, TimeUnit.DAYS); // Run every week
+//
+//        // Shutdown the scheduler gracefully when the program exits
+//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//            scheduler.shutdown();
+//            try {
+//                scheduler.awaitTermination(5, TimeUnit.SECONDS);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }));
         
 
         // Schedule the email sender to run every week
-//		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//		DatabaseHandler dbHandler = new DatabaseHandler();
-//		Object[][] message = dbHandler.retrieveRecommendations("anusham@my.yorku.ca");
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		DatabaseHandler dbHandler = new DatabaseHandler();
+		Object[][] message = dbHandler.retrieveRecommendations("Maik@my.yorku.ca");
 		
-//        scheduler.scheduleAtFixedRate(() -> {sendEmail("anusham@my.yorku.ca", "Newsletter", message);System.exit(0);}, 0, 7, TimeUnit.DAYS);
-//		sendEmail("anusham@my.yorku.ca", "Newsletter", message);
+        scheduler.scheduleAtFixedRate(() -> {sendEmail("Maik@my.yorku.ca", "Newsletter", message);System.exit(0);}, 0, 7, TimeUnit.DAYS);
+		sendEmail("Maik@my.yorku.ca", "Newsletter", message);
     }
 	
 	//Send an email
 		public static void sendEmail(String to, String subject, Object[][] body) {
 	        final String from = "eecs2311group1@gmail.com";
-	        final String password = "enter-password";
+	        final String password = "jsno fozx itnl kuhj";
 
 	        // Setup mail server properties
 	        Properties properties = new Properties();

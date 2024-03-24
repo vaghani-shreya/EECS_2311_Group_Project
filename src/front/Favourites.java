@@ -19,13 +19,11 @@ import javax.swing.*;
 public class Favourites extends JFrame {
 	public static Favourites instance;
 	private JPanel showPanel;
-    private JScrollPane scrollPane;
-    private JComboBox<String> filterComboBox;
 
-    
     public Favourites() {
     	initComponents();
     	displayUserFavourites();
+    	RefreshUserFavouritesDisplay();
     }
     public static Favourites getInstance() {
         if (instance == null)
@@ -43,14 +41,14 @@ public class Favourites extends JFrame {
 		JButton searchButton = new JButton("Search");
 
 		searchPanel.add(searchField);
-		
 		searchPanel.add(searchButton);
+		
 		// Add action listener to the search button
 		searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String searchFor = searchField.getText();
-				//searchFavourites(searchFor);
+				searchFavourites(searchFor);
 			}
 		});
 
@@ -65,59 +63,69 @@ public class Favourites extends JFrame {
 		  revalidate();
 		  repaint();
 	    }
-	
-//	public void searchFavourites(String searchFor) {
-//	    showPanel.removeAll(); // Clear existing shows/movies
-//	    String username = "user";
-//	    String path = "jdbc:sqlite:database/Favourite.db";
-//	    String query = "SELECT * FROM favourites WHERE username = ? AND title LIKE ?";
-//
-//	    try {
-//	        Class.forName("org.sqlite.JDBC");
-//	        Connection conn = DriverManager.getConnection(path);
-//	        PreparedStatement pstmt = conn.prepareStatement(query);
-//	        pstmt.setString(1, username);
-//	        pstmt.setString(2, "%" + searchFor + "%"); 
-//
-//	        ResultSet resultSet = pstmt.executeQuery();
-//
-//	        while (resultSet.next()) {
-//	            String id = resultSet.getString("show_id");
-//	            String title = resultSet.getString("title");
-//	            String dateAdded = resultSet.getString("date_added");
-//	            String releaseYear = resultSet.getString("release_year");
-//	            String director = resultSet.getString("director");
-//	            String cast = resultSet.getString("cast");
-//	            String description = resultSet.getString("description");
-//	            //prints the specified show / movie and the corresponding information
-//
-//	            JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
-//	            showLabel.addMouseListener(new MouseAdapter() {
-//	                @Override
-//	                public void mouseClicked(MouseEvent e) {
-//	                    showDetails(id, title, dateAdded, releaseYear, director, cast, description);
-//	                }
-//	            });
-//
-//	            showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//	            showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//	            showPanel.add(showLabel);
-//	            showPanel.add(Box.createVerticalStrut(10)); 
-//	        }
-//
-//	        conn.close();
-//	    } catch (SQLException | ClassNotFoundException e) {
-//	        e.printStackTrace();
-//	    }
-//
-//	    showPanel.revalidate(); // Refresh layout
-//	    showPanel.repaint(); // Repaint the panel
-//	}
+	 private void RefreshUserFavouritesDisplay() {
+	        Timer timer = new Timer(20000, new ActionListener() { 
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                displayUserFavourites(); 
+	            }
+	        });
+	        timer.setRepeats(true); // Repeat the timer
+	        timer.start(); // Start the timer
+	    }
 
 	
+	public void searchFavourites(String searchFor) {
+	    showPanel.removeAll(); // Clear existing shows/movies
+	    String username = "user";
+	    String path = "jdbc:sqlite:database/Favourite.db";
+	    String query = "SELECT * FROM favourites WHERE username = ? AND title LIKE ?";
+
+	    try {
+	        Class.forName("org.sqlite.JDBC");
+	        Connection conn = DriverManager.getConnection(path);
+	        PreparedStatement pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, username);
+	        pstmt.setString(2, "%" + searchFor + "%"); 
+
+	        ResultSet resultSet = pstmt.executeQuery();
+
+	        while (resultSet.next()) {
+	            String id = resultSet.getString("show_id");
+	            String title = resultSet.getString("title");
+	            String dateAdded = resultSet.getString("date_added");
+	            String releaseYear = resultSet.getString("release_year");
+	            String director = resultSet.getString("director");
+	            String cast = resultSet.getString("cast");
+	            String description = resultSet.getString("description");
+	            //prints the specified show / movie and the corresponding information
+
+	            JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
+	            showLabel.addMouseListener(new MouseAdapter() {
+	                @Override
+	                public void mouseClicked(MouseEvent e) {
+	                    showDetails(id, title, dateAdded, releaseYear, director, cast, description);
+	                }
+	            });
+
+	            showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	            showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	            showPanel.add(showLabel);
+	            showPanel.add(Box.createVerticalStrut(10)); 
+	        }
+
+	        conn.close();
+	    } catch (SQLException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    showPanel.revalidate(); // Refresh layout
+	    showPanel.repaint(); // Repaint the panel
+	}
+
+	//Adds the the show to favourite.db when user clicks on the add to favourites button
 	public void addToFavouritesList(String username, String showId, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
 	    
-		// Proceed with adding the show to the user's favorites list
 	    String path = "jdbc:sqlite:database/Favourite.db";
 	    String selectQuery = "SELECT COUNT(*) FROM Favourites WHERE Username = ? AND title = ?";
 	    String insertQuery = "INSERT INTO Favourites (Username, show_id, title, date_added, release_year, director, cast, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -126,15 +134,15 @@ public class Favourites extends JFrame {
 	         PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
 	         PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
 
-	        // Check if the record already exists
+	        // Checks if the show/movie has been already added by the user
 	        selectStatement.setString(1, username);
 	        selectStatement.setString(2, title);
 	        ResultSet resultSet = selectStatement.executeQuery();
 	        resultSet.next();
 	        int count = resultSet.getInt(1);
-
+	        
 	        if (count == 0) {
-	         
+	         //if the show doesn't exist in the record add the details to the favourite database
 	            insertStatement.setString(1, username);
 	            insertStatement.setString(2, showId);
 	            insertStatement.setString(3, title);
@@ -159,9 +167,9 @@ public class Favourites extends JFrame {
 	    displayUserFavourites();
 	}
 	
-	
+	//displays all the current user's favourited shows/movies from the database
 	public void displayUserFavourites() {
-		String username = "user";
+		String username = LoginPage.getUsernameForDB();
 		System.out.println("Displaying favorites for user: " + username);
         String path = "jdbc:sqlite:database/Favourite.db";
         String query = "SELECT * FROM Favourites WHERE username = ?";
@@ -169,11 +177,10 @@ public class Favourites extends JFrame {
         try (Connection connection = DriverManager.getConnection(path);
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            // Set parameter for the SELECT statement
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             showPanel.removeAll();
-            // Iterate through the result set and add each show to the panel
+        //Iterate through all the details saved in the database
             while (resultSet.next()) {
                 String showId = resultSet.getString("show_id");
                 String title = resultSet.getString("title");
@@ -183,12 +190,14 @@ public class Favourites extends JFrame {
                 String cast = resultSet.getString("cast");
                 String description = resultSet.getString("description");
                 System.out.println(showId+title+"\n");
-                JLabel showLabel = new JLabel("Show ID: " + showId + ", Title: " + title +
-                        ", Date Added: " + dateAdded);
+                // add the show details from database to the display
+                JLabel showLabel = new JLabel("Show ID: " + showId + ", Title: " + title + ", Date Added: " + dateAdded);
                 showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				showLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				showPanel.add(showLabel);
 				showPanel.add(Box.createVerticalStrut(10)); 
+				
+				//Click to see more details about the show
 				showLabel.addMouseListener(new MouseAdapter() {
 				 @Override
 				    public void mouseClicked(MouseEvent e) {
@@ -203,32 +212,32 @@ public class Favourites extends JFrame {
             e.printStackTrace();
         }
 	}
-//		private void deleteShowFromFavourites(String username, String showId, String title) {
-//			 String path = "jdbc:sqlite:database/Favourite.db";
-//			    String deleteQuery = "DELETE FROM Favourites WHERE username = ? AND show_id = ? AND title = ?";
-//
-//			    try (Connection connection = DriverManager.getConnection(path);
-//			         PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
-//
-//			        statement.setString(1, username);
-//			        statement.setString(2, showId);
-//			        statement.setString(3, title);
-//			        int rowsDeleted = statement.executeUpdate();
-//			        if (rowsDeleted > 0) {
-//			            JOptionPane.showMessageDialog(null, "Show deleted successfully!", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
-//			            displayUserFavourites();
-//			        } else {
-//			            JOptionPane.showMessageDialog(null, "Failed to delete show.", "Deletion Failed", JOptionPane.ERROR_MESSAGE);
-//			        }
-//
-//			    } catch (SQLException e) {
-//			        e.printStackTrace();
-//			    }
-//	 
-//			}
+		private void deleteShowFromFavourites(String username, String showId, String title) {
+			 String path = "jdbc:sqlite:database/Favourite.db";
+			    String deleteQuery = "DELETE FROM Favourites WHERE username = ? AND show_id = ? AND title = ?";
+
+			    try (Connection connection = DriverManager.getConnection(path);
+			         PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+
+			        statement.setString(1, username);
+			        statement.setString(2, showId);
+			        statement.setString(3, title);
+			        int rowsDeleted = statement.executeUpdate();
+			        if (rowsDeleted > 0) {
+			            JOptionPane.showMessageDialog(null, "Show deleted successfully!", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
+			            displayUserFavourites();
+			        } else {
+			            JOptionPane.showMessageDialog(null, "Failed to delete show.", "Deletion Failed", JOptionPane.ERROR_MESSAGE);
+			        }
+
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			    }
+	 
+			}
 	
 	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
-		String username = "user";
+		String username = LoginPage.getUsernameForDB();
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
 		JPanel detailsPanel = new JPanel(); // Use a grid layout
@@ -249,7 +258,7 @@ public class Favourites extends JFrame {
 		            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this show?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 		            if (choice == JOptionPane.YES_OPTION) {
 		                // Delete the show from the database/user favourites
-		               // deleteShowFromFavourites(username, showId ,title);
+		                deleteShowFromFavourites(username, showId ,title);
 		                detailsFrame.dispose();
 		            }
 		        }
@@ -258,22 +267,14 @@ public class Favourites extends JFrame {
 
 		    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
 		    buttonPanel.add(deleteButton);
-
 		    detailsPanel.add(detailsTextArea, BorderLayout.CENTER);
 		    detailsPanel.add(buttonPanel, BorderLayout.SOUTH); 
-
-
 		    detailsPanel.add(detailsTextArea);
 		    detailsPanel.add(deleteButton); 
 		    detailsFrame.add(detailsPanel);
-
-
-		detailsPanel.add(detailsTextArea);
-		detailsFrame.add(detailsPanel);
-
-		detailsFrame.setSize(300, 200);
-		detailsFrame.setLocationRelativeTo(null);
-		detailsFrame.setVisible(true);
+			detailsFrame.setSize(300, 200);
+			detailsFrame.setLocationRelativeTo(null);
+			detailsFrame.setVisible(true);
 	}
 
 	public static void main(String[] args) {	
