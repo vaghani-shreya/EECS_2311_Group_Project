@@ -224,6 +224,7 @@ public class ratingDisney extends JPanel{
 					//System.out.println(rating);
 					rating_dao.updateRatingdb(rating,show_id,"disney");
 					rating_dao.insertIntoUserMediadb(user,show_id,title,releaseYear,ratingNAN,rating);
+					JOptionPane.showMessageDialog(detailsFrame, "The Movie/show was rated a rating of " + rating );
 					//detailsFrame.dispose();
 					
 				}
