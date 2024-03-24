@@ -12,14 +12,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TMDBFetcher {
-<<<<<<< HEAD
-
-	private static final String API_KEY = "436d078ec2369d3f3800fd5de3fa6464"; // Use TMDb API
+	
+    private static final String API_KEY = "your_api_key_here"; // Use TMDb API
     private static final String BASE_URL = "https://api.themoviedb.org/3"; // TMDb API URL
-=======
-	//private static final String API_KEY = "your_api_key_here"; // Use TMDb API
-	private static final String BASE_URL = "https://api.themoviedb.org/3"; // TMDb API URL
->>>>>>> e6913767159d465cf96ff23370318ea6d5389672
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // width 500
 
     private HttpClient client;
