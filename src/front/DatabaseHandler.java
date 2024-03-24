@@ -12,7 +12,7 @@ public class DatabaseHandler {
 
 		try (Connection conn = DriverManager.getConnection(path);
 
-				PreparedStatement pstmt = conn.prepareStatement(query)) {
+			PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
 
@@ -176,37 +176,61 @@ public class DatabaseHandler {
 	}
 
 	public Object[][] retrieveRecommendations(String username) {
-		String path = "jdbc:sqlite:database/Netflix.db";
-		String basedGenre = getGenre(username); 
-		// listed_in column in netflix.db is Genre
-		String query = "SELECT title, NumRatings FROM netflix_titles WHERE listed_in like ? ORDER BY NumRatings DESC LIMIT 30;"; 
-
-		try {
-			Class.forName("org.sqlite.JDBC");
-			try (Connection conn = DriverManager.getConnection(path);
+		// recommendation from three main sources
+		String[] dbPaths = new String[]{
+				"jdbc:sqlite:database/Netflix.db",
+				"jdbc:sqlite:database/Amazon.db",
+				"jdbc:sqlite:database/Disney.db"
+		};
+		
+		String basedGenre = getGenre(username);
+		
+		ArrayList<Object[]> recommendationList = new ArrayList<>();
+		
+		for(String path:dbPaths) {
+			try {
+				
+				Class.forName("org.sqlite.JDBC");
+				String tableNameOfEachDB = getTableFromPath(path);
+				String query = String.format("SELECT title, release_year FROM %s WHERE listed_in LIKE ? ORDER BY release_year DESC LIMIT 30;", tableNameOfEachDB);
+	            			
+				try (Connection conn = DriverManager.getConnection(path);
 					PreparedStatement pstmt = conn.prepareStatement(query)) {
-				pstmt.setString(1, "%" + basedGenre + "%");
-				ResultSet resultSet = pstmt.executeQuery();
-
-				ArrayList<Object[]> tempList = new ArrayList<>();
-				while (resultSet.next()) {
-					tempList.add(new Object[]{
-							resultSet.getString("title"),
-							resultSet.getInt("NumRatings")                     
-					});
+					pstmt.setString(1, "%" + basedGenre + "%");
+					ResultSet resultSet = pstmt.executeQuery();
+	
+					while (resultSet.next()) {
+						recommendationList.add(new Object[]{
+						resultSet.getString("title"),
+//						resultSet.getInt("NumRatings")       
+						resultSet.getInt("release_year")
+						});
+					}
 				}
-
-				return tempList.toArray(new Object[0][]);
+			} catch (ClassNotFoundException e) {
+				System.err.println("JDBC Driver not found.");
+				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println("Database access error.");
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return new Object[0][];
 			}
-		} catch (ClassNotFoundException e) {
-			System.err.println("JDBC Driver not found.");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.err.println("Database access error.");
-			e.printStackTrace();
 		}
-		return new Object[0][];
-	}
+		return recommendationList.stream().limit(20).toArray(Object[][]::new);
+	}	
+	
+	private String getTableFromPath(String dbPath) {
+		if (dbPath.contains("Netflix")) {
+		return "netflix_titles";
+		} else if (dbPath.contains("Amazon")) {
+		return "amazon_prime_titles"; 
+		} else if (dbPath.contains("Disney")) {
+		return "disney_plus_titles"; 
+		}
+		return "";
+		}
 
     
 //    public Object[][] retrieveFavouritesList(String filter) {
