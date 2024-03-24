@@ -70,8 +70,8 @@ public class Favourites extends JFrame {
 	                displayUserFavourites(); 
 	            }
 	        });
-	        timer.setRepeats(true); // Repeat the timer
-	        timer.start(); // Start the timer
+	        timer.setRepeats(true); 
+	        timer.start(); 
 	    }
 
 	
