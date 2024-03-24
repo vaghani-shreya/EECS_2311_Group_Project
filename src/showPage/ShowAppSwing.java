@@ -11,7 +11,7 @@ public class ShowAppSwing {
         JFrame frame = new JFrame("Show Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 600);
-        // 添加组件到frame中
+        
         addComponentsToPane(frame.getContentPane());
         frame.setVisible(true);
     }
@@ -39,7 +39,7 @@ public class ShowAppSwing {
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pane.add(nameLabel);
-        pane.add(Box.createRigidArea(new Dimension(0, 5))); // 添加组件之间的间距
+        pane.add(Box.createRigidArea(new Dimension(0, 5))); 
         pane.add(ratingLabel);
         pane.add(Box.createRigidArea(new Dimension(0, 5)));
         pane.add(scrollPane);
