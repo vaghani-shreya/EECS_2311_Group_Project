@@ -44,6 +44,7 @@ public class ratingNetflix  extends JPanel {
 	 private JScrollPane scrollPane;
 	 private rating_DAO rating_dao;
 	 private static ratingNetflix instance;
+	 public String prevComm;  // = rating_dao.retrivePrevComm();
 	 
 	 public static ratingNetflix getInstance() {
 	        if (instance == null)
@@ -59,7 +60,6 @@ public class ratingNetflix  extends JPanel {
 	 
 	 
 		private void initComponents(){
-	
 		     setSize(800, 600);
 		
 		     
@@ -114,13 +114,14 @@ public class ratingNetflix  extends JPanel {
 	                String releaseYear = resultSet.getString("release_year");
 	                String description = resultSet.getString("description");
 	                String ratingNAN = resultSet.getString("rating");
-	              //prints the specified show / movie and the corresponding information
+	                String avgRating = resultSet.getString("avgRating");
+	              //prints the specified show / movie and the corresponding information      
 	                JLabel showLabel = new JLabel(  "Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
 	              showLabel.addMouseListener(new MouseAdapter() {
 	              @Override
 	              public void mouseClicked(MouseEvent e) {
 	            	  //ratingNetflix.getInstance();
-	                  rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN);
+	                  rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN, avgRating);
 	              }
 	          });
 	                showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -140,7 +141,7 @@ public class ratingNetflix  extends JPanel {
 	    // Allows the user to search for a specific show/movie
 	    private void searchNetflixDatabase(String searchFor) {
 	        showPanel.removeAll(); // Clear existing shows/movies
-
+    
 	        String path = "jdbc:sqlite:database/Netflix.db";
 	        //Finds the specified title and extracts from database
 	        String query = "SELECT * FROM netflix_titles WHERE title LIKE ?;";
@@ -163,13 +164,13 @@ public class ratingNetflix  extends JPanel {
 	                String description = resultSet.getString("description");
 	                String date_added = resultSet.getString("date_added");
 	                String ratingNAN = resultSet.getString("rating");
+	                String avgRating = resultSet.getString("avgRating");
 	                //prints the specified show / movie and the corresponding information
-	            
 	                JLabel showLabel = new JLabel("Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
 	                showLabel.addMouseListener(new MouseAdapter() {
 	                    @Override
 	                    public void mouseClicked(MouseEvent e) {
-	                        rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN);
+	                        rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN, avgRating);
 	                        
 	                    }
 	                });
@@ -192,24 +193,27 @@ public class ratingNetflix  extends JPanel {
 	    
 	    
 	    
-public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN) {
-		  String user = LoginPage.getUsernameForDB();
+public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN,String avgRating) {
+	String user = LoginPage.getUsernameForDB();
+	//	  System.out.print(user);
 		  rating_dao = new rating_DAO();
+		  
 		
 	  JFrame detailsFrame = new JFrame("Add Ratings");
 	  JPanel detailsPanel = new JPanel();
 	  detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS)); // Stack components vertically
-      
 	  JTextArea detailsTextArea = new JTextArea();
 	  detailsTextArea.append("Title: " + title + "\n");
 	  detailsTextArea.append("Date Added: " + dateAdded + "\n");
 	  detailsTextArea.append("Release Year: " + releaseYear + "\n");
+	  
 	  if(description == null) {
 		 detailsTextArea.append("Description : NO DESCRIPTION AVAILABLE"  + "\n");
 	  }else {
 		  detailsTextArea.append("Description : " + description + "\n");
 	  }
 	  
+	  detailsTextArea.append("Average Rating: " + avgRating + "\n");
 	  
 	  JPanel RatingPanel = new JPanel();
 	  JLabel ratingLabel = new JLabel("Add Rating: ");
@@ -251,8 +255,10 @@ public void rateMedia(String show_id,String title, String dateAdded, String rele
 	     detailsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add space between components
 	     detailsPanel.add(RatingPanel);
 	     detailsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add space between components
-	     detailsPanel.add(rating_dao.commentMedia(detailsFrame));
+	     detailsPanel.add(rating_dao.commentMedia(detailsFrame,title,detailsTextArea));
 	     detailsPanel.add(Box.createRigidArea(new Dimension(0, 50))); // Add space between components
+	     
+	     
 
 	        detailsFrame.add(detailsPanel);
 	        detailsFrame.setSize(600, 400);
@@ -263,3 +269,5 @@ public void rateMedia(String show_id,String title, String dateAdded, String rele
 	 }
 
 }
+
+

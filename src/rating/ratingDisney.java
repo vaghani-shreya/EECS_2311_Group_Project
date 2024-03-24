@@ -36,7 +36,7 @@ public class ratingDisney extends JPanel{
 	private JScrollPane scrollPane;
 	private rating_DAO rating_dao;
 	private static ratingDisney instance;
-
+	public String prevComm;
 
 	public static ratingDisney getInstance() {
 		if (instance == null)
@@ -91,6 +91,7 @@ public class ratingDisney extends JPanel{
 
 	}
 	private void DisneyDataBase() {
+		//rating_dao = new rating_DAO();
 		String path = "jdbc:sqlite:database/Disney.db";
 		// extract data from netflix database by descending order in terms of release year
 		String query = "SELECT * FROM disney_plus_titles ORDER BY release_year DESC LIMIT 10;"; 
@@ -110,12 +111,13 @@ public class ratingDisney extends JPanel{
 				String releaseYear = resultSet.getString("release_year");
 				String description = resultSet.getString("description");
 				String ratingNAN = resultSet.getString("rating");
+				String avgRating = resultSet.getString("avgRating");
 				//prints the specified show / movie and the corresponding information
 				JLabel showLabel = new JLabel(  "Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
 				showLabel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN);
+						rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN, avgRating);
 					}
 				});
 				showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -132,7 +134,7 @@ public class ratingDisney extends JPanel{
 	// Allows the user to search for a specific show/movie
 	private void searchDisneyDatabase(String searchFor) {
 		showPanel.removeAll(); // Clear existing shows/movies
-
+	//	rating_dao = new rating_DAO();
 		String path = "jdbc:sqlite:database/Disney.db";
 		//Finds the specified title and extracts from database
 		String query = "SELECT * FROM disney_plus_titles WHERE title LIKE ?;";
@@ -152,13 +154,13 @@ public class ratingDisney extends JPanel{
 				String releaseYear = resultSet.getString("release_year");
 				String description = resultSet.getString("description");
 				String ratingNAN = resultSet.getString("rating");
+				String avgRating = resultSet.getString("avgRating");
 				//prints the specified show / movie and the corresponding information
-
 				JLabel showLabel = new JLabel("Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
 				showLabel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN);
+						rateMedia(id,title, dateAdded, releaseYear, description,ratingNAN, avgRating);
 
 					}
 				});
@@ -178,8 +180,8 @@ public class ratingDisney extends JPanel{
 		showPanel.repaint(); // Repaint the panel
 	}
 
-	public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN) {
-		 String user =  LoginPage.getUsernameForDB();
+	public void rateMedia(String show_id,String title, String dateAdded, String releaseYear, String description,String ratingNAN,String avgRating) {
+		 String user = LoginPage.getUsernameForDB();
 		 rating_dao = new rating_DAO();
 		
 		JFrame detailsFrame = new JFrame("Add Ratings");
@@ -195,6 +197,9 @@ public class ratingDisney extends JPanel{
 		}else {
 			detailsTextArea.append("Description : " + description + "\n");
 		}
+	   
+		 detailsTextArea.append("Average Rating: " + avgRating + "\n");
+		  
 		
 		 JPanel RatingPanel = new JPanel();
 		  JLabel ratingLabel = new JLabel("Add Rating: ");
@@ -219,8 +224,8 @@ public class ratingDisney extends JPanel{
 					//System.out.println(rating);
 					rating_dao.updateRatingdb(rating,show_id,"disney");
 					rating_dao.insertIntoUserMediadb(user,show_id,title,releaseYear,ratingNAN,rating);
-					detailsFrame.dispose();
-					//rateNumber = rating;
+					//detailsFrame.dispose();
+					
 				}
 				catch(NumberFormatException ex) {
 					JOptionPane.showMessageDialog(detailsFrame, "Please enter the rating between 0 and 10.");
@@ -234,7 +239,7 @@ public class ratingDisney extends JPanel{
      detailsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add space between components
      detailsPanel.add(RatingPanel);
      detailsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add space between components
-     detailsPanel.add(rating_dao.commentMedia(detailsFrame));
+     detailsPanel.add(rating_dao.commentMedia(detailsFrame,title,detailsTextArea));
      detailsPanel.add(Box.createRigidArea(new Dimension(0, 50))); // Add space between components
 
      detailsFrame.add(detailsPanel);
