@@ -56,12 +56,6 @@ public class WatchHistory {
 			      statement.setString(2, showId);
 			      statement.setString(3, title);
 			      statement.executeUpdate();
-//			      int rowsDeleted = statement.executeUpdate();
-//			      if (rowsDeleted > 0) {
-//			          JOptionPane.showMessageDialog(null, "Show deleted successfully!", "Deletion Successful", JOptionPane.INFORMATION_MESSAGE);
-//			      } else {
-//			          JOptionPane.showMessageDialog(null, "Failed to delete show.", "Deletion Failed", JOptionPane.ERROR_MESSAGE);
-//			      }
 
 			  } catch (SQLException e) {
 			      e.printStackTrace();
