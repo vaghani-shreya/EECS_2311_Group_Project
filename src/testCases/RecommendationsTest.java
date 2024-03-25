@@ -32,7 +32,7 @@ class RecommendationsTest {
 	@Test
 	void testGetShowName2() {
 		recommendation = new Recommendation("Team America: World Police", 5);
-		recommendation.setShowName("Hook");
+//		recommendation.setShowName("Hook");
 		assertEquals("Hook", recommendation.getShowName());
 	}
 	
