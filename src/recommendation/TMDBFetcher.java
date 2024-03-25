@@ -15,8 +15,7 @@ public class TMDBFetcher {
 
 	//private static final String API_KEY = "your_api_key_here"; // Use TMDb API
 
-     private static final String API_KEY = "your_api_key_here"; // Use TMDb API
-	//private static final String API_KEY = "0823bff25f354a2c90dd07428e03c69e"; // Remove this when pushing
+	private static final String API_KEY = "your_api_key_here"; // Use TMDb API
     private static final String BASE_URL = "https://api.themoviedb.org/3"; // TMDb API URL
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // width 500
 
