@@ -267,6 +267,7 @@ public class netflix extends JPanel {
 	private static void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
 		String username = LoginPage.getUsernameForDB();
 		Favourites favourites = new Favourites();
+		WatchHistory watchedList = new WatchHistory();
 
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
@@ -290,7 +291,41 @@ public class netflix extends JPanel {
 	           favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
 	        }
 	    });
+	    
+	    //Mark as Watched/Watched Button
+	    JButton watchedButton = new JButton("");
+	    //call db to check if movie is in watch history
+	    boolean watch = watchedList.checkWatchList(username, showId, title);
+	    //If statement to show if the button is "Mark as Watched" or "Watched"
+	    if(watch == true) {
+        	watchedButton.setText("Watched");
+
+        } else {
+        	watchedButton.setText("Mark as Watched");
+
+        }
+	    watchedButton.setPreferredSize(new Dimension(20,40));
+	    // Set the button's bounds (x, y, width, height)
+        watchedButton.setBounds(50, 50, 100, 30);
+	    watchedButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	if(watchedList.checkWatchList(username, showId, title) == true) {
+	        		watchedList.deleteShowFromWatchList(username, showId, title);
+	            	watchedButton.setText("Mark As Watched");
+	            	
+	            } else {
+	            	watchedList.addToWatchedList(username, showId, title);
+	        		watchedButton.setText("Watched");
+
+	            }
+	        }
+	    });
+	    
+	    watch = watchedList.checkWatchList(username, showId, title);
+	    
 	    detailsPanel.add(likeButton);
+	    detailsPanel.add(watchedButton);
 		detailsPanel.add(detailsTextArea);
 		detailsFrame.add(detailsPanel);
 
