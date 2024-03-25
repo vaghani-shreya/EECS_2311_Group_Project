@@ -1,15 +1,21 @@
 package recommendation;
 
 public class Recommendation {
-	private String showName; 
+	private final String showName; 
     private int rating; 
     private String review;
+    private final int releaseYear;
 
-    public Recommendation(String showName, int rating) {
-        this.showName = showName;
-        this.rating = rating;
+//    public Recommendation(String showName, int rating) {
+//        this.showName = showName;
+//        this.rating = rating;
+//    }
+
+    public Recommendation(String showName, int releaseYear) {
+      this.showName = showName;
+      this.releaseYear = releaseYear;
+      
     }
-
     public String getShowName() {
         return showName;
     }
@@ -21,9 +27,9 @@ public class Recommendation {
     public String getReview() {
     	return review;
     }
-
-    public void setShowName(String showName) {
-        this.showName = showName;
+    
+    public int getReleaseYear() {
+    	return releaseYear;
     }
 
     public void setRating(int rating) {
@@ -33,4 +39,5 @@ public class Recommendation {
     public void setReview(String review) {
     	this.review = review;
     }
+    
 }

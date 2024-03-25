@@ -212,7 +212,9 @@ public class Favourites extends JFrame {
             e.printStackTrace();
         }
 	}
-		private void deleteShowFromFavourites(String username, String showId, String title) {
+
+		public void deleteShowFromFavourites(String username, String showId, String title) {
+
 			 String path = "jdbc:sqlite:database/Favourite.db";
 			    String deleteQuery = "DELETE FROM Favourites WHERE username = ? AND show_id = ? AND title = ?";
 

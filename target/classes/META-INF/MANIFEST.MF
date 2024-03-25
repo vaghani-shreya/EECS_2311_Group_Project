@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: grace
 Build-Jdk: 17.0.5
+=======
+Build-Jdk-Spec: 17
+>>>>>>> 8bf326f98ae87d5bb5664791cf4cc68d2a163885
 Created-By: Maven Integration for Eclipse
 

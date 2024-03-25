@@ -49,4 +49,20 @@ class LoginPageTest {
 		assertEquals(password, loginPage.getPassword());
 	}
 
+	@Test
+	void testBlankUsername() {
+		
+		loginPage.setUsername("");
+		assertEquals("", loginPage.getUsername());
+		
+	}
+	
+	@Test
+	void testBlankPassword() {
+		
+		loginPage.setPassword("");
+		assertEquals("", loginPage.getPassword());
+		
+	}
+	
 }

@@ -1,6 +1,5 @@
 package front;
 
-import java.util.ArrayList;
 import java.sql.*;
 
 import java.util.Properties;
@@ -12,42 +11,45 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import com.google.gson.Gson;
-import java.util.Arrays;
 
 public class Newsletter {
 
 	public static void main(String[] args) {
-        //Database connections
-
-        String path = "jdbc:sqlite:database/UserCredentials.db";
-        String query = "SELECT username FROM UserCred";
-        
         // Create a scheduled executor service
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         // Schedule the email sending task to run every day
         scheduler.scheduleAtFixedRate(() -> {
+        	// Load the SQLite JDBC driver
+            try {
+                Class.forName("org.sqlite.JDBC");
+            } catch (ClassNotFoundException e) {
+                System.out.println("SQLite JDBC Driver not found.");
+                e.printStackTrace();
+                return;
+            }
+        	//Database connections
+    		String path = "jdbc:sqlite:database/UserCredentials.db";
+            String query = "SELECT username FROM UserCred";
             try (Connection conn = DriverManager.getConnection(path);
             		
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                // Connect to the database
-            	//Connection conn = DriverManager.getConnection(path);
+                 Statement stmt = conn.createStatement()) {
 
-                // Execute query to fetch email addresses
-            	//PreparedStatement pstmt = conn.prepareStatement(query);
-                ResultSet resultSet = pstmt.executeQuery(query);
+                ResultSet resultSet = stmt.executeQuery(query);
 
                 // Iterate over the results and send email for each address
                 while (resultSet.next()) {
-                    String to = resultSet.getString("email");
+                    String to = resultSet.getString("username");
 					DatabaseHandler dbHandler = new DatabaseHandler();
-					//Object[][] message = dbHandler.retrieveRecommendations(to);
-                    //sendEmail(to, "Newsletter", message);
+					//retrieve recommendations for user
+					Object[][] message = dbHandler.retrieveRecommendations(to);
+					//Send email to user
+                    sendEmail(to, "Newsletter", message);
                 }
 
                 // Close JDBC resources
                 resultSet.close();
-                pstmt.close();
+                stmt.close();
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -66,14 +68,13 @@ public class Newsletter {
         }));
         
 
-        // Schedule the email sender to run every week
+        // Newsletter Test to send to single user instead of every user in the database
 //		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 //		DatabaseHandler dbHandler = new DatabaseHandler();
 //		Object[][] message = dbHandler.retrieveRecommendations("anusham@my.yorku.ca");
-		
-//        scheduler.scheduleAtFixedRate(() -> {sendEmail("anusham@my.yorku.ca", "Newsletter", message);System.exit(0);}, 0, 7, TimeUnit.DAYS);
-//		sendEmail("anusham@my.yorku.ca", "Newsletter", message);
+//		scheduler.scheduleAtFixedRate(() -> {sendEmail("anusham@my.yorku.ca", "Newsletter", message);System.exit(0);}, 0, 7, TimeUnit.DAYS);
     }
+
 	
 	//Send an email
 		public static void sendEmail(String to, String subject, Object[][] body) {
