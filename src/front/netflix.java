@@ -5,7 +5,7 @@ import java.sql.*;
 import javax.swing.*;
 
 public class netflix extends JPanel {
-	private JPanel showPanel;
+	private static JPanel showPanel;
 	private JScrollPane scrollPane;
 	private JComboBox<String> filterComboBox;
 	private JComboBox<String> sortComboBox;
@@ -75,63 +75,9 @@ public class netflix extends JPanel {
 	        add(scrollPane, BorderLayout.CENTER);
 
 	 }
-//	public netflix() {
-////		setTitle("Netflix Discover Weekly");
-////		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setSize(800, 600);
-////		setLocationRelativeTo(null);
-//		//create a search panel
-//		JPanel searchPanel = new JPanel();
-//		JTextField searchField = new JTextField(20);
-//		// create search button
-//		JButton searchButton = new JButton("Search");
-//
-//		// Filter menu feature
-//		String[] filterOptions = {"Title", "Genre", "Type", "Ratings"};
-//		filterComboBox = new JComboBox<>(filterOptions);
-//
-//		// Sort menu feature
-//		String[] sortOptions = {"Release Date", "Title", "Date Added"};
-//		sortComboBox = new JComboBox<>(sortOptions);
-//
-//		searchPanel.add(searchField);
-//		searchPanel.add(filterComboBox);
-//		searchPanel.add(searchButton);
-//		searchPanel.add(new JLabel("Sort By:"));
-//		searchPanel.add(sortComboBox);
-//
-//		// Add action listener to the search button
-//		searchButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String searchFor = searchField.getText();
-//				String selectedFilter = (String) filterComboBox.getSelectedItem();
-//				searchNetflixDatabase(searchFor, selectedFilter);
-//			}
-//		});
-//
-//		// Add action listener to the sort button
-//		sortComboBox.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String selectedSort = (String) sortComboBox.getSelectedItem();
-//				sortNetflixDatabase(selectedSort);
-//			}
-//		});
-//
-//		add(searchPanel, BorderLayout.NORTH);
-//
-//		scrollPane = new JScrollPane();
-//	//	getContentPane().add(scrollPane, BorderLayout.CENTER);
-//
-//		showPanel = new JPanel();
-//		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
-//		scrollPane.setViewportView(showPanel);
-//
-//		NetflixDataBase();
-//	}
+
 	// Allows the user to see the shows in descending order of release year
-	private void NetflixDataBase() {
+	public static void NetflixDataBase() {
 		String path = "jdbc:sqlite:database/Netflix.db";
 		// extract data from netflix database by descending order in terms of release year
 		String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC LIMIT 10;";
@@ -304,6 +250,7 @@ public class netflix extends JPanel {
 	}
 
 
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -314,10 +261,18 @@ public class netflix extends JPanel {
         });
     }
 
-	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+
+
+	
+	private static void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
+		String username = LoginPage.getUsernameForDB();
+		Favourites favourites = new Favourites();
+		WatchHistory watchedList = new WatchHistory();
+
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
-		JPanel detailsPanel = new JPanel(new GridLayout(0, 1)); // Use a grid layout
+		 JPanel detailsPanel = new JPanel(); // Use a grid layout
+		 detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 		JTextArea detailsTextArea = new JTextArea();
 		detailsTextArea.append("Show ID: " + showId + "\n");
 		detailsTextArea.append("Title: " + title + "\n");
@@ -327,7 +282,50 @@ public class netflix extends JPanel {
 		detailsTextArea.append("Description : " + description + "\n");
 		detailsTextArea.append("Cast: " + cast + "\n");
 
+		JButton likeButton = new JButton("Add to Favourites");
+	    likeButton.setPreferredSize(new Dimension(20,40));
+	    likeButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // Call addToFavouritesList method when the button is clicked
+	           favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
+	        }
+	    });
+	    
+	    //Mark as Watched/Watched Button
+	    JButton watchedButton = new JButton("");
+	    //call db to check if movie is in watch history
+	    boolean watch = watchedList.checkWatchList(username, showId, title);
+	    //If statement to show if the button is "Mark as Watched" or "Watched"
+	    if(watch == true) {
+        	watchedButton.setText("Watched");
 
+        } else {
+        	watchedButton.setText("Mark as Watched");
+
+        }
+	    watchedButton.setPreferredSize(new Dimension(20,40));
+	    // Set the button's bounds (x, y, width, height)
+        watchedButton.setBounds(50, 50, 100, 30);
+	    watchedButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	if(watchedList.checkWatchList(username, showId, title) == true) {
+	        		watchedList.deleteShowFromWatchList(username, showId, title);
+	            	watchedButton.setText("Mark As Watched");
+	            	
+	            } else {
+	            	watchedList.addToWatchedList(username, showId, title);
+	        		watchedButton.setText("Watched");
+
+	            }
+	        }
+	    });
+	    
+	    watch = watchedList.checkWatchList(username, showId, title);
+	    
+	    detailsPanel.add(likeButton);
+	    detailsPanel.add(watchedButton);
 		detailsPanel.add(detailsTextArea);
 		detailsFrame.add(detailsPanel);
 
@@ -335,6 +333,7 @@ public class netflix extends JPanel {
 		detailsFrame.setLocationRelativeTo(null);
 		detailsFrame.setVisible(true);
 	}
+
 
 }
 
