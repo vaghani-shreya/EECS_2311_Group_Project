@@ -84,13 +84,11 @@ public class LoginPage extends JFrame {
 		contentPane.add(registerButton, gbc);
 
 		// Create welcome panel
-		WelcomePage welcomePanel = new WelcomePage(this);
 		dashBoard dbPanel = new dashBoard(this);
 		ForgotPasswordPage fpPanel = new ForgotPasswordPage(this);
 
 		// Add panels to cardPanel
 		cardPanel.add(contentPane, "login");
-		cardPanel.add(welcomePanel, "welcome");
 		cardPanel.add(dbPanel, "dashBoard");
 		cardPanel.add(fpPanel, "ForgotPasswordPage");
 

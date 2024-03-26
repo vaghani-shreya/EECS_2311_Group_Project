@@ -47,7 +47,7 @@ public class DatabaseHandler {
 	public boolean checkUser(String username) {
 		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "SELECT * FROM UserCred WHERE username = ?;";
-
+		
 		try (Connection conn = DriverManager.getConnection(path);
 				PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, username);
