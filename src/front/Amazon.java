@@ -5,33 +5,34 @@ import java.sql.*;
 import javax.swing.*;
 
 
-
 public class Amazon extends JPanel {
 	private JPanel showPanel;
 	private JScrollPane scrollPane;
 	private JComboBox<String> filterComboBox;
 	private JComboBox<String> sortComboBox;
 	private static Amazon instance;
-	
+
 	private Amazon() {
 		initComponents();
 		NetflixDataBase();
 	}
-	 public static Amazon getInstance() {
-	        if (instance == null)
-	            instance = new Amazon();
-	        return instance;
-	    }
+	public static Amazon getInstance() {
+		if (instance == null)
+			instance = new Amazon();
+		return instance;
+	}
 	private void initComponents(){
-//		setTitle("Netflix Discover Weekly");
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//		setTitle("Netflix Discover Weekly");
+		//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
-//		setLocationRelativeTo(null);
+		//		setLocationRelativeTo(null);
 		//create a search panel
 		JPanel searchPanel = new JPanel();
 		JTextField searchField = new JTextField(20);
 		// create search button
 		JButton searchButton = new JButton("Search");
+		// create search button
+		JButton sortButton = new JButton("Sort");
 
 		// Filter menu feature
 		String[] filterOptions = {"Title", "Genre", "Type", "Ratings"};
@@ -46,6 +47,8 @@ public class Amazon extends JPanel {
 		searchPanel.add(searchButton);
 		searchPanel.add(new JLabel("Sort By:"));
 		searchPanel.add(sortComboBox);
+		searchPanel.add(sortButton);
+
 
 		// Add action listener to the search button
 		searchButton.addActionListener(new ActionListener() {
@@ -58,7 +61,7 @@ public class Amazon extends JPanel {
 		});
 
 		// Add action listener to the sort button
-		sortComboBox.addActionListener(new ActionListener() {
+		sortButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selectedSort = (String) sortComboBox.getSelectedItem();
@@ -66,16 +69,16 @@ public class Amazon extends JPanel {
 			}
 		});
 		scrollPane = new JScrollPane();
-        showPanel = new JPanel();
-        showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
-        scrollPane.setViewportView(showPanel);
+		showPanel = new JPanel();
+		showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
+		scrollPane.setViewportView(showPanel);
 
-        // Add components to this JPanel
-        setLayout(new BorderLayout());
-        add(searchPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+		// Add components to this JPanel
+		setLayout(new BorderLayout());
+		add(searchPanel, BorderLayout.NORTH);
+		add(scrollPane, BorderLayout.CENTER);
 
-	 }
+	}
 
 	// Allows the user to see the shows in descending order of release year
 	private void NetflixDataBase() {
@@ -131,16 +134,16 @@ public class Amazon extends JPanel {
 
 		switch(filterBy.toLowerCase()) {
 		case "title":
-			query = "SELECT * FROM amazon_prime_titles WHERE title LIKE ?;";
+			query = "SELECT * FROM amazon_prime_titles WHERE title LIKE ? LIMIT 10;";
 			break;
 		case "genre":
-			query = "SELECT * FROM amazon_prime_titles WHERE listed_in LIKE ?;";
+			query = "SELECT * FROM amazon_prime_titles WHERE listed_in LIKE ? LIMIT 10;";
 			break;
 		case "type":
-			query = "SELECT * FROM amazon_prime_titles WHERE type LIKE ?;";
+			query = "SELECT * FROM amazon_prime_titles WHERE type LIKE ? LIMIT 10;";
 			break;
 		case "rating":
-			query = "SELECT * FROM amazon_prime_titles WHERE rating LIKE ?;";
+			query = "SELECT * FROM amazon_prime_titles WHERE rating LIKE ? LIMIT 10;";
 			break;
 		default:
 			query = "SELECT * FROM amazon_prime_titles WHERE title LIKE ?;";
@@ -196,16 +199,16 @@ public class Amazon extends JPanel {
 
 		switch (sortBy.toLowerCase()) {
 		case "title":
-			query = "SELECT * FROM amazon_prime_titles ORDER BY title DESC;";
+			query = "SELECT * FROM amazon_prime_titles ORDER BY title DESC LIMIT 10;";
 			break;
 		case "release date":
-			query = "SELECT * FROM amazon_prime_titles ORDER BY release_year DESC;";
+			query = "SELECT * FROM amazon_prime_titles ORDER BY release_year DESC LIMIT 10;";
 			break;
 		case "date added":
-			query = "SELECT * FROM amazon_prime_titles ORDER BY date_added DESC;";
+			query = "SELECT * FROM amazon_prime_titles ORDER BY date_added DESC LIMIT 10;";
 			break;
 		default:
-			query = "SELECT * FROM amazon_prime_titles ORDER BY release_year DESC;";
+			query = "SELECT * FROM amazon_prime_titles ORDER BY release_year DESC LIMIT 10;";
 			break;
 		}
 		try {
@@ -254,14 +257,14 @@ public class Amazon extends JPanel {
 
 	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String description, String cast, String date_added) {
 		String username = LoginPage.getUsernameForDB();
-		
+
 		Favourites favourites = new Favourites();
 		WatchHistory watchedList = new WatchHistory();
 
 		// Open a new page to display more details about a specific show/movie
 		JFrame detailsFrame = new JFrame("Show Details");
-		 JPanel detailsPanel = new JPanel(); // Use a grid layout
-		 detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+		JPanel detailsPanel = new JPanel(); // Use a grid layout
+		detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 		JTextArea detailsTextArea = new JTextArea();
 		detailsTextArea.append("Show ID: " + showId + "\n");
 		detailsTextArea.append("Title: " + title + "\n");
@@ -271,49 +274,49 @@ public class Amazon extends JPanel {
 		detailsTextArea.append("Description : " + description + "\n");
 		detailsTextArea.append("Cast: " + cast + "\n");
 		JButton likeButton = new JButton("Add to Favourites");
-	    likeButton.setPreferredSize(new Dimension(20,40));
+		likeButton.setPreferredSize(new Dimension(20,40));
 		likeButton.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            // Call addToFavouritesList method when the button is clicked
-	            favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
-	        }
-	    });
-		
-	    //Mark as Watched/Watched Button
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Call addToFavouritesList method when the button is clicked
+				favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
+			}
+		});
+
+		//Mark as Watched/Watched Button
 		JButton watchedButton = new JButton("");
-	    //call db to check if movie is in watch history
-	    boolean watch = watchedList.checkWatchList(username, showId, title);
-	    //If statement to show if the button is "Mark as Watched" or "Watched"
-	    if(watch == true) {
-        	watchedButton.setText("Watched");
+		//call db to check if movie is in watch history
+		boolean watch = watchedList.checkWatchList(username, showId, title);
+		//If statement to show if the button is "Mark as Watched" or "Watched"
+		if(watch == true) {
+			watchedButton.setText("Watched");
 
-        } else {
-        	watchedButton.setText("Mark as Watched");
+		} else {
+			watchedButton.setText("Mark as Watched");
 
-        }
-	    watchedButton.setPreferredSize(new Dimension(20,40));
-	    // Set the button's bounds (x, y, width, height)
-        watchedButton.setBounds(50, 50, 100, 30);
-	    watchedButton.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	if(watchedList.checkWatchList(username, showId, title) == true) {
-	        		watchedList.deleteShowFromWatchList(username, showId, title);
-	            	watchedButton.setText("Mark As Watched");
-	            	
-	            } else {
-	            	watchedList.addToWatchedList(username, showId, title);
-	        		watchedButton.setText("Watched");
+		}
+		watchedButton.setPreferredSize(new Dimension(20,40));
+		// Set the button's bounds (x, y, width, height)
+		watchedButton.setBounds(50, 50, 100, 30);
+		watchedButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(watchedList.checkWatchList(username, showId, title) == true) {
+					watchedList.deleteShowFromWatchList(username, showId, title);
+					watchedButton.setText("Mark As Watched");
 
-	            }
-	        }
-	    });
-	    
-	    watch = watchedList.checkWatchList(username, showId, title);
-	    
-	    detailsPanel.add(likeButton);
-	    detailsPanel.add(watchedButton);
+				} else {
+					watchedList.addToWatchedList(username, showId, title);
+					watchedButton.setText("Watched");
+
+				}
+			}
+		});
+
+		watch = watchedList.checkWatchList(username, showId, title);
+
+		detailsPanel.add(likeButton);
+		detailsPanel.add(watchedButton);
 		detailsPanel.add(detailsTextArea);
 		detailsFrame.add(detailsPanel);
 

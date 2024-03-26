@@ -1,41 +1,11 @@
 package rating;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
 
 import front.LoginPage;
-
-import javax.swing.JOptionPane;
 
 
 public class ratingNetflix  extends JPanel {
@@ -144,7 +114,7 @@ public class ratingNetflix  extends JPanel {
     
 	        String path = "jdbc:sqlite:database/Netflix.db";
 	        //Finds the specified title and extracts from database
-	        String query = "SELECT * FROM netflix_titles WHERE title LIKE ?;";
+	        String query = "SELECT * FROM netflix_titles WHERE title LIKE ? LIMIT 10;";
 
 	        try {
 	            Class.forName("org.sqlite.JDBC");

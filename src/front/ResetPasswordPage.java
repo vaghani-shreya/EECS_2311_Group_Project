@@ -1,11 +1,7 @@
 package front;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import javax.swing.*;
-
+import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class ResetPasswordPage extends JPanel {
