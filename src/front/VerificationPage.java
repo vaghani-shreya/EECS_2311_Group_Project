@@ -1,15 +1,14 @@
 package front;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.awt.event.*;
 import javax.swing.*;
 
-import javax.swing.*;
-
+/**
+ * This class verifies that the authentication code entered by the user matches the one found in the database
+ */
 public class VerificationPage extends JPanel {
+	// Variable Initialization
 	private JTextField codeField;
 	private JTextField usernameField;
 	private JPanel cardPanel;
@@ -19,52 +18,52 @@ public class VerificationPage extends JPanel {
 	private static LoginPage login;
 	private DatabaseHandler dbHandler;
 	private static JButton enterButton;
-	
-	public boolean check(String username, int code) {
-		// Check if the username and code matches the one in the database
-		// For simplicity, let's use a hardcoded username and password for demonstration
-		//		return username.equals("user") && code.equals("12345");
-		boolean correct = dbHandler.checkCode(username, code)|| username.equals("user")&& code==12345;
 
+	// Check if the username and code matches the one in the database
+	public boolean check(String username, int code) {		
+		boolean correct = dbHandler.checkCode(username, code)|| username.equals("user")&& code==12345;
 		return correct;
 	}
-	
+
 	public static VerificationPage getInstance() {
 		if (instance == null)
 			instance = new VerificationPage(forgot);
-
 		return instance;
 	}
 
+	/**
+	 * Main constructor responsible for the design and all the actions on the verification page
+	 * Pagelayout and all the dfferent design aspects of the verification page are found in this constructor
+	 */
 	public VerificationPage(ForgotPasswordPage ForgotPasswordPage) {
 		dbHandler = new DatabaseHandler();
 		setSize(900, 900);
 		setLayout(new BorderLayout());
-		
+
 		//Create Labels
 		JLabel titleLabel = new JLabel("Verification Code");
 		JLabel Label = new JLabel("Please re-enter your username and the 5 digit code that was sent to your email:");
 		JLabel usernameLabel = new JLabel("Username:");
 		JLabel codeLabel = new JLabel("Verification Code:");
-		
+
 		//Create textfields
 		usernameField = new JTextField(20);
 		codeField = new JTextField(20); 
-		
+
 		// Label Properties
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 30));
 		Label.setForeground(Color.WHITE); 
 		usernameLabel.setForeground(Color.WHITE); 
 		codeLabel.setForeground(Color.WHITE); 
-		
+
 		// Set layout manager for content pane
 		cardPanel = new JPanel();
 		cardLayout = new CardLayout();
 		cardPanel.setLayout(cardLayout);
 		cardPanel.setBackground(new Color(45, 45, 45));
-		
-		//Create Button
+
+		// Create Button
 		enterButton = new JButton("Enter");
 
 		JPanel contentPane = new JPanel(new GridBagLayout());
@@ -94,31 +93,32 @@ public class VerificationPage extends JPanel {
 		gbc.gridy++;
 		gbc.gridwidth = 2; // Span two columns
 		contentPane.add(enterButton, gbc);
-		
-		add(contentPane, BorderLayout.CENTER);
-		
-		// Create Reset Password panel
-	    ResetPasswordPage rpPanel = new ResetPasswordPage(this);
 
-	    // Add panels to cardPanel
-	    cardPanel.add(contentPane, "verification");
-	    cardPanel.add(rpPanel, "reset");
+		add(contentPane, BorderLayout.CENTER);
+
+		// Create Reset Password panel
+		ResetPasswordPage rpPanel = new ResetPasswordPage(this);
+
+		// Add panels to cardPanel
+		cardPanel.add(contentPane, "verification");
+		cardPanel.add(rpPanel, "reset");
 
 		add(cardPanel, BorderLayout.CENTER);
-
+		
+		// Checkes if the verification code matches
 		enterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Get the username and code from text fields
 				String verCode = getCode();
 				String username = getUsername();
-				
+
 				//Check if fields are empty
 				if (verCode.isEmpty() || username.isEmpty()) {
-		            JOptionPane.showMessageDialog(VerificationPage.this, "Please enter both username and verification code.");
-		            return; // Stop further execution
-		        }
-				
+					JOptionPane.showMessageDialog(VerificationPage.this, "Please enter both username and verification code.");
+					return; // Stop further execution
+				}
+
 				// Check if the username and code match the ones in the database
 				if (check(username, Integer.parseInt(verCode))) {
 					cardLayout.show(cardPanel, "reset");
@@ -127,48 +127,47 @@ public class VerificationPage extends JPanel {
 					//return to the forgot password page
 					ForgotPasswordPage.returnPage();
 				}
-				
+
 				// Clear the fields after checking
 				setUsername("");
 				setCode("");
-				
 			}
 		});
-	
+
 	}
-	
+
 	// Methods to get and set the Username and Code
 	public String getUsername() {
 		return usernameField.getText();
 	}
-	
+
 	public void setUsername (String username) {
 		usernameField.setText(username);
 	}
-	
+
 	public String getCode() {
 		return codeField.getText();
 	}
-	
+
 	public void setCode(String code) {
 		codeField.setText(code);
 	}
-	
+
 	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-        	login = new LoginPage();
-        	ForgotPasswordPage fpPage = new ForgotPasswordPage(login);
-            JFrame frame = new JFrame();
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(fpPage);
-            frame.pack();
-            frame.setVisible(true);
-        });
-        
-     // Retrieve user credentials from the database using DatabaseHandler
-     DatabaseHandler dbHandler = new DatabaseHandler();
-     dbHandler.retrieveUserCredentials();
-    }
+		SwingUtilities.invokeLater(() -> {
+			login = new LoginPage();
+			ForgotPasswordPage fpPage = new ForgotPasswordPage(login);
+			JFrame frame = new JFrame();
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().add(fpPage);
+			frame.pack();
+			frame.setVisible(true);
+		});
+
+		// Retrieve user credentials from the database using DatabaseHandler
+		DatabaseHandler dbHandler = new DatabaseHandler();
+		dbHandler.retrieveUserCredentials();
+	}
 
 }
