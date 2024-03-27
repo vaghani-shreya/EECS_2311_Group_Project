@@ -1,7 +1,11 @@
 package front;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import javax.swing.*;
+
 import javax.swing.*;
 
 public class ResetPasswordPage extends JPanel {
@@ -15,14 +19,23 @@ public class ResetPasswordPage extends JPanel {
 	private static LoginPage loginPage;
 	private DatabaseHandler dbHandler;
 	private static JButton enterButton;
-	
+
 	public void newPassword(String username, String password) {
 		//reset the password in database
 		// For simplicity, let's use a hardcoded username and password for demonstration
 		//		return username.equals("user") && password.equals("password");
 		dbHandler.resetPassword(username, password);
 	}
-	
+
+	public boolean username(String username) {
+		// Check if username exists in the database
+		// For simplicity, let's use a hardcoded username and password for demonstration
+		//		return username.equals("user");
+		boolean login = dbHandler.checkUser(username)|| username.equals("user");
+
+		return login;
+	}
+
 	public static ResetPasswordPage getInstance() {
 		if (instance == null)
 			instance = new ResetPasswordPage(verify);
@@ -34,7 +47,7 @@ public class ResetPasswordPage extends JPanel {
 		dbHandler = new DatabaseHandler();
 		setSize(900, 900);
 		setLayout(new BorderLayout());
-		
+
 		//Create Labels
 		JLabel titleLabel = new JLabel("New Password");
 		JLabel Label = new JLabel("Please re-enter your username and a new password:");
@@ -42,20 +55,20 @@ public class ResetPasswordPage extends JPanel {
 		JLabel codeLabel = new JLabel("New Password:");
 		usernameField = new JTextField(20);
 		passwordField = new JTextField(20); 
-		
+
 		// Label Properties
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 30));
 		Label.setForeground(Color.WHITE); 
 		usernameLabel.setForeground(Color.WHITE); 
 		codeLabel.setForeground(Color.WHITE); 
-		
+
 		// Set layout manager for content pane
 		cardPanel = new JPanel();
 		cardLayout = new CardLayout();
 		cardPanel.setLayout(cardLayout);
 		cardPanel.setBackground(new Color(45, 45, 45));
-		
+
 		enterButton = new JButton("Enter");
 
 		JPanel contentPane = new JPanel(new GridBagLayout());
@@ -85,8 +98,11 @@ public class ResetPasswordPage extends JPanel {
 		gbc.gridy++;
 		gbc.gridwidth = 2; // Span two columns
 		contentPane.add(enterButton, gbc);
-		
+
 		add(contentPane, BorderLayout.CENTER);
+
+
+
 
 		enterButton.addActionListener(new ActionListener() {
 			@Override
@@ -94,29 +110,34 @@ public class ResetPasswordPage extends JPanel {
 				//Get the string from textfields
 				String password = getPassword();
 				String username = getUsername();
-				
+
 				//Check if fields are empty
 				if (password.isEmpty() || username.isEmpty()) {
-		            JOptionPane.showMessageDialog(ResetPasswordPage.this, "Please enter username and new password.");
-		            return; // Stop further execution
-		        }
+					JOptionPane.showMessageDialog(ResetPasswordPage.this, "Please enter username and new password.");
+					return; // Stop further execution
+				}
+				else if (username(username)==false) {
+					JOptionPane.showMessageDialog(ResetPasswordPage.this, "Incorrect username please enter correct one.");
+					return;
+				}
 				newPassword(username, password);
 				JOptionPane.showMessageDialog(ResetPasswordPage.this, "Your password was successfully changed.");
-				
-				// Get the parent window (LoginPage) and dispose the current window
-	            Window parentWindow = SwingUtilities.getWindowAncestor(ResetPasswordPage.this);
-	            if (parentWindow instanceof JFrame) {
-	                parentWindow.dispose(); // Close the current window (ResetPasswordPage)
-	            }
 
-	            // Show the LoginPage frame
-	            //loginPage.setVisible(true);
-				
+				// Get the parent window (LoginPage) and dispose the current window
+				Window parentWindow = SwingUtilities.getWindowAncestor(ResetPasswordPage.this);
+				if (parentWindow instanceof JFrame) {
+					parentWindow.dispose(); // Close the current window (ResetPasswordPage)
+				}
+
+				// Show the LoginPage frame
+				//loginPage.setVisible(true);
+
+
 			}
 		});
 	}
-	
-	
+
+
 	// Methods to Set and Get the Username
 	public void setUsername (String username) {
 		usernameField.setText(username);
@@ -134,23 +155,23 @@ public class ResetPasswordPage extends JPanel {
 	public String getPassword() {
 		return passwordField.getText();
 	}
-	
+
 	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-        	loginPage = new LoginPage();
-        	VerificationPage vPage = new VerificationPage(forgot);
-            JFrame frame = new JFrame();
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(vPage);
-            frame.pack();
-            frame.setVisible(true);
-           // fpPage.setVisible(true);
-        });
-        
-     // Retrieve user credentials from the database using DatabaseHandler
-     DatabaseHandler dbHandler = new DatabaseHandler();
-     dbHandler.retrieveUserCredentials();
-    }
-	
+		SwingUtilities.invokeLater(() -> {
+			loginPage = new LoginPage();
+			VerificationPage vPage = new VerificationPage(forgot);
+			JFrame frame = new JFrame();
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().add(vPage);
+			frame.pack();
+			frame.setVisible(true);
+			// fpPage.setVisible(true);
+		});
+
+		// Retrieve user credentials from the database using DatabaseHandler
+		DatabaseHandler dbHandler = new DatabaseHandler();
+		dbHandler.retrieveUserCredentials();
+	}
+
 }

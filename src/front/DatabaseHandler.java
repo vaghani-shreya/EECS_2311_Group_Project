@@ -5,7 +5,6 @@ import java.sql.*;
 
 public class DatabaseHandler {
 
-
 	public boolean authenticateUser(String username, String password) {
 		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "SELECT * FROM UserCred WHERE username = ? AND password = ?;";
@@ -94,8 +93,6 @@ public class DatabaseHandler {
 				String username = resultSet.getString("username");
 				String password = resultSet.getString("password");
 
-				//    System.out.println("Username: " + username + ", Password: " + password);
-				// You can add more details here if needed
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -133,7 +130,6 @@ public class DatabaseHandler {
 	}
 
 	public String getFavoriteGenre(String username) {
-
 		// get genre info from user's favorite list
 		//    	String path = "jdbc:sqlite:database/Favourites.db";
 		//    	String query = "SELECT show_id as count FROM F WHERE user_id = ? ORDER BY count DESC LIMIT 1;";
