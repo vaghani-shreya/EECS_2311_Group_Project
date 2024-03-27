@@ -19,6 +19,7 @@ public class VerificationPage extends JPanel {
 	private static LoginPage login;
 	private DatabaseHandler dbHandler;
 	private static JButton enterButton;
+	private String username;
 	
 	public boolean check(String username, int code) {
 		// Check if the username and code matches the one in the database
@@ -35,6 +36,7 @@ public class VerificationPage extends JPanel {
 
 		return instance;
 	}
+	
 
 	public VerificationPage(ForgotPasswordPage ForgotPasswordPage) {
 		dbHandler = new DatabaseHandler();
@@ -123,7 +125,7 @@ public class VerificationPage extends JPanel {
 				if (check(username, Integer.parseInt(verCode))) {
 					cardLayout.show(cardPanel, "reset");
 				} else {
-					JOptionPane.showMessageDialog(VerificationPage.this, "The verification code is incorrect. Re-enter your username to send a new code.");
+					JOptionPane.showMessageDialog(VerificationPage.this, "The verification code or email is incorrect. Re-enter your username to send a new code.");
 					//return to the forgot password page
 					ForgotPasswordPage.returnPage();
 				}

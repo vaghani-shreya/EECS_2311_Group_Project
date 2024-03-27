@@ -113,6 +113,7 @@ public class ForgotPasswordPage extends JPanel {
 				// Check username
 				String username = getUsername();
 
+
 				// Check if user is correct
 				if (username(username)) {
 					//Get a random 5 digit code
@@ -165,7 +166,7 @@ public class ForgotPasswordPage extends JPanel {
 	//Send an email
 	public static void sendEmail(String to, String subject, String body) {
         final String from = "eecs2311group1@gmail.com";
-        final String password = "enter-password";	// change password for testing purposes
+        final String password = "jsno fozx itnl kuhj";	// change password for testing purposes
 
         // Setup mail server properties
         Properties properties = new Properties();

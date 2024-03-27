@@ -13,10 +13,10 @@ class ResetPasswordPageTest {
 	ResetPasswordPage resetPasswordPage;
 	VerificationPage verificationPage;
 	
-	@BeforeEach
-	void init() {
-		resetPasswordPage = new ResetPasswordPage(verificationPage);
-	}
+//	@BeforeEach
+//	void init() {
+//		resetPasswordPage = new ResetPasswordPage(verificationPage);
+//	}
 	
 	@Test
 	void testSetGetUsername() {

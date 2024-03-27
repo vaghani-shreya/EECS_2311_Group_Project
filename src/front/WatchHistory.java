@@ -39,6 +39,7 @@ public class WatchHistory {
 		            	//do nothing
 		            }
 
+
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }

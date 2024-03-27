@@ -15,71 +15,71 @@ import com.google.gson.Gson;
 public class Newsletter {
 
 	public static void main(String[] args) {
-        // Create a scheduled executor service
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-        // Schedule the email sending task to run every day
-        scheduler.scheduleAtFixedRate(() -> {
-        	// Load the SQLite JDBC driver
-            try {
-                Class.forName("org.sqlite.JDBC");
-            } catch (ClassNotFoundException e) {
-                System.out.println("SQLite JDBC Driver not found.");
-                e.printStackTrace();
-                return;
-            }
-        	//Database connections
-    		String path = "jdbc:sqlite:database/UserCredentials.db";
-            String query = "SELECT username FROM UserCred";
-            try (Connection conn = DriverManager.getConnection(path);
-            		
-                 Statement stmt = conn.createStatement()) {
-
-                ResultSet resultSet = stmt.executeQuery(query);
-
-                // Iterate over the results and send email for each address
-                while (resultSet.next()) {
-                    String to = resultSet.getString("username");
-					DatabaseHandler dbHandler = new DatabaseHandler();
-					//retrieve recommendations for user
-					Object[][] message = dbHandler.retrieveRecommendations(to);
-					//Send email to user
-                    sendEmail(to, "Newsletter", message);
-                }
-
-                // Close JDBC resources
-                resultSet.close();
-                stmt.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.exit(0);
-        }, 0, 7, TimeUnit.DAYS); // Run every week
-
-        // Shutdown the scheduler gracefully when the program exits
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            scheduler.shutdown();
-            try {
-                scheduler.awaitTermination(5, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }));
+//        // Create a scheduled executor service
+//        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+//
+//        // Schedule the email sending task to run every day
+//        scheduler.scheduleAtFixedRate(() -> {
+//        	// Load the SQLite JDBC driver
+//            try {
+//                Class.forName("org.sqlite.JDBC");
+//            } catch (ClassNotFoundException e) {
+//                System.out.println("SQLite JDBC Driver not found.");
+//                e.printStackTrace();
+//                return;
+//            }
+//        	//Database connections
+//    		String path = "jdbc:sqlite:database/UserCredentials.db";
+//            String query = "SELECT username FROM UserCred";
+//            try (Connection conn = DriverManager.getConnection(path);
+//            		
+//                 Statement stmt = conn.createStatement()) {
+//
+//                ResultSet resultSet = stmt.executeQuery(query);
+//
+//                // Iterate over the results and send email for each address
+//                while (resultSet.next()) {
+//                    String to = resultSet.getString("username");
+//					DatabaseHandler dbHandler = new DatabaseHandler();
+//					//retrieve recommendations for user
+//					Object[][] message = dbHandler.retrieveRecommendations(to);
+//					//Send email to user
+//                    sendEmail(to, "Newsletter", message);
+//                }
+//
+//                // Close JDBC resources
+//                resultSet.close();
+//                stmt.close();
+//                conn.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            System.exit(0);
+//        }, 0, 7, TimeUnit.DAYS); // Run every week
+//
+//        // Shutdown the scheduler gracefully when the program exits
+//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//            scheduler.shutdown();
+//            try {
+//                scheduler.awaitTermination(5, TimeUnit.SECONDS);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }));
         
 
         // Newsletter Test to send to single user instead of every user in the database
-//		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//		DatabaseHandler dbHandler = new DatabaseHandler();
-//		Object[][] message = dbHandler.retrieveRecommendations("anusham@my.yorku.ca");
-//		scheduler.scheduleAtFixedRate(() -> {sendEmail("anusham@my.yorku.ca", "Newsletter", message);System.exit(0);}, 0, 7, TimeUnit.DAYS);
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		DatabaseHandler dbHandler = new DatabaseHandler();
+		Object[][] message = dbHandler.retrieveRecommendations("anusham@my.yorku.ca");
+		scheduler.scheduleAtFixedRate(() -> {sendEmail("anusham@my.yorku.ca", "Newsletter", message);System.exit(0);}, 0, 7, TimeUnit.DAYS);
     }
 
 	
 	//Send an email
 		public static void sendEmail(String to, String subject, Object[][] body) {
 	        final String from = "eecs2311group1@gmail.com";
-	        final String password = "enter-password";
+	        final String password = "jsno fozx itnl kuhj";
 
 	        // Setup mail server properties
 	        Properties properties = new Properties();

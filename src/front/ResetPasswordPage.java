@@ -27,6 +27,15 @@ public class ResetPasswordPage extends JPanel {
 		dbHandler.resetPassword(username, password);
 	}
 	
+	public boolean username(String username) {
+		// Check if username exists in the database
+		// For simplicity, let's use a hardcoded username and password for demonstration
+		//		return username.equals("user");
+		boolean login = dbHandler.checkUser(username)|| username.equals("user");
+
+		return login;
+	}
+	
 	public static ResetPasswordPage getInstance() {
 		if (instance == null)
 			instance = new ResetPasswordPage(verify);
@@ -91,7 +100,10 @@ public class ResetPasswordPage extends JPanel {
 		contentPane.add(enterButton, gbc);
 		
 		add(contentPane, BorderLayout.CENTER);
+		
 
+		
+		
 		enterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -104,6 +116,10 @@ public class ResetPasswordPage extends JPanel {
 		            JOptionPane.showMessageDialog(ResetPasswordPage.this, "Please enter username and new password.");
 		            return; // Stop further execution
 		        }
+				else if (username(username)==false) {
+		            JOptionPane.showMessageDialog(ResetPasswordPage.this, "Incorrect username please enter correct one.");
+		            return;
+				}
 				newPassword(username, password);
 				JOptionPane.showMessageDialog(ResetPasswordPage.this, "Your password was successfully changed.");
 				
@@ -115,6 +131,7 @@ public class ResetPasswordPage extends JPanel {
 
 	            // Show the LoginPage frame
 	            //loginPage.setVisible(true);
+				
 				
 			}
 		});

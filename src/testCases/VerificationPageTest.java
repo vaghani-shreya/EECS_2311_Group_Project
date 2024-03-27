@@ -16,10 +16,10 @@ class VerificationPageTest {
 	ForgotPasswordPage forgotpasswordPage;
 
 	
-	@BeforeEach
-	void init() {
-		verificationPage = new VerificationPage(forgotpasswordPage);		
-	}
+//	@BeforeEach
+//	void init() {
+//		verificationPage = new VerificationPage(forgotpasswordPage);		
+//	}
 	
 	//Correct Username
 	@Test
