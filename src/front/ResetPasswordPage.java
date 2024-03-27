@@ -8,7 +8,11 @@ import javax.swing.*;
 
 import javax.swing.*;
 
+/**
+ * This class reset the password for the user
+ */
 public class ResetPasswordPage extends JPanel {
+	// Variable Initialization
 	private JTextField passwordField;
 	private JTextField usernameField;
 	private JPanel cardPanel;
@@ -20,29 +24,27 @@ public class ResetPasswordPage extends JPanel {
 	private DatabaseHandler dbHandler;
 	private static JButton enterButton;
 
+	// Resets the password in database
 	public void newPassword(String username, String password) {
-		//reset the password in database
-		// For simplicity, let's use a hardcoded username and password for demonstration
-		//		return username.equals("user") && password.equals("password");
 		dbHandler.resetPassword(username, password);
 	}
 
-	public boolean username(String username) {
-		// Check if username exists in the database
-		// For simplicity, let's use a hardcoded username and password for demonstration
-		//		return username.equals("user");
+	// Check if username exists in the database
+	public boolean username(String username) {		
 		boolean login = dbHandler.checkUser(username)|| username.equals("user");
-
 		return login;
 	}
 
 	public static ResetPasswordPage getInstance() {
 		if (instance == null)
 			instance = new ResetPasswordPage(verify);
-
 		return instance;
 	}
 
+	/**
+	 * Main constructor responsible for the design and all the actions on the reset password page
+	 * Pagelayout and all the dfferent design aspects of the reset password are found in this constructor
+	 */
 	public ResetPasswordPage(VerificationPage verificationPage) {
 		dbHandler = new DatabaseHandler();
 		setSize(900, 900);
@@ -101,9 +103,7 @@ public class ResetPasswordPage extends JPanel {
 
 		add(contentPane, BorderLayout.CENTER);
 
-
-
-
+		// Changes the password in the data for the valid user and termniates program
 		enterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,11 +128,6 @@ public class ResetPasswordPage extends JPanel {
 				if (parentWindow instanceof JFrame) {
 					parentWindow.dispose(); // Close the current window (ResetPasswordPage)
 				}
-
-				// Show the LoginPage frame
-				//loginPage.setVisible(true);
-
-
 			}
 		});
 	}

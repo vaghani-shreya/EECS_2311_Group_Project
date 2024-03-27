@@ -3,7 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * LoginPage class is resposible for all the functionalities on the main login page
+ * This includes: authenication of user login, registeration of new users, and reseting a user's password
+ */
 public class LoginPage extends JFrame {
+	// Variable Initialization
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JPanel cardPanel;
@@ -12,21 +17,25 @@ public class LoginPage extends JFrame {
 	private static LoginPage instance;
 	private static String usernameForDB;
 
+	/**
+	 * this method is for authenticating the users, it calls on authenticateUser method in the DatabaseHandler class
+	 * Takes in username and password as input and return a boolean regarding the valid login
+	 */
 	public boolean login(String username, String password) {
-		// For simplicity, let's use a hardcoded username and password for demonstration
-		//		return username.equals("user") && password.equals("password");
 		boolean login = dbHandler.authenticateUser(username, password) || username.equals("user") && password.equals("password");
-
 		return login;
 	}
 
 	public static LoginPage getInstance() {
 		if (instance == null)
 			instance = new LoginPage();
-
 		return instance;
 	}
 
+	/**
+	 * Main constructor responsible for the design and all the actions on the login page
+	 * Pagelayout and all the dfferent design aspects of the login page are found in this constructor
+	 */
 	public LoginPage() {
 		dbHandler = new DatabaseHandler();
 		setTitle("Show Tracking Application");
@@ -177,15 +186,10 @@ public class LoginPage extends JFrame {
 	    return email.matches(regex);
 	}
 	
-	public void signOut(){
-		cardLayout.show(cardPanel, "login");
-	}
-
 	// Methods to Set and Get the Username
 	public void setUsername (String username) {
 		usernameField.setText(username);
 	}
-
 	public String getUsername() {
 		return usernameField.getText();
 	}
@@ -194,17 +198,18 @@ public class LoginPage extends JFrame {
 	public void setPassword (String password) {
 		passwordField.setText(password);
 	}
-
 	public String getPassword() {
 		return passwordField.getText();
 	}
 
+	// Method to retrieve the username from the database ,used in dashboard and ratings tabs
 	public static String getUsernameForDB() {
 		return usernameForDB;
 	}
 
-	public static void setUsernameForDB(String usernameForDB) {
-		LoginPage.usernameForDB = usernameForDB;
+	// Signout method which takes the user back tot he login page
+	public void signOut(){
+		cardLayout.show(cardPanel, "login");
 	}
 
 	public static void main(String[] args) {

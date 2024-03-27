@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class DatabaseHandler {
+	static String path = "jdbc:sqlite:database/UserCredentials.db";
 
+	/**
+	 * This method is responsible to authenticating the user's credentials
+	 * It is used when the user login 
+	 * It takes in the username and password as input and confirms the data with the UserCredential database
+	 */
 	public boolean authenticateUser(String username, String password) {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "SELECT * FROM UserCred WHERE username = ? AND password = ?;";
 
 		try (Connection conn = DriverManager.getConnection(path);
-
-			PreparedStatement pstmt = conn.prepareStatement(query)) {
+				PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
 
@@ -21,12 +25,16 @@ public class DatabaseHandler {
 			return resultSet.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return false;	// return false, if the username is invalid
 		}
 	}
 
+	/**
+	 * This method is responsible for registering new user's credentials
+	 * It is used when the user registers 
+	 * It takes in the username and password as input and inserts the new user's credentials
+	 */
 	public boolean insertUserCredentials (String username, String password) {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "INSERT INTO UserCred (username, password) VALUES (?, ?);";
 
 		try (Connection conn = DriverManager.getConnection(path);
@@ -34,34 +42,45 @@ public class DatabaseHandler {
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
 
-			int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+			// Valid user registration - database changed, returns true
+			int rowsAffected = pstmt.executeUpdate();	
+			return rowsAffected > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return false;	// Invalid user registration 
 		}
-
 	}
 
+	/**
+	 * This method is responsible to confirm that the username exits 
+	 * It is used when the user registers and when they use reset password feature
+	 * Used when register to confirm no duplicate username can be created
+	 * Used in reset password feature to check if the username exists in the database 
+	 * It takes in the username as input and confirms the data with the UserCredential database 
+	 */
 	public boolean checkUser(String username) {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "SELECT * FROM UserCred WHERE username = ?;";
-		
+
 		try (Connection conn = DriverManager.getConnection(path);
 				PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, username);
 
 			ResultSet resultSet = pstmt.executeQuery();
 
-			// If a row with the given username and password exists, the user is valid
-			return resultSet.next();
+			return resultSet.next();	// if username exists, returns true
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return false;				// Username doesn't exists
 		}
 	}
+
+	/**
+	 * This method is responsible to confirm that the authentication code sent to the user's email 
+	 * matches the one in the database.
+	 * It is used by the reset password feature
+	 * It takes in the username and code as input and confirms the data matches with the UserCredential database 
+	 */
 	public boolean checkCode(String username, int code) {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "SELECT * FROM UserCred WHERE username = ? AND code = ?;";
 
 		try (Connection conn = DriverManager.getConnection(path);
@@ -71,36 +90,20 @@ public class DatabaseHandler {
 
 			ResultSet resultSet = pstmt.executeQuery();
 
-			// If a row with the given username and password exists, the user is valid
+			// If a row with the given username and authentication code matches withthe database, password can be reset
 			return resultSet.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return false;	// username or code is incorrrect, password can not be reset
 		}
 	}
-	public void retrieveUserCredentials() {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
-		String query = "SELECT * FROM UserCred;";
-
-		try {
-			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection(path);
-			PreparedStatement pstmt = conn.prepareStatement(query);
-
-			ResultSet resultSet = pstmt.executeQuery();
-
-			while (resultSet.next()) {
-				String username = resultSet.getString("username");
-				String password = resultSet.getString("password");
-
-			}
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
+	/**
+	 * This method is responsible to assiging an authentication code sent to the user's email 
+	 * It is used by the reset password feature
+	 * It updates the verification code for the user in the database
+	 */
 	public void assignCode(String username, int verCode) {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "UPDATE UserCred SET code = ? WHERE username = ?;";
 
 		try (Connection conn = DriverManager.getConnection(path);
@@ -114,8 +117,12 @@ public class DatabaseHandler {
 		}
 	}
 
+	/**
+	 * This method is responsible for reseting the password for a user
+	 * It is used by the reset password feature
+	 * it update the user's password field in the database
+	 */
 	public void resetPassword(String username, String password) {
-		String path = "jdbc:sqlite:database/UserCredentials.db";
 		String query = "UPDATE UserCred SET password = ? WHERE username = ?;";
 
 		try (Connection conn = DriverManager.getConnection(path);
@@ -129,47 +136,29 @@ public class DatabaseHandler {
 		}
 	}
 
-	public String getFavoriteGenre(String username) {
-		// get genre info from user's favorite list
-		//    	String path = "jdbc:sqlite:database/Favourites.db";
-		//    	String query = "SELECT show_id as count FROM F WHERE user_id = ? ORDER BY count DESC LIMIT 1;";
-		//        
-		//    	
-		//        try {
-		//            Class.forName("org.sqlite.JDBC");
-		//            try (Connection conn = DriverManager.getConnection(path);
-		//                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-		//                ResultSet resultSet = pstmt.executeQuery();
-		//                
-		//                if (resultSet.next()) {
-		//                    return resultSet.getString("Genre");
-		//                }
-		//            }
-		//        } catch (Exception e) {
-		//            e.printStackTrace();
-		//        }
+	/**
+	 * This method is responsible for retrieving the user's credentials (usrname and password)
+	 * It is used by the login, register, and reset password features
+	 */
+	public void retrieveUserCredentials() {
+		String query = "SELECT * FROM UserCred;";
 
-		return "Drama"; // Default genre if none found
+		try {
+			Class.forName("org.sqlite.JDBC");
+			Connection conn = DriverManager.getConnection(path);
+			PreparedStatement pstmt = conn.prepareStatement(query);
+
+			ResultSet resultSet = pstmt.executeQuery();
+
+			while (resultSet.next()) {
+				String username = resultSet.getString("username");
+				String password = resultSet.getString("password");
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String getClickGenre(String username) {
-		return "Comedies";
-	}
-	public int getFavCount(String username) {
-		return 0;
-	}
-
-	public int getClickCount(String username) {
-		return 1;
-	}
-
-	public String getGenre(String username) {
-		int fav_count = getFavCount(username);
-		int click_count = getClickCount(username);
-
-		if (fav_count >= click_count) return getFavoriteGenre(username);
-		else return getClickGenre(username);
-	}
 
 	public Object[][] retrieveRecommendations(String username) {
 		// recommendation from three main sources
@@ -178,28 +167,24 @@ public class DatabaseHandler {
 				"jdbc:sqlite:database/Amazon.db",
 				"jdbc:sqlite:database/Disney.db"
 		};
-		
-		String basedGenre = getGenre(username);
-		
+
 		ArrayList<Object[]> recommendationList = new ArrayList<>();
-		
+
 		for(String path:dbPaths) {
 			try {
-				
 				Class.forName("org.sqlite.JDBC");
 				String tableNameOfEachDB = getTableFromPath(path);
 				String query = String.format("SELECT title, release_year FROM %s WHERE listed_in LIKE ? ORDER BY release_year DESC LIMIT 30;", tableNameOfEachDB);
-	            			
+
 				try (Connection conn = DriverManager.getConnection(path);
-					PreparedStatement pstmt = conn.prepareStatement(query)) {
-					pstmt.setString(1, "%" + basedGenre + "%");
+						PreparedStatement pstmt = conn.prepareStatement(query)) {
+					pstmt.setString(1, "%" + "Comedies" + "%");
 					ResultSet resultSet = pstmt.executeQuery();
-	
+
 					while (resultSet.next()) {
 						recommendationList.add(new Object[]{
-						resultSet.getString("title"),
-//						resultSet.getInt("NumRatings")       
-						resultSet.getInt("release_year")
+								resultSet.getString("title"),
+								resultSet.getInt("release_year")
 						});
 					}
 				}
@@ -216,177 +201,16 @@ public class DatabaseHandler {
 		}
 		return recommendationList.stream().limit(20).toArray(Object[][]::new);
 	}	
-	
+
 	private String getTableFromPath(String dbPath) {
 		if (dbPath.contains("Netflix")) {
-		return "netflix_titles";
+			return "netflix_titles";
 		} else if (dbPath.contains("Amazon")) {
-		return "amazon_prime_titles"; 
+			return "amazon_prime_titles"; 
 		} else if (dbPath.contains("Disney")) {
-		return "disney_plus_titles"; 
+			return "disney_plus_titles"; 
 		}
 		return "";
-		}
-
-    
-//    public Object[][] retrieveFavouritesList(String filter) {
-//    	
-//    	Object[][] movies = null;
-//    	
-//    	String path = "jdbc:sqlite:database/Favourites.db";
-//    	String query = "SELECT * FROM FavouriteMovies ORDER BY " + filter + ";";
-//    	
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            Connection conn = DriverManager.getConnection(path);
-//            PreparedStatement pstmt = conn.prepareStatement(query);
-//
-//            ResultSet resultSet = pstmt.executeQuery();
-//            
-//            movies = new Object[10][6];
-//            String categories[] = {"Name", "Length", "Genre", "DateAdded", "Rating", "ReleaseDate"};
-//            
-//            int i = 0;
-//            while (resultSet.next()) {
-//            	
-//            	String name = resultSet.getString("Name");
-//            	double length = resultSet.getDouble("Length");
-//            	String genre = resultSet.getString("Genre");
-//            	Date da = resultSet.getDate("DateAdded");
-//            	String rating = resultSet.getString("Rating");
-//            	Date rd = resultSet.getDate("ReleaseDate");
-//            	
-//            	movies[i][0] = name;
-//            	movies[i][1] = length;
-//            	movies[i][2] = genre;
-//            	movies[i][3] = da;
-//            	movies[i][4] = rating;
-//            	movies[i][5] = rd;
-//            	
-//            	i++;
-//            	
-////            	System.out.println(movie_name);
-////                String movie_name = resultSet.getString("username");
-////                String password = resultSet.getString("password");
-//
-//            //    System.out.println("Username: " + username + ", Password: " + password);
-//                // You can add more details here if needed
-//            }
-//           
-//        } 
-//        catch (SQLException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        
-//		return movies;
-//    }
-//    
-//    public Object[][] deleteFavourites(String filter) {
-//    	
-//    	Object[][] movies = null;
-//    	
-//    	String path = "jdbc:sqlite:database/Favourites.db";
-//    	String query = "DELETE FROM FavouriteMovies WHERE Name = " + filter + ";";
-//    	
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            Connection conn = DriverManager.getConnection(path);
-//            PreparedStatement pstmt = conn.prepareStatement(query);
-//
-//            ResultSet resultSet = pstmt.executeQuery();
-//            
-//            movies = new Object[10][6];
-//            String categories[] = {"Name", "Length", "Genre", "DateAdded", "Rating", "ReleaseDate"};
-//            
-//            int i = 0;
-//            while (resultSet.next()) {
-//            	
-//            	String name = resultSet.getString("Name");
-//            	double length = resultSet.getDouble("Length");
-//            	String genre = resultSet.getString("Genre");
-//            	Date da = resultSet.getDate("DateAdded");
-//            	String rating = resultSet.getString("Rating");
-//            	Date rd = resultSet.getDate("ReleaseDate");
-//            	
-//            	movies[i][0] = name;
-//            	movies[i][1] = length;
-//            	movies[i][2] = genre;
-//            	movies[i][3] = da;
-//            	movies[i][4] = rating;
-//            	movies[i][5] = rd;
-//            	
-//            	i++;
-//            	
-////            	System.out.println(movie_name);
-////                String movie_name = resultSet.getString("username");
-////                String password = resultSet.getString("password");
-//
-//            //    System.out.println("Username: " + username + ", Password: " + password);
-//                // You can add more details here if needed
-//            }
-//           
-//        } 
-//        catch (SQLException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        
-//		return movies;
-//    }
-    
-//    public String getFavoriteGenreForUser(String username) {
-//    	// get genre info from user's favorite list
-//    	String path = "jdbc:sqlite:database/Favourites.db";
-//        String query = "SELECT Genre, COUNT(Genre) as count FROM FavouritedMovies GROUP BY Genre ORDER BY count DESC LIMIT 1;";
-//        
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            try (Connection conn = DriverManager.getConnection(path);
-//                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-//                ResultSet resultSet = pstmt.executeQuery();
-//                
-//                if (resultSet.next()) {
-//                    return resultSet.getString("Genre");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        
-//        return "Drama"; // Default genre if none found
-//    }
-//    
-//    public Object[][] retrieveRecommendations(String username) {
-//        String path = "jdbc:sqlite:database/Netflix.db";
-//        String favoriteGenre = getFavoriteGenreForUser(username); 
-//        // listed_in column in netflix.db is Genre
-//        String query = "SELECT * FROM netflix_titles WHERE listed_in like ? ORDER BY NumRatings DESC LIMIT 10;"; 
-//        
-//        
-
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            try (Connection conn = DriverManager.getConnection(path);
-//                PreparedStatement pstmt = conn.prepareStatement(query)) {
-//                pstmt.setString(1, "%" + favoriteGenre + "%");
-//            	ResultSet resultSet = pstmt.executeQuery();
-//                
-//                ArrayList<Object[]> tempList = new ArrayList<>();
-//                while (resultSet.next()) {
-//                    tempList.add(new Object[]{
-//                        resultSet.getString("title"),
-//                        //resultSet.getString("listed_in"),
-//                        resultSet.getString("NumRatings"),
-//                        resultSet.getString("description")
-//                    });
-//                }
-//                
-//                return tempList.toArray(new Object[0][]);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new Object[0][];
-//        }
-//    }
-
+	}
 
 }
