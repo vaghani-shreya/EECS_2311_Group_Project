@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
+
 import front.LoginPage;
 
 public class ratingDisney extends JPanel{
@@ -25,11 +26,8 @@ public class ratingDisney extends JPanel{
 	}
 
 
-
 	private void initComponents(){
-
 		setSize(800, 600);
-
 
 		JPanel searchPanel = new JPanel();
 		JTextField searchField = new JTextField(20);
@@ -221,10 +219,4 @@ public class ratingDisney extends JPanel{
      detailsFrame.setVisible(true);
 
 	}
-
-
-
-
-
-
 }

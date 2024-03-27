@@ -343,4 +343,3 @@ public class netflix extends JPanel {
 
 }
 
-

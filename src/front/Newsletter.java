@@ -1,7 +1,6 @@
 package front;
 
 import java.sql.*;
-
 import java.util.concurrent.*;
 import java.util.*;
 import javax.mail.*;

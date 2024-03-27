@@ -337,4 +337,3 @@ public class Amazon extends JPanel {
 	}
 }
 
-

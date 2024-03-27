@@ -4,9 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
-
 import front.LoginPage;
-
+import javax.swing.JOptionPane;
 
 public class ratingNetflix  extends JPanel {
 	

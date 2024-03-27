@@ -1,9 +1,7 @@
 package recommendation;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.http.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -14,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TMDBFetcher {
 
 	private static final String API_KEY = "your_api_key_here"; // Use TMDb API
-
 //	private static final String API_KEY = "a68655415a834a3c858ca968424bdb07"; // Use TMDb API
     private static final String BASE_URL = "https://api.themoviedb.org/3"; // TMDb API URL
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // width 500

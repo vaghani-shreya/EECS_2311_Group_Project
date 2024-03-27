@@ -151,12 +151,12 @@ public class LoginPage extends JFrame {
 					JOptionPane.showMessageDialog(LoginPage.this, "Please enter both username and password.");
 					return; // Exit the action listener if fields are empty
 				}
-				
-				 // Check if the username is a valid email address
-		        if (!isValidEmailAddress(username)) {
-		            JOptionPane.showMessageDialog(LoginPage.this, "Please enter a valid email address as the username.");
-		            return; // Exit the action listener if username is not a valid email
-		        }
+
+				// Check if the username is a valid email address
+				if (!isValidEmailAddress(username)) {
+					JOptionPane.showMessageDialog(LoginPage.this, "Please enter a valid email address as the username.");
+					return; // Exit the action listener if username is not a valid email
+				}
 				// Check if the username already exists in the database
 				boolean usernameExists = dbHandler.checkUser(username);
 				if (usernameExists) {
@@ -181,11 +181,11 @@ public class LoginPage extends JFrame {
 
 	// Method to check if the username is a valid email address
 	private boolean isValidEmailAddress(String email) {
-	    // Regular expression for validating email addresses
-	    String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-	    return email.matches(regex);
+		// Regular expression for validating email addresses
+		String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		return email.matches(regex);
 	}
-	
+
 	// Methods to Set and Get the Username
 	public void setUsername (String username) {
 		usernameField.setText(username);
@@ -225,4 +225,3 @@ public class LoginPage extends JFrame {
 		dbHandler.retrieveUserCredentials();
 	}
 }
-
