@@ -19,6 +19,7 @@ import javax.swing.*;
 public class Favourites extends JFrame {
 	public static Favourites instance;
 	private JPanel showPanel;
+	final String path = "jdbc:sqlite:database/Favourite.db";
 
     public Favourites() {
     	initComponents();
@@ -78,7 +79,6 @@ public class Favourites extends JFrame {
 	public void searchFavourites(String searchFor) {
 	    showPanel.removeAll(); // Clear existing shows/movies
 	    String username = "user";
-	    String path = "jdbc:sqlite:database/Favourite.db";
 	    String query = "SELECT * FROM favourites WHERE username = ? AND title LIKE ?";
 
 	    try {
@@ -126,7 +126,6 @@ public class Favourites extends JFrame {
 	//Adds the the show to favourite.db when user clicks on the add to favourites button
 	public void addToFavouritesList(String username, String showId, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
 	    
-	    String path = "jdbc:sqlite:database/Favourite.db";
 	    String selectQuery = "SELECT COUNT(*) FROM Favourites WHERE Username = ? AND title = ?";
 	    String insertQuery = "INSERT INTO Favourites (Username, show_id, title, date_added, release_year, director, cast, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -171,7 +170,6 @@ public class Favourites extends JFrame {
 	public void displayUserFavourites() {
 		String username = LoginPage.getUsernameForDB();
 		System.out.println("Displaying favorites for user: " + username);
-        String path = "jdbc:sqlite:database/Favourite.db";
         String query = "SELECT * FROM Favourites WHERE username = ?";
         
         try (Connection connection = DriverManager.getConnection(path);
@@ -213,7 +211,6 @@ public class Favourites extends JFrame {
         }
 	}
 		public void deleteShowFromFavourites(String username, String showId, String title) {
-			 String path = "jdbc:sqlite:database/Favourite.db";
 			    String deleteQuery = "DELETE FROM Favourites WHERE username = ? AND show_id = ? AND title = ?";
 
 			    try (Connection connection = DriverManager.getConnection(path);

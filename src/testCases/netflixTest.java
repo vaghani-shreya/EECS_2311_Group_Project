@@ -58,7 +58,7 @@ class netflixTest {
 	}
 	//Test that the movies/shows are ordered in descending order by release year
 	@Test
-	void test4() {
+	void test3() {
 		 String path = "jdbc:sqlite:database/Netflix.db";
 	     String query = "SELECT * FROM netflix_titles ORDER BY release_year DESC;"; 
 	    boolean expected = false;
