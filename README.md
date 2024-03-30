@@ -89,58 +89,22 @@ If the maven dependencies cannot be resolved, sync maven dependencies  https://m
 
 ## Usage
 
-There are 2 parts to this iteration that have been not connected due to further developmentand required resources, they will be connected for future iterations.
-They are 1. Launching the  main Application 
-         2. Launching the Movies/Shows thumbnail 
-
   ### Launching the Main Application 
-  There are 2 ways to launch the application , 
+Follow the steps to launch the application:
 
   1. Locate the LoginPage.java found under **src/front/LoginPage.java** in the Project folder and right click on it, scroll down to the **Run** option and click on **Java Application** to Launch the application.
      The process is witnessed in the Image below
      
       ![figure 2](Images/Image2.png)
 
-2. Locate the **Project EECS_2311_Group_Project** in your eclipse Project explorer and right click on it, scroll down to **Run** option and Click on **Java Application** as shown below
-   
-    ![figure 3](Images/Image3.png)
-
-
-   Then Click on **LoginPage-front** and click on **OK** to run the application. It is shown as below
-   
-    ![figure 4](Images/Image4.png)
-
-   **Username** - user
-   **Password** - password 
-
-   
-  ### Launching the Movies/Shows thumbnail
-  There are 2 ways to launch the application ,
-
- 1. Locate the netflix.java found under **src/front/netflix.java** in the Project folder and right click on it, scroll down to the **Run** option and click on **Java Application** to Launch the application.
-     The process is witnessed in the Image below
-
-     ![figure 5](Images/Image5.png)
-
-2. Locate the Project **EECS_2311_Group_Project** in your eclipse Project explorer and right click on it, scroll down to **Run** option and Click on **Java Application** as shown below
-   
-   
-    ![figure 3](Images/Image3.png)
-
-
-   Then Click on **netflix-front** and click on **OK** to run the application. It is shown as below
-   
-    ![figure 6](Images/Image6.png)
-
    **NOTE - It takes a few seconds to Launch the Application as it is connected to a database and parsing data from the database**
-
-   You can search any movie/show from the search bar and click search. You can also click on a Movie/Show to check out the details of that particular Movie/Show
-
-     ![figure 7](Images/Image7.png)
 
 ### Exploring Functionailties 
 
-You can use the **username** - user , **password** - password to login into the system and explore the application.You can use the **pin** - 12345 to change the password as well just for this iteration. Th next iteration has an email feature that will send the pin to your email that will be developed.
+You can use the **username** - user , **password** - password to login into the system and explore the application. You can also register as a new user by entering a new email you'd like to set as your username and enter a new password. Then click **register**.
+ ![figure 3](Images/Image3.png)
+ ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/6379938c-73cd-4278-8ee7-c30a46d7e817)
+
 
 After Logging into the Main Application, you can click on the different tabs to checkout the features that are currently implemented such as **Favourites page** and **Movies/Show page(indepent launch as of now)** and the **sign out** feature.
 
