@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
-import analytics.ratingAnalytics;
+import analytics.chartAnalytics;
 import rating.ratings;
 
 import recommendation.RecommendationPanel;
@@ -21,8 +21,6 @@ public class dashBoard extends JPanel{
 	public static dashBoard instance;
 	private static LoginPage login;
 	private DatabaseHandler dbHandler;
-	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
-	private JComboBox filterList = new JComboBox(filterNames);
 
 	public static dashBoard getInstance() {
 		if (instance == null)
@@ -81,7 +79,7 @@ public class dashBoard extends JPanel{
 		tab4.add(fav.getContentPane());
 
 		JPanel tab5 = new JPanel();
-		ratingAnalytics ratingChart = new ratingAnalytics();
+		chartAnalytics ratingChart = new chartAnalytics();
 		tab5.add(ratingChart.getContentPane());
 
 

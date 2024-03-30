@@ -29,12 +29,21 @@ class RecommendationsTest {
 		assertNotEquals("AND", recommendation.getReview());
 	}
 	
+<<<<<<< HEAD
 	@Test
 	void testGetShowName2() {
 		recommendation = new Recommendation("Team America: World Police", 5);
 		recommendation.setShowName("Hook");
 		assertEquals("Hook", recommendation.getShowName());
 	}
+=======
+//	@Test
+//	void testGetShowName2() {
+//		recommendation = new Recommendation("Team America: World Police", 5);
+//		recommendation.setShowName("Hook");
+//		assertEquals("Hook", recommendation.getShowName());
+//	}
+>>>>>>> 17b9311fc71f9325d1c8ff7af870b24ed9c71ba3
 	
 	@Test
 	void testGetRating2() {
