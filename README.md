@@ -124,13 +124,39 @@ After Logging into the Main Application, you can click on the different tabs to 
   ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/23b00aca-ec89-4d73-bfc6-863baec20afd)
   ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/bfd861d5-572b-417d-ae46-81ef8ba27aea)
   ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/7a46a761-fdad-4bac-87e8-a985b97bcda3)
+
+  
 To search for a specific show enter the title of the show and press **Search**.
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/7953cc45-6c8d-475e-8244-80355acd372c)
 
 To further filter based on genre, Type, or ratings you can click on the drop-down arrow by the search button. Select the filter by clicking then enter the genre, rating, type etc. then press **search**.
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/705b3e9b-3ad6-4078-82be-ba8292020a9d)
+
+
 You can further sort by date added, release year, and title. Follow the same steps as above.
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/aef904f2-0dd0-444d-a366-31dbd7ce1b12)
+
+
+To see additional information about the specific show click on a show panel. A pop window should appear.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/2ee87997-a995-4c12-9feb-edf6849edc9d)
+
+
+Here you can add a show to your favourites list.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/d759ffc2-eead-462b-934c-eb9f2ce26238)
+
+You can also mark the show as watched.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/51b64db3-d8bf-4269-99b3-aa26e43204b8)
+
+#### Rating
+Similarly to dashboard there are three different tabs under ratings which can be explored **Netflix**, **Disney**,and **Amazon**.
+The main difference is included when you click 
+
+#### Favourites Page
+If you click on favourites page you can see your favourite list of shows.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/c173dd4b-863b-4167-ba67-c0549af8b396)
+
+If you click on any show you can see further details and delete any show added to the list by clicking **Delete**
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/4cfaa4f5-1f71-49d5-93cd-f5b063ada754)
 
 
 ### Sign Out - the Main Application
