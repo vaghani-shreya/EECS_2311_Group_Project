@@ -99,16 +99,38 @@ Follow the steps to launch the application:
 
    **NOTE - It takes a few seconds to Launch the Application as it is connected to a database and parsing data from the database**
 
-### Exploring Functionailties 
+### Exploring Functionalities 
 
+#### Logining in and Authentication
 You can use the **username** - user , **password** - password to login into the system and explore the application. You can also register as a new user by entering a new email you'd like to set as your username and enter a new password. Then click **register**.
- ![figure 3](Images/Image3.png)
+ ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/a5114757-36ee-4b69-ae40-43014b11d056)
+ 
+A pop-up window should appear letting you know you have successfully registered.
  ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/6379938c-73cd-4278-8ee7-c30a46d7e817)
+ 
+If you forgot your password or want to change it. Click **forgot my password** then enter your **username** then press **Enter**.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/72da77bc-c38e-4037-bead-75667fd2850d)
+
+The verification window will appear where you should enter the code that has been sent to your email.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/011476ee-a9fa-4f45-9f72-1221344e8d05)
+
+If you have an existing account simply enter the **username** and **password** and click **Login**.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/fb7bf959-92c8-410e-8e4e-ff6a4220fcbd)
 
 
-After Logging into the Main Application, you can click on the different tabs to checkout the features that are currently implemented such as **Favourites page** and **Movies/Show page(indepent launch as of now)** and the **sign out** feature.
+After Logging into the Main Application, you can click on the different tabs to checkout the different features **Dashboard**, **Ratings**, **Favourites page**, and **Analytics** 
+#### Dashboard
+  There are three different tabs under the dashboard which can be explored **Netflix**, **Disney**,and **Amazon**.
+  ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/23b00aca-ec89-4d73-bfc6-863baec20afd)
+  ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/bfd861d5-572b-417d-ae46-81ef8ba27aea)
+  ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/7a46a761-fdad-4bac-87e8-a985b97bcda3)
+To search for a specific show enter the title of the show and press **Search**.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/7953cc45-6c8d-475e-8244-80355acd372c)
 
-   ![figure 8](Images/Image9.png)
+To further filter based on genre, Type, or ratings you can click on the drop-down arrow by the search button. Select the filter by clicking then enter the genre, rating, type etc. then press **search**.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/705b3e9b-3ad6-4078-82be-ba8292020a9d)
+You can further sort by date added, release year, and title. Follow the same steps as above.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/aef904f2-0dd0-444d-a366-31dbd7ce1b12)
 
 
 ### Sign Out - the Main Application
