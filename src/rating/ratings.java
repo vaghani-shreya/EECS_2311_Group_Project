@@ -50,11 +50,10 @@ public class ratings  extends JFrame {
 		JTabbedPane subTabbedPanel = new JTabbedPane();
 		tab1.setLayout(new BorderLayout());
 			
+		ratingPanel net =  ratingNetflix.getInstance();
+		ratingPanel net2 = ratingAmazon.getInstance();
+		ratingPanel  net3 = ratingDisney.getInstance();
 		
-		ratingNetflix net = ratingNetflix.getInstance();
-		ratingAmazon net2 = ratingAmazon.getInstance();
-		ratingDisney net3 = ratingDisney.getInstance();
-		 
 		subTabbedPanel.addTab("Discover on Netflix",net);
 		subTabbedPanel.addTab("Discover on Amazon",net2);
 		subTabbedPanel.addTab("Discover on Disney",net3);

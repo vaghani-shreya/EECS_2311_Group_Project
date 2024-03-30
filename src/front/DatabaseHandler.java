@@ -1,6 +1,5 @@
 package front;
 
-import java.util.ArrayList;
 import java.sql.*;
 
 public class DatabaseHandler {
@@ -108,6 +107,7 @@ public class DatabaseHandler {
 
 		try (Connection conn = DriverManager.getConnection(path);
 				PreparedStatement pstmt = conn.prepareStatement(query)) {
+			//Update the new code into database
 			pstmt.setInt(1, verCode);
 			pstmt.setString(2, username);
 			pstmt.executeUpdate();
@@ -124,9 +124,9 @@ public class DatabaseHandler {
 	 */
 	public void resetPassword(String username, String password) {
 		String query = "UPDATE UserCred SET password = ? WHERE username = ?;";
-
 		try (Connection conn = DriverManager.getConnection(path);
 				PreparedStatement pstmt = conn.prepareStatement(query)) {
+			//Update the new password into database
 			pstmt.setString(1, password);
 			pstmt.setString(2, username);
 			pstmt.executeUpdate();
@@ -142,7 +142,6 @@ public class DatabaseHandler {
 	 */
 	public void retrieveUserCredentials() {
 		String query = "SELECT * FROM UserCred;";
-
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection(path);
@@ -157,60 +156,6 @@ public class DatabaseHandler {
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	public Object[][] retrieveRecommendations(String username) {
-		// recommendation from three main sources
-		String[] dbPaths = new String[]{
-				"jdbc:sqlite:database/Netflix.db",
-				"jdbc:sqlite:database/Amazon.db",
-				"jdbc:sqlite:database/Disney.db"
-		};
-
-		ArrayList<Object[]> recommendationList = new ArrayList<>();
-
-		for(String path:dbPaths) {
-			try {
-				Class.forName("org.sqlite.JDBC");
-				String tableNameOfEachDB = getTableFromPath(path);
-				String query = String.format("SELECT title, release_year FROM %s WHERE listed_in LIKE ? ORDER BY release_year DESC LIMIT 30;", tableNameOfEachDB);
-
-				try (Connection conn = DriverManager.getConnection(path);
-						PreparedStatement pstmt = conn.prepareStatement(query)) {
-					pstmt.setString(1, "%" + "Comedies" + "%");
-					ResultSet resultSet = pstmt.executeQuery();
-
-					while (resultSet.next()) {
-						recommendationList.add(new Object[]{
-								resultSet.getString("title"),
-								resultSet.getInt("release_year")
-						});
-					}
-				}
-			} catch (ClassNotFoundException e) {
-				System.err.println("JDBC Driver not found.");
-				e.printStackTrace();
-			} catch (SQLException e) {
-				System.err.println("Database access error.");
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return new Object[0][];
-			}
-		}
-		return recommendationList.stream().limit(20).toArray(Object[][]::new);
-	}	
-
-	private String getTableFromPath(String dbPath) {
-		if (dbPath.contains("Netflix")) {
-			return "netflix_titles";
-		} else if (dbPath.contains("Amazon")) {
-			return "amazon_prime_titles"; 
-		} else if (dbPath.contains("Disney")) {
-			return "disney_plus_titles"; 
-		}
-		return "";
 	}
 
 }

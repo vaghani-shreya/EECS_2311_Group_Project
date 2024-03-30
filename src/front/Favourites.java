@@ -215,6 +215,7 @@ public class Favourites extends JFrame {
             e.printStackTrace();
         }
 	}
+
 	//Delete a specified show from user's favourites
 		public void deleteShowFromFavourites(String username, String showId, String title) {
 				String path = "jdbc:sqlite:database/Favourite.db";

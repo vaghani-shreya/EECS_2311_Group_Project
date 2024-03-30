@@ -2,27 +2,17 @@ package front;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-
-import analytics.ratingAnalytics;
+import analytics.chartAnalytics;
 import rating.ratings;
 
-import recommendation.RecommendationPanel;
-
-
-
 public class dashBoard extends JPanel{
-	private JPanel cardPanel;
+	
 	private static JButton signOutButton;
-	private CardLayout cardLayout;
 	public static dashBoard instance;
 	private static LoginPage login;
 	private DatabaseHandler dbHandler;
-	private String[] filterNames = {"Name", "Length", "Genre", "Date Added", "Rating", "Release Date"};
-	private JComboBox filterList = new JComboBox(filterNames);
+	
 
 	public static dashBoard getInstance() {
 		if (instance == null)
@@ -32,11 +22,8 @@ public class dashBoard extends JPanel{
 	}
 
 	public dashBoard(LoginPage loginPage) {
-		// setTitle("Dashboard");
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 900);
 		setLayout(new BorderLayout());
-		//  setLocationRelativeTo(null); // Center the window
 
 		//initialize a databaseHandler instance
 		dbHandler = new DatabaseHandler();
@@ -44,16 +31,14 @@ public class dashBoard extends JPanel{
 		JTabbedPane maintabbedPane = new JTabbedPane();
 
 		// Create tabs
-		
 		JPanel tab1 = new JPanel();
 		JTabbedPane subTabbedPanel = new JTabbedPane();
 		tab1.setLayout(new BorderLayout());
-			
 		
-		netflix net = netflix.getInstance();
-		Disney net2 = Disney.getInstance();
-		Amazon net3 = Amazon.getInstance();
-		 
+		BrowsingDashboard net = netflix.getInstance();
+		BrowsingDashboard net2 = Disney.getInstance();
+		BrowsingDashboard net3 = Amazon.getInstance();
+		
 		subTabbedPanel.addTab("Discover on Netflix",net);
 		subTabbedPanel.addTab("Discover on Disney",net2);
 		subTabbedPanel.addTab("Discover on Amazon",net3);
@@ -61,12 +46,6 @@ public class dashBoard extends JPanel{
 		maintabbedPane.addTab("Dashboard", tab1);
 		add(maintabbedPane, BorderLayout.CENTER);
 		
-
-		JPanel tab2 = new JPanel();
-		RecommendationPanel recommendationPanel = new RecommendationPanel(dbHandler, loginPage.getUsername());
-
-		tab2.add(recommendationPanel); 
-		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
 		
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
@@ -81,17 +60,12 @@ public class dashBoard extends JPanel{
 		tab4.add(fav.getContentPane());
 
 		JPanel tab5 = new JPanel();
-		ratingAnalytics ratingChart = new ratingAnalytics();
+		chartAnalytics ratingChart = new chartAnalytics();
 		tab5.add(ratingChart.getContentPane());
 
-
-		// Add tabs to tabbed pane
-		
-		maintabbedPane.addTab("Recommendations", tab2);
 		maintabbedPane.addTab("Ratings", tab3);
 		maintabbedPane.addTab("Favourites", tab4);
 		maintabbedPane.addTab("Analytics", tab5);
-
 
 		signOutButton = new JButton("Sign Out");
 
@@ -101,9 +75,6 @@ public class dashBoard extends JPanel{
 
 		// Add sign-out button panel to the frame
 		add(signOutPanel, BorderLayout.NORTH);
-
-		// Add tabbed pane to content pane
-		//	add(tabbedPane, BorderLayout.CENTER);
 
 		signOutButton.addActionListener(new ActionListener() {
 			@Override
@@ -115,6 +86,8 @@ public class dashBoard extends JPanel{
 	}
 
 
+	
+	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			dashBoard dashboard = new dashBoard(login);
@@ -124,7 +97,7 @@ public class dashBoard extends JPanel{
 			frame.getContentPane().add(dashboard);
 			frame.pack();
 			frame.setVisible(true);
-			// dashboard.setVisible(true);
+			
 
 		});
 	}
