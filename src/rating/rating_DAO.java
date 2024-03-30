@@ -24,12 +24,10 @@ public class rating_DAO {
 	public int userRating;
 	public int updaterate;
 	public String comment;
-	public String prevComment;
 	
-	public rating_DAO() {
+	public rating_DAO() {}
 		
-	}
-		
+	
 	 public int updateRatingdb(int userRating, String id, String platform) {
 		 updaterate = userRating;
 		  
@@ -38,6 +36,7 @@ public class rating_DAO {
 		 String disney = "disney";
 		 String path = null;
 		 String query = null;
+		 
 		if(platform.equals(netflix)) {			
 		  path = "jdbc:sqlite:database/Netflix.db";
 	        //Finds the specified title and extracts from database
@@ -68,28 +67,23 @@ public class rating_DAO {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}
-	        
-	        
-	        return updaterate;
-		  
-		  
+			}	        
+	        return updaterate;	  
 	  }
 	 
-	 // rating is the general TV rating such as "TV-18", "TV-MA".
-	 //numRating is the numerical rating by the user.
 	 
+	 
+	 
+	 
+	 // rating is the general TV rating such as "TV-18", "TV-MA".
+	 //numRating is the numerical rating by the user.	 
 	 public int insertIntoUserMediadb(String userName,String showid, String title, String releaseYear, String rating, int numRating) {
-		 int numRate = -1;
 		 int rowsAffected = 0;
 		 userRating = numRating;
-		 String client = null;
-		 String mediaTitle = null;
-		
 		 
 		 String path = "jdbc:sqlite:database/userDetails.db";
 		 String query1 = "INSERT INTO userMedia (name, showid, title, releaseYear, rating, numRating) VALUES (?, ?, ?, ?, ?, ?)";
-		 String query2 = "SELECT * FROM userMedia WHERE title = ? AND name = ?;";
+		 String query2 =  "SELECT * FROM userMedia WHERE title = ? AND name = ?;";
 		 String query3 = "UPDATE userMedia SET NumRating = ? WHERE title = ? AND name = ?;";
 		 
 		  try {
@@ -102,9 +96,7 @@ public class rating_DAO {
 				PreparedStatement pstmt1 = conn.prepareStatement(query1);
 				PreparedStatement pstmt2 = conn.prepareStatement(query2);
 				PreparedStatement pstmt3 = conn.prepareStatement(query3);
-						
-				
-				
+									
 				pstmt1.setString(1,userName);
 				pstmt1.setString(2,showid);
 				pstmt1.setString(3,title);
@@ -129,22 +121,6 @@ public class rating_DAO {
 				}else {
 					rowsAffected = pstmt3.executeUpdate();
 				}
-									
-//				while (resultSet.next()) {
-//					 numRate = resultSet.getInt("numRating");
-//					 client = resultSet.getString("name");
-//					 mediaTitle = resultSet.getString("title");
-//					 
-//				}				
-//				 
-//				if(numRate == -1) {
-//					 rowsAffected = pstmt1.executeUpdate();
-//					
-//				}
-//				else if(client.equals(userName) && mediaTitle.equals(title) && numRate != -1) {
-//					 rowsAffected = pstmt3.executeUpdate();
-//					
-//				}
 					
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -155,8 +131,9 @@ public class rating_DAO {
 		  return userRating;
 	 }
 	 
-
-	 public JPanel commentMedia(JFrame frame,String title,JTextArea detailsTextArea) {
+	 
+	 
+	 public JPanel commentMedia(JFrame frame,String title,JTextArea detailsTextArea,String username) {
 		  String user = LoginPage.getUsernameForDB();
 			
 	    	JPanel commentPanel = new JPanel();
@@ -173,24 +150,19 @@ public class rating_DAO {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                 comment = commentField.getText();
-	                // prevComment = comment;
 	                // Save the comment here
 	                 saveCommentToUserDB(comment,user,title);
 	                JOptionPane.showMessageDialog(frame, "Comment saved: " + comment);
-	                detailsTextArea.append("Comment: " + comment + "\n");
+	                detailsTextArea.append(username + "'s" + " comment: " + comment + "\n");
+	                commentField.setText("");
 	            }
 	        });
-	        
-	        
+	                
 	        frame.add(commentPanel);       
 	        return commentPanel;
 	              	
 	 }
-	 
-//	 public void displayComm( JTextArea detailsTextArea, String comment) {
-//		 detailsTextArea.append("Comment: " + comment + "\n");
-//	 }
-//	 
+	 	 
 	 public void saveCommentToUserDB(String comment,String user,String title) {
 		 String path = "jdbc:sqlite:database/userDetails.db";
 		 String query = "UPDATE userMedia SET userComments = ? WHERE name = ? AND title = ?;";
@@ -212,37 +184,6 @@ public class rating_DAO {
 				e.printStackTrace();
 			}
 	        	 	 
-	 }
-	 
-//	 public String retrivePrevComm(String title) {
-//		 
-//		 String path = "jdbc:sqlite:database/userDetails.db";
-//		 String query = "SELECT userComments FROM userMedia WHERE title = ?;";
-//		 
-//		 try {
-//				Class.forName("org.sqlite.JDBC");
-//				Connection conn = DriverManager.getConnection(path);
-//				PreparedStatement pstmt = conn.prepareStatement(query);
-//
-//				pstmt.setString(1, title);
-//			 
-//			    ResultSet resultSet = pstmt.executeQuery();
-//				
-//				while (resultSet.next()) {
-//					prevComment = resultSet.getString("userComments");
-//				}	
-//
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			} catch (ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		 
-//		 return prevComment;
-//	 }
-
-	
+	 }	
 
 }
-
-
