@@ -35,7 +35,7 @@ class ratingNetflixTest {
                 
             	assertNotNull(resultSet.getString("show_id"));
             	assertNotNull(resultSet.getString("title"));
-        //    	assertNotNull(resultSet.getString("date_added"));
+            	assertNotNull(resultSet.getString("date_added"));
             	assertNotNull(resultSet.getString("release_year"));
             	assertNotNull(resultSet.getString("description"));
             	assertNotNull(resultSet.getString("rating"));

@@ -21,7 +21,7 @@ class AmazonTest {
 		     String query = "SELECT * FROM amazon_prime_titles WHERE title LIKE ?;";
 		     
 		     // Replace this title with a title from the Amazon database
-		     String expected = "My Little Pony: A New Generation";
+		     String expected = "White Tiger";
 
 		        try {
 		            Class.forName("org.sqlite.JDBC");

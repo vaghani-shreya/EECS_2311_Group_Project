@@ -21,7 +21,7 @@ class DisneyTest {
 		     String query = "SELECT * FROM disney_plus_titles WHERE title LIKE ?;";
 		     
 		     // Replace this title with a title from the Disney database
-		     String expected = "My Little Pony: A New Generation";
+		     String expected = "Hawkeye";
 
 		        try {
 		            Class.forName("org.sqlite.JDBC");
