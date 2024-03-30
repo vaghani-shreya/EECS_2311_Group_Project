@@ -51,7 +51,7 @@ public class ratingAnalytics extends JFrame {
 
             JFreeChart chart = ChartFactory.createBarChart(titles[i], "Category", "Media Number", dataset);
             ChartPanel chartPanel = new ChartPanel(chart);
-            chartPanel.setPreferredSize(new Dimension(750, 700));
+            chartPanel.setPreferredSize(new Dimension(500, 700));
             containerPanel.add(chartPanel);
         }
 

@@ -14,7 +14,13 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+/**
+ * This class is responsible for all reset pssoword functionalities
+ * these include: confirming the username exists in the database, assigning a verification code to the user,
+ * and sending an email with the verification code to the user.
+ */
 public class ForgotPasswordPage extends JPanel {
+	// Variable Initializations
 	private JTextField usernameField;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
@@ -25,29 +31,27 @@ public class ForgotPasswordPage extends JPanel {
 	private static JButton enterButton;
 	private int code;
 	
+	// Check if username exists in the database
 	public boolean username(String username) {
-		// Check if username exists in the database
-		// For simplicity, let's use a hardcoded username and password for demonstration
-		//		return username.equals("user");
 		boolean login = dbHandler.checkUser(username)|| username.equals("user");
-
 		return login;
 	}
 	
+	// Assign a verification code to the user
 	public void changeCode(String username, int code) {
-		// assign a verification code to the user
-		
 		dbHandler.assignCode(username, code);
-
 	}
 	
 	public static ForgotPasswordPage getInstance() {
 		if (instance == null)
 			instance = new ForgotPasswordPage(login);
-
 		return instance;
 	}
 	
+	/**
+	 * Main constructor responsible for the design and all the actions on the forget password page
+	 * Pagelayout and all the dfferent design aspects of the forget password page are found in this constructor
+	 */
 	public ForgotPasswordPage(LoginPage loginPage) {
 		dbHandler = new DatabaseHandler();
 		setSize(900, 900);
@@ -132,6 +136,7 @@ public class ForgotPasswordPage extends JPanel {
 			}
 		});
 		
+		// Returns user to the login page
 		backButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -165,8 +170,10 @@ public class ForgotPasswordPage extends JPanel {
 	//Send an email
 	public static void sendEmail(String to, String subject, String body) {
         final String from = "eecs2311group1@gmail.com";
-        final String password = "jsno fozx itnl kuhj";	// change password for testing purposes
+       final String password = "jsno fozx itnl kuhj";	// change password for testing purposes
+       // final String password = "enter-password";	// change password for testing purposes
 
+        
         // Setup mail server properties
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com"); // Replace with your SMTP server
