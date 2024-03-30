@@ -10,9 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
-public class ratingAnalytics extends JFrame {
+public class chartAnalytics extends JFrame {
    
-    public ratingAnalytics() {
+    public chartAnalytics() {
         JPanel containerPanel = new JPanel(new GridLayout(1, 3));
 
         String[] paths = {
@@ -66,7 +66,7 @@ public class ratingAnalytics extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new ratingAnalytics();
+            JFrame frame = new chartAnalytics();
             frame.setVisible(true);
         });
     }
