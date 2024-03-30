@@ -10,8 +10,6 @@ import javax.swing.event.ChangeEvent;
 import analytics.ratingAnalytics;
 import rating.ratings;
 
-import recommendation.RecommendationPanel;
-
 
 
 public class dashBoard extends JPanel{
@@ -61,13 +59,6 @@ public class dashBoard extends JPanel{
 		maintabbedPane.addTab("Dashboard", tab1);
 		add(maintabbedPane, BorderLayout.CENTER);
 		
-
-		JPanel tab2 = new JPanel();
-		RecommendationPanel recommendationPanel = new RecommendationPanel(dbHandler, loginPage.getUsername());
-
-		tab2.add(recommendationPanel); 
-		tab2.setLayout(new BoxLayout(tab2, BoxLayout.Y_AXIS));
-		
 		JPanel tab3 = new JPanel();
 		tab3.add(new JLabel("User can rate here"));
 		tab3.setLayout(new BorderLayout());
@@ -86,8 +77,6 @@ public class dashBoard extends JPanel{
 
 
 		// Add tabs to tabbed pane
-		
-		maintabbedPane.addTab("Recommendations", tab2);
 		maintabbedPane.addTab("Ratings", tab3);
 		maintabbedPane.addTab("Favourites", tab4);
 		maintabbedPane.addTab("Analytics", tab5);
