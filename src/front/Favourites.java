@@ -1,4 +1,5 @@
 package front;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -15,21 +16,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
 
-
 public class Favourites extends JFrame {
 	public static Favourites instance;
 	private JPanel showPanel;
-
+	
+	//Favourites constructor
     public Favourites() {
     	initComponents();
     	displayUserFavourites();
     	RefreshUserFavouritesDisplay();
     }
+    //Ensuring only one instance is created
     public static Favourites getInstance() {
         if (instance == null)
             instance = new Favourites();
         return instance;
     }
+    //Initialize GUI components
 	public void initComponents() {
 	
 		setSize(800, 600);
@@ -58,26 +61,27 @@ public class Favourites extends JFrame {
 		 JScrollPane scrollPane = new JScrollPane(showPanel);
 
 		  getContentPane().add(searchPanel, BorderLayout.NORTH);
-		    // Add the favorites panel to the center section of the frame
+		  // Add the favorites panel to the center section of the frame
 		  getContentPane().add(scrollPane, BorderLayout.CENTER);
 		  revalidate();
 		  repaint();
 	    }
+	//Refresh display of favourites every 10 seconds
 	 private void RefreshUserFavouritesDisplay() {
-	        Timer timer = new Timer(20000, new ActionListener() { 
+	        Timer timer = new Timer(10000, new ActionListener() { 
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                displayUserFavourites(); 
 	            }
 	        });
-	        timer.setRepeats(true); // Repeat the timer
-	        timer.start(); // Start the timer
+	        timer.setRepeats(true); 
+	        timer.start(); 
 	    }
 
-	
+	//Search for a specified title from the user's favourites
 	public void searchFavourites(String searchFor) {
 	    showPanel.removeAll(); // Clear existing shows/movies
-	    String username = "user";
+	    String username = LoginPage.getUsernameForDB();
 	    String path = "jdbc:sqlite:database/Favourite.db";
 	    String query = "SELECT * FROM favourites WHERE username = ? AND title LIKE ?";
 
@@ -98,8 +102,8 @@ public class Favourites extends JFrame {
 	            String director = resultSet.getString("director");
 	            String cast = resultSet.getString("cast");
 	            String description = resultSet.getString("description");
+	            
 	            //prints the specified show / movie and the corresponding information
-
 	            JLabel showLabel = new JLabel("ID: " + id + ", Title: " + title + ", Date Added: " + dateAdded + ", Release Year: " + releaseYear);
 	            showLabel.addMouseListener(new MouseAdapter() {
 	                @Override
@@ -163,14 +167,14 @@ public class Favourites extends JFrame {
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	        
 	    }
-	    displayUserFavourites();
+	   displayUserFavourites();
 	}
 	
 	//displays all the current user's favourited shows/movies from the database
 	public void displayUserFavourites() {
 		String username = LoginPage.getUsernameForDB();
-		System.out.println("Displaying favorites for user: " + username);
         String path = "jdbc:sqlite:database/Favourite.db";
         String query = "SELECT * FROM Favourites WHERE username = ?";
         
@@ -189,7 +193,7 @@ public class Favourites extends JFrame {
                 String director = resultSet.getString("director");
                 String cast = resultSet.getString("cast");
                 String description = resultSet.getString("description");
-                System.out.println(showId+title+"\n");
+                
                 // add the show details from database to the display
                 JLabel showLabel = new JLabel("Show ID: " + showId + ", Title: " + title + ", Date Added: " + dateAdded);
                 showLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -197,7 +201,7 @@ public class Favourites extends JFrame {
 				showPanel.add(showLabel);
 				showPanel.add(Box.createVerticalStrut(10)); 
 				
-				//Click to see more details about the show
+				//Listener to click to see more details about the show
 				showLabel.addMouseListener(new MouseAdapter() {
 				 @Override
 				    public void mouseClicked(MouseEvent e) {
@@ -212,8 +216,10 @@ public class Favourites extends JFrame {
             e.printStackTrace();
         }
 	}
+
+	//Delete a specified show from user's favourites
 		public void deleteShowFromFavourites(String username, String showId, String title) {
-			 String path = "jdbc:sqlite:database/Favourite.db";
+				String path = "jdbc:sqlite:database/Favourite.db";
 			    String deleteQuery = "DELETE FROM Favourites WHERE username = ? AND show_id = ? AND title = ?";
 
 			    try (Connection connection = DriverManager.getConnection(path);
@@ -235,7 +241,7 @@ public class Favourites extends JFrame {
 			    }
 	 
 			}
-	
+	//Display more details about the Show/Movie
 	private void showDetails(String showId, String title, String dateAdded, String releaseYear, String director, String cast, String description) {
 		String username = LoginPage.getUsernameForDB();
 		// Open a new page to display more details about a specific show/movie
