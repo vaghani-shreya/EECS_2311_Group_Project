@@ -204,8 +204,6 @@ To Sign out from the Main application, click on the Sign out button on the right
 - Anusha
 - David
 - Shreya
-- Huiling
-
 
 ## Acknowledgements
 - Thanks to Hadi Hemmati, the EECS 2311 instructor and Hamed Taherkhani, the TA, for their invaluable guidance.
@@ -215,12 +213,11 @@ To Sign out from the Main application, click on the Sign out button on the right
 
 ## Authors
 
-- Mai: Implemented The Netflix “Discover Weekly” page where users can search for a certain show from Netflix.
-- Elizabeth: Implementing the login page
-- Anusha: Implemented the Forgot Password Function
-- David: Implemented the Favourites Page
-- Shreya: Implementing the dashboard with all the different pages
-- Huiling: Implementing the detailed page for each entry 
+Anusha -  Forgot Password, Newsletter, Mark as Watched
+David - Favourites List
+Elizabeth - Login Authentication, Registration, Sort and Filter 
+Mai - Discover From, Favourites List, Show Details
+Shreya - Discover From, Ratings and Comments, Chart Analytics
 
 ## Acknowledgements
 
