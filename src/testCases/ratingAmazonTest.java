@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 
 import rating.ratingAmazon;
+import rating.ratingNetflix;
 import rating.rating_DAO;
 
 class ratingAmazonTest {
@@ -61,22 +62,27 @@ class ratingAmazonTest {
 		String ratingNAN = "Test RatingNAN";
 		String avgRating = "Test AVGRating";
 		
-		ratingAmazon ratingAmazon = new ratingAmazon();
-		ratingAmazon.rateMedia(show, title, date, year, description, ratingNAN, avgRating);
+		ratingNetflix ratingNetflix = new ratingNetflix();
+		ratingNetflix.rateMedia(show, title, date, year, description, ratingNAN, avgRating);
 		
 		rating_DAO ratingDAO = new rating_DAO();
 		
 		ratingDAO.updateRatingdb(0, "12345", "amazon");
 		ratingDAO.insertIntoUserMediadb("Test User", "12345", title, year, avgRating, 0);
-		
-		String path = "jdbc:sqlite:database/Amazon.db";
-		String query = "UPDATE amazon_prime_titles SET NumRatings = 0 WHERE show_id = 12345;";
-		
+
 		try {
 			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection(path);
-			PreparedStatement pstmt = conn.prepareStatement(query);
-			ResultSet resultSet = pstmt.executeQuery(); 
+			String path = "jdbc:sqlite:database/Amazon.db";
+			Connection connection = DriverManager.getConnection(path);
+			String updateSql = "UPDATE amazon_prime_titles SET NumRatings = 0 WHERE show_id = 12345;";
+			PreparedStatement statement = connection.prepareStatement(updateSql);
+			
+			statement.executeUpdate();
+			statement.close();
+			
+			String selectSql = "SELECT * FROM amazon_prime_titles WHERE NumRatings = 0 AND show_id = 12345";
+			statement = connection.prepareStatement(selectSql);
+			ResultSet resultSet = statement.executeQuery();
 			
 			while (resultSet.next()) {
 				

@@ -69,15 +69,20 @@ class ratingNetflixTest {
 		
 		ratingDAO.updateRatingdb(0, "12345", "netflix");
 		ratingDAO.insertIntoUserMediadb("Test User", "12345", title, year, avgRating, 0);
-		
-		String path = "jdbc:sqlite:database/Netflix.db";
-		String query = "UPDATE netflix_titles SET NumRatings = 0 WHERE show_id = 12345;";
-		
+
 		try {
 			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection(path);
-			PreparedStatement pstmt = conn.prepareStatement(query);
-			ResultSet resultSet = pstmt.executeQuery(); 
+			String path = "jdbc:sqlite:database/Netflix.db";
+			Connection connection = DriverManager.getConnection(path);
+			String updateSql = "UPDATE netflix_titles SET NumRatings = 0 WHERE show_id = 12345;";
+			PreparedStatement statement = connection.prepareStatement(updateSql);
+			
+			statement.executeUpdate();
+			statement.close();
+			
+			String selectSql = "SELECT * FROM netflix_titles WHERE NumRatings = 0 AND show_id = 12345";
+			statement = connection.prepareStatement(selectSql);
+			ResultSet resultSet = statement.executeQuery();
 			
 			while (resultSet.next()) {
 				

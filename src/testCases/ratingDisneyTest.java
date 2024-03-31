@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 
 import rating.ratingDisney;
+import rating.ratingNetflix;
 import rating.rating_DAO;
 
 class ratingDisneyTest {
@@ -61,22 +62,27 @@ class ratingDisneyTest {
 		String ratingNAN = "Test RatingNAN";
 		String avgRating = "Test AVGRating";
 		
-		ratingDisney ratingDisney = new ratingDisney();
-		ratingDisney.rateMedia(show, title, date, year, description, ratingNAN, avgRating);
+		ratingNetflix ratingNetflix = new ratingNetflix();
+		ratingNetflix.rateMedia(show, title, date, year, description, ratingNAN, avgRating);
 		
 		rating_DAO ratingDAO = new rating_DAO();
 		
-		ratingDAO.updateRatingdb(0, "12345", "netflix");
+		ratingDAO.updateRatingdb(0, "12345", "disney");
 		ratingDAO.insertIntoUserMediadb("Test User", "12345", title, year, avgRating, 0);
-		
-		String path = "jdbc:sqlite:database/Disney.db";
-		String query = "UPDATE disney_plus_titles SET NumRatings = 0 WHERE show_id = 12345;";
-		
+
 		try {
 			Class.forName("org.sqlite.JDBC");
-			Connection conn = DriverManager.getConnection(path);
-			PreparedStatement pstmt = conn.prepareStatement(query);
-			ResultSet resultSet = pstmt.executeQuery(); 
+			String path = "jdbc:sqlite:database/Disney.db";
+			Connection connection = DriverManager.getConnection(path);
+			String updateSql = "UPDATE disney_plus_titles SET NumRatings = 0 WHERE show_id = 12345;";
+			PreparedStatement statement = connection.prepareStatement(updateSql);
+			
+			statement.executeUpdate();
+			statement.close();
+			
+			String selectSql = "SELECT * FROM disney_plus_titles WHERE NumRatings = 0 AND show_id = 12345";
+			statement = connection.prepareStatement(selectSql);
+			ResultSet resultSet = statement.executeQuery();
 			
 			while (resultSet.next()) {
 				
