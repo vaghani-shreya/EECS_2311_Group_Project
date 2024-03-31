@@ -222,15 +222,6 @@ public abstract class BrowsingDashboard extends JPanel{
 				}
 			});
 
-		    likeButton.setPreferredSize(new Dimension(20,40));
-		    likeButton.addActionListener(new ActionListener() {
-		        @Override
-		        public void actionPerformed(ActionEvent e) {
-		            // Call addToFavouritesList method when the button is clicked
-		           favourites.addToFavouritesList(username,showId, title, dateAdded, releaseYear, director, cast, description);
-		        }
-		    });
-
 		    detailsPanel.add(likeButton);
 
 		    

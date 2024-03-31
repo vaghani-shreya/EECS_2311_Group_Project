@@ -167,8 +167,9 @@ public class Favourites extends JFrame {
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	        
 	    }
-	    displayUserFavourites();
+	   displayUserFavourites();
 	}
 	
 	//displays all the current user's favourited shows/movies from the database
