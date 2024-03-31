@@ -30,7 +30,12 @@
 * [Set Up](#Set-Up)
 * [Usage](#usage)
   * [Launching the Main Application](#Launching-the-Main-Application)
-  * [Launching the Movies/Shows thumbnail](#Launching-the-Movies/Shows-thumbnail)
+  * [Exploring Functionalities](#Exploring-Functionalities)
+      * [Logining in and Authentication](#Logining-in-and-Authentication)
+      * [Dashboard](#Dashboard)
+      * [Rating](#Rating)
+      * [Favourites](#Favourites)
+      * [Analytics](#Analytics)
   * [Sign Out - the Main Application](Sign-Out---the-Main-Application)
 * [Contributing](#contributing)
 * [Authors](#authors)
@@ -137,7 +142,7 @@ You can further sort by date added, release year, and title. Follow the same ste
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/aef904f2-0dd0-444d-a366-31dbd7ce1b12)
 
 
-To see additional information about the specific show click on a show panel. A pop window should appear.
+To see additional information about the specific show click on a show panel. A pop-up window should appear.
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/2ee87997-a995-4c12-9feb-edf6849edc9d)
 
 
@@ -149,24 +154,40 @@ You can also mark the show as watched.
 
 #### Rating
 Similarly to dashboard there are three different tabs under ratings which can be explored **Netflix**, **Disney**,and **Amazon**.
-The main difference is included when you click 
+The main difference is included when you click on an individual show. Once Clicked this pop up window should appear. With an **Add Rating** functionality as well as **Add Comment**.
 
-#### Favourites Page
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/4af8174a-29e5-4d15-b0b0-86894743df48)
+
+
+To Enter a rating and/or comment type a rating between 1-10 and a comment in their respective search fields. The press **save** or **save comment**.
+
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/4a776581-7fed-4f38-bdbb-dcb9f7601aaa)
+
+When rating is complete a pop window should appear informing you the rating was complete.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/19011afd-540b-43a4-acb5-be6080c33f7d)
+
+Similarly when a comment is added it will appear in show details. 
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/fa82c5a6-c50a-4ee8-90c9-15c4df6e5697)
+
+#### Favourites
 If you click on favourites page you can see your favourite list of shows.
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/c173dd4b-863b-4167-ba67-c0549af8b396)
 
 If you click on any show you can see further details and delete any show added to the list by clicking **Delete**
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/89653733/4cfaa4f5-1f71-49d5-93cd-f5b063ada754)
 
+#### Analytics
+The Analytics page displays the number of shows in each platform which have a certain age rating associated with it.
 
-### Sign Out - the Main Application
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/da1a57b9-11f5-451b-a117-67bf6d2c186b)
 
-To Sign out from the Mainn application, click on the Sign out button on the right hand side of the application.
 
-<<<<<<< HEAD
- ![figure 9](Images/Image8.png)
+### Sign Out - the Main Applicatio
 
- **NOTE** - There is no sign out button to the netflix application as it will be a component of the Main application for the next iteration.
+To Sign out from the Main application, click on the Sign out button on the right hand side of the application.
+
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/5d3338d0-1967-48b3-a89f-b1d1bac2d2f0)
+
 
 
 ## Authors
