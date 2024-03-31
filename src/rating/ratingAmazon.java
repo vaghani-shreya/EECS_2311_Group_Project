@@ -31,7 +31,7 @@ public class ratingAmazon extends ratingPanel{
 	  
 
 	@Override
-	protected void loadDataFromDatabase() {
+	public void loadDataFromDatabase() {
 		
 		 String path = "jdbc:sqlite:database/Amazon.db";
 	     // extract data from netflix database by descending order in terms of release year
@@ -77,7 +77,7 @@ public class ratingAmazon extends ratingPanel{
 	    }
 
 	@Override
-	protected void searchDatabase(String searchFor) {
+	public void searchDatabase(String searchFor) {
 		
        showPanel.removeAll(); // Clear existing shows/movies  
        //Finds the specified title and extracts from database

@@ -78,7 +78,7 @@ public class Newsletter {
 	public static void sendEmail(String to, String subject, Object[][] body) {
 		//Initialize Variables
 		final String from = "eecs2311group1@gmail.com";
-		final String password = "enter-password";
+		final String password = "jsno fozx itnl kuhj";
 
 		// Setup mail server properties
 		Properties properties = new Properties();

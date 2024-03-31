@@ -34,7 +34,7 @@ public class ratingNetflix extends ratingPanel{
 	  
 
 	@Override
-	protected void loadDataFromDatabase() {
+	public void loadDataFromDatabase() {
 		// TODO Auto-generated method stub
 		
 		 String path = "jdbc:sqlite:database/Netflix.db";
@@ -134,7 +134,7 @@ public class ratingNetflix extends ratingPanel{
 	    
 
 	@Override
-	protected void searchDatabase(String searchFor) {
+	public void searchDatabase(String searchFor) {
 		
         showPanel.removeAll(); // Clear existing shows/movies  
         //Finds the specified title and extracts from database

@@ -27,7 +27,7 @@ public class ratingDisney extends ratingPanel{
 	 }
 	 
 	@Override
-	protected void loadDataFromDatabase() {
+	public void loadDataFromDatabase() {
 		 String path = "jdbc:sqlite:database/Disney.db";
 	     // extract data from netflix database by descending order in terms of release year
 	        String query = "SELECT * FROM disney_plus_titles ORDER BY release_year DESC LIMIT 10;";
@@ -72,7 +72,7 @@ public class ratingDisney extends ratingPanel{
 	}
 
 	@Override
-	protected void searchDatabase(String searchFor) {
+	public void searchDatabase(String searchFor) {
 		
       showPanel.removeAll(); // Clear existing shows/movies  
       //Finds the specified title and extracts from database
