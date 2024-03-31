@@ -37,7 +37,8 @@
       * [Favourites](#Favourites)
       * [Analytics](#Analytics)
       * [Email Feature](#Email-Feature)
-  * [Sign Out - the Main Application](Sign-Out---the-Main-Application)
+  * [Sign Out - the Main Application](#Sign-Out---the-Main-Application)
+  * [Running Test Cases Only](#Running-Test-Cases-Only)
 * [Contributing](#contributing)
 * [Authors](#authors)
 * [Acknowledgements](#acknowledgements)
@@ -196,6 +197,16 @@ To Sign out from the Main application, click on the Sign out button on the right
 
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/5d3338d0-1967-48b3-a89f-b1d1bac2d2f0)
 
+
+### Running Test Cases Only
+
+The Java SQL error "No suitable driver found for "jdbc:sqlite:database/UserCredentials.db" is supposed to occur since we are testing hardcoded values. But the database is tested in the databaseTest.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/8c078e9f-376e-4f1d-8d0f-f4935fcde4cc)
+
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/9673e174-4ad8-4f53-986d-d3c0a5587e3e)
+
+For the following error multiple pop-up windows should appear in your task bar. Continuously press "ok" and the test cases should pass.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/dbe44f86-23b4-4d88-a3d7-25e978ea169b)
 
 
 ## Authors
