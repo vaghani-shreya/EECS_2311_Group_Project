@@ -36,6 +36,7 @@
       * [Rating](#Rating)
       * [Favourites](#Favourites)
       * [Analytics](#Analytics)
+      * [Email Feature](#Email-Feature)
   * [Sign Out - the Main Application](Sign-Out---the-Main-Application)
 * [Contributing](#contributing)
 * [Authors](#authors)
@@ -181,8 +182,15 @@ The Analytics page displays the number of shows in each platform which have a ce
 
 ![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/da1a57b9-11f5-451b-a117-67bf6d2c186b)
 
+#### Email Feature
+The email feature is automated to be sent weekly. To test this feature:
 
-### Sign Out - the Main Applicatio
+In the newsletter.java file go to the sendEmail method and enter the correct password.
+![image](https://github.com/vaghani-shreya/EECS_2311_Group_Project/assets/96916849/6e316270-3eb9-4e50-9eb8-de2f3cce10d5)
+
+Then run the application again and log in with your email. You should recieve an email automatically. The next email will be sent in a week.
+
+### Sign Out - the Main Application
 
 To Sign out from the Main application, click on the Sign out button on the right hand side of the application.
 
